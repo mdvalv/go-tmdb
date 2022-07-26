@@ -54,7 +54,7 @@ func (pr *WatchProvidersResource) getProviders(providerType string, opt *Provide
 
 type ProviderRegion struct {
 	EnglishName string `json:"english_name"`
-	ISO_3166_1  string `json:"iso_3166_1"`
+	ISO31661    string `json:"iso_3166_1"`
 	NativeName  string `json:"native_name"`
 }
 
