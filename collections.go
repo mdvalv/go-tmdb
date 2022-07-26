@@ -14,7 +14,7 @@ type CollectionsResource struct {
 
 type Part struct {
 	Adult            bool    `json:"adult"`
-	BackdropPath     string  `json:"backdrop_path"`
+	BackdropPath     *string `json:"backdrop_path"`
 	GenreIds         []int   `json:"genre_ids"`
 	Id               int     `json:"id"`
 	OriginalLanguage string  `json:"original_language"`
@@ -30,12 +30,12 @@ type Part struct {
 }
 
 type Collection struct {
-	Id           int    `json:"id"`
-	Name         string `json:"name"`
-	Overview     string `json:"overview"`
-	PosterPath   string `json:"poster_path"`
-	BackdropPath string `json:"backdrop_path"`
-	Parts        []Part `json:"parts"`
+	Id           int     `json:"id"`
+	Name         string  `json:"name"`
+	Overview     string  `json:"overview"`
+	PosterPath   *string `json:"poster_path"`
+	BackdropPath string  `json:"backdrop_path"`
+	Parts        []Part  `json:"parts"`
 }
 
 type CollectionsOptions struct {
@@ -59,7 +59,7 @@ type image struct {
 	AspectRatio float64 `json:"aspect_ratio"`
 	FilePath    string  `json:"file_path"`
 	Height      int     `json:"height"`
-	ISO_3166_1  string  `json:"iso_639_1"`
+	ISO_3166_1  *string `json:"iso_639_1"`
 	VoteAverage float64 `json:"vote_average"`
 	VoteCount   int     `json:"vote_count"`
 	Width       int     `json:"width"`
