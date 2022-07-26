@@ -59,7 +59,7 @@ type image struct {
 	AspectRatio float64 `json:"aspect_ratio"`
 	FilePath    string  `json:"file_path"`
 	Height      int     `json:"height"`
-	ISO_3166_1  *string `json:"iso_639_1"`
+	ISO6391     *string `json:"iso_639_1"`
 	VoteAverage float64 `json:"vote_average"`
 	VoteCount   int     `json:"vote_count"`
 	Width       int     `json:"width"`
@@ -90,8 +90,8 @@ type Data struct {
 }
 
 type Translation []struct {
-	Iso31661    string `json:"iso_3166_1"`
-	Iso6391     string `json:"iso_639_1"`
+	ISO31661    string `json:"iso_3166_1"`
+	ISO6391     string `json:"iso_639_1"`
 	Name        string `json:"name"`
 	EnglishName string `json:"english_name"`
 	Data        Data   `json:"data"`
