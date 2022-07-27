@@ -37,6 +37,7 @@ type Client struct {
 	Certifications *CertificationsResource
 	Collections    *CollectionsResource
 	Companies      *CompaniesResource
+	Configuration  *ConfigurationResource
 	Credits        *CreditsResource
 	Genres         *GenresResource
 	Keywords       *KeywordsResource
@@ -80,6 +81,7 @@ func NewClient(token string, options ...HTTPClientOptionFunc) (*Client, error) {
 	c.Certifications = &CertificationsResource{client: c}
 	c.Collections = &CollectionsResource{client: c}
 	c.Companies = &CompaniesResource{client: c}
+	c.Configuration = &ConfigurationResource{client: c}
 	c.Credits = &CreditsResource{client: c}
 	c.Genres = &GenresResource{client: c}
 	c.Keywords = &KeywordsResource{client: c}
