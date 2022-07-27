@@ -29,7 +29,7 @@ type Company struct {
 	ParentCompany *ParentCompany `json:"parent_company"`
 }
 
-// Get a companies details by id.
+// Get company details by id.
 func (cr *CompaniesResource) GetCompany(id int) (*Company, *http.Response, error) {
 	path := fmt.Sprintf("/company/%d", id)
 	var company Company
@@ -71,7 +71,7 @@ type CompanyImages struct {
 	Logos []Logo `json:"logos"`
 }
 
-// Get a companies logos by id.
+// Get company logos by id.
 // There are two image formats that are supported for companies, PNG's and SVG's.
 func (cr *CompaniesResource) GetImages(id int) (*CompanyImages, *http.Response, error) {
 	path := fmt.Sprintf("/company/%d/images", id)
