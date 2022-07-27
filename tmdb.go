@@ -40,6 +40,7 @@ type Client struct {
 	Credits        *CreditsResource
 	Genres         *GenresResource
 	Keywords       *KeywordsResource
+	Networks       *NetworksResource
 	Reviews        *ReviewsResource
 	WatchProviders *WatchProvidersResource
 }
@@ -82,6 +83,7 @@ func NewClient(token string, options ...HTTPClientOptionFunc) (*Client, error) {
 	c.Credits = &CreditsResource{client: c}
 	c.Genres = &GenresResource{client: c}
 	c.Keywords = &KeywordsResource{client: c}
+	c.Networks = &NetworksResource{client: c}
 	c.Reviews = &ReviewsResource{client: c}
 	c.WatchProviders = &WatchProvidersResource{client: c}
 
