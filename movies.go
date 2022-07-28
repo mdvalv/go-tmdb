@@ -5,7 +5,7 @@ type MoviesResource struct {
 	client *Client
 }
 
-type Movie struct {
+type movie struct {
 	Adult            bool    `json:"adult"`
 	BackdropPath     *string `json:"backdrop_path"`
 	GenreIds         []int   `json:"genre_ids"`

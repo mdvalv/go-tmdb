@@ -28,7 +28,7 @@ func (kr *KeywordsResource) GetKeyword(id int) (*Keyword, *http.Response, error)
 type KeywordMovies struct {
 	Id           int     `json:"id"`
 	Page         int     `json:"page"`
-	Results      []Movie `json:"results"`
+	Movies       []movie `json:"results"`
 	TotalPages   int     `json:"total_pages"`
 	TotalResults int     `json:"total_results"`
 }
