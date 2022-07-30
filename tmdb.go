@@ -34,6 +34,7 @@ type Client struct {
 	token string
 
 	// Available TMDb resources that can be interacted with through the API.
+	Authentication *AuthenticationResource
 	Certifications *CertificationsResource
 	Collections    *CollectionsResource
 	Companies      *CompaniesResource
@@ -79,6 +80,7 @@ func NewClient(token string, options ...HTTPClientOptionFunc) (*Client, error) {
 		token:      token,
 	}
 
+	c.Authentication = &AuthenticationResource{client: c}
 	c.Certifications = &CertificationsResource{client: c}
 	c.Collections = &CollectionsResource{client: c}
 	c.Companies = &CompaniesResource{client: c}
