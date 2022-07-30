@@ -102,10 +102,11 @@ func (c *Client) newRequest(method, path string, opt interface{}) (*retryablehtt
 	reqHeaders := make(http.Header)
 	reqHeaders.Set("Accept", "application/json")
 
-	var body interface{}
+	var body []byte
 	var err error
+	q := url.Values{}
 	switch {
-	case method == http.MethodPost || method == http.MethodPut:
+	case method == http.MethodPost || method == http.MethodPut || method == http.MethodDelete:
 		reqHeaders.Set("Content-Type", "application/json")
 		if opt != nil {
 			body, err = json.Marshal(opt)
@@ -114,19 +115,15 @@ func (c *Client) newRequest(method, path string, opt interface{}) (*retryablehtt
 				return nil, err
 			}
 		}
-	case opt == nil:
-		type foo struct{}
-		opt = foo{}
-		fallthrough
 	case opt != nil:
-		q, err := query.Values(opt)
+		q, err = query.Values(opt)
 		if err != nil {
 			err = errors.Wrap(err, "failed to prepare request body")
 			return nil, err
 		}
-		q.Add("api_key", c.token)
-		u.RawQuery = q.Encode()
 	}
+	q.Add("api_key", c.token)
+	u.RawQuery = q.Encode()
 
 	req, err := retryablehttp.NewRequest(method, u.String(), body)
 	if err != nil {
@@ -153,7 +150,6 @@ func (c *Client) do(req *retryablehttp.Request, resource interface{}) (*http.Res
 
 	err = checkResponse(resp)
 	if err != nil {
-		err = errors.Wrap(err, "failed to check response")
 		return resp, err
 	}
 
@@ -217,6 +213,18 @@ func parseError(raw interface{}) string {
 	}
 }
 
+// createResource creates a resource in TMDb.
+func (c *Client) createResource(basePath string, opt, resource interface{}) (*http.Response, error) {
+	req, err := c.newRequest(http.MethodPost, basePath, opt)
+	if err != nil {
+		err = errors.Wrap(err, "failed to get new request")
+		return nil, err
+	}
+
+	resp, err := c.do(req, resource)
+	return resp, errors.Wrap(err, "failed to execute request")
+}
+
 // getResource retrieves a resource from TMDb.
 // If the request should have url values/parameters, they should be included in opt
 func (c *Client) getResource(resourcePath string, opt, resource interface{}) (*http.Response, error) {
@@ -225,6 +233,18 @@ func (c *Client) getResource(resourcePath string, opt, resource interface{}) (*h
 		err = errors.Wrap(err, "failed to get new request")
 		return nil, err
 	}
+	resp, err := c.do(req, resource)
+	return resp, errors.Wrap(err, "failed to execute request")
+}
+
+// deleteResource deletes a resource from TMDb.
+func (c *Client) deleteResource(resourcePath string, opt, resource interface{}) (*http.Response, error) {
+	req, err := c.newRequest(http.MethodDelete, resourcePath, opt)
+	if err != nil {
+		err = errors.Wrap(err, "failed to get new request")
+		return nil, err
+	}
+
 	resp, err := c.do(req, resource)
 	return resp, errors.Wrap(err, "failed to execute request")
 }
