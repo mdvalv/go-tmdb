@@ -6,18 +6,38 @@ type TVResource struct {
 }
 
 type tv struct {
-	PosterPath       *string  `json:"poster_path"`
-	Popularity       float64  `json:"popularity"`
-	Id               int      `json:"id"`
-	BackdropPath     *string  `json:"backdrop_path"`
-	VoteAverage      float64  `json:"vote_average"`
-	Overview         string   `json:"overview"`
-	FirstAirDate     string   `json:"first_air_date"`
-	OriginCountry    []string `json:"origin_country"`
-	GenreIds         []int    `json:"genre_ids"`
-	OriginalLanguage string   `json:"original_language"`
-	VoteCount        int      `json:"vote_count"`
-	Name             string   `json:"name"`
-	OriginalName     string   `json:"original_name"`
 	Adult            bool     `json:"adult"`
+	BackdropPath     *string  `json:"backdrop_path"`
+	FirstAirDate     string   `json:"first_air_date"`
+	GenreIds         []int    `json:"genre_ids"`
+	Id               int      `json:"id"`
+	Name             string   `json:"name"`
+	OriginalLanguage string   `json:"original_language"`
+	OriginalName     string   `json:"original_name"`
+	OriginCountry    []string `json:"origin_country"`
+	Overview         string   `json:"overview"`
+	Popularity       float64  `json:"popularity"`
+	PosterPath       *string  `json:"poster_path"`
+	VoteAverage      float64  `json:"vote_average"`
+	VoteCount        int      `json:"vote_count"`
+}
+
+type episode struct {
+	AirDate        string  `json:"air_date"`
+	EpisodeNumber  int     `json:"episode_number"`
+	Id             int     `json:"id"`
+	Name           string  `json:"name"`
+	Overview       string  `json:"overview"`
+	ProductionCode string  `json:"production_code"`
+	Runtime        int     `json:"runtime"`
+	SeasonNumber   int     `json:"season_number"`
+	ShowId         int     `json:"show_id"`
+	StillPath      *string `json:"still_path"`
+	VoteAverage    float64 `json:"vote_average"`
+	VoteCount      int     `json:"vote_count"`
+}
+
+type paginatedTVShows struct {
+	pagination
+	TVShows []tv `json:"results"`
 }
