@@ -29,6 +29,7 @@ type Client struct {
 	HttpClient *resty.Client
 
 	// Available TMDb resources that can be interacted with through the API.
+	Account        *AccountResource
 	Authentication *AuthenticationResource
 	Certifications *CertificationsResource
 	Collections    *CollectionsResource
@@ -61,6 +62,7 @@ func NewClient(token string) (*Client, error) {
 		HttpClient: getRestyClient(token, BASE_URL),
 	}
 
+	c.Account = &AccountResource{client: c}
 	c.Authentication = &AuthenticationResource{client: c}
 	c.Certifications = &CertificationsResource{client: c}
 	c.Collections = &CollectionsResource{client: c}
@@ -145,6 +147,14 @@ func WithQueryParams(params interface{}) requestOptionFn {
 			return errors.Wrap(err, "failed to prepare request query params")
 		}
 		r.SetQueryParamsFromValues(q)
+		return nil
+	}
+}
+
+// WithQueryParam can be used to set a custom query parameter to the request.
+func WithQueryParam(param, value string) requestOptionFn {
+	return func(r *resty.Request) error {
+		r.SetQueryParam(param, value)
 		return nil
 	}
 }

@@ -21,3 +21,8 @@ type movie struct {
 	VoteAverage      float64 `json:"vote_average"`
 	VoteCount        int     `json:"vote_count"`
 }
+
+type paginatedMovies struct {
+	pagination
+	Movies []movie `json:"results"`
+}
