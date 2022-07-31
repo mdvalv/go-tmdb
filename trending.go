@@ -14,13 +14,8 @@ type TrendingResource struct {
 }
 
 type TrendingOptions struct {
+	// Specify which page to query.
 	Page *int `url:"page,omitempty" json:"page,omitempty"`
-}
-
-type pagination struct {
-	Page         int `json:"page"`
-	TotalPages   int `json:"total_pages"`
-	TotalResults int `json:"total_results"`
 }
 
 type KnownFor map[string]interface{}

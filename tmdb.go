@@ -17,6 +17,12 @@ const (
 	BASE_URL = "https://api.themoviedb.org/3"
 )
 
+type pagination struct {
+	Page         int `json:"page"`
+	TotalPages   int `json:"total_pages"`
+	TotalResults int `json:"total_results"`
+}
+
 // Client handles interaction with TMDb API.
 type Client struct {
 	// HTTP client used to communicate with the API.
