@@ -25,7 +25,7 @@ type Network struct {
 func (nr *NetworksResource) GetNetwork(id int) (*Network, *http.Response, error) {
 	path := fmt.Sprintf("/network/%d", id)
 	var network Network
-	resp, err := nr.client.getResource(path, nil, &network)
+	resp, err := nr.client.get(path, &network)
 	return &network, resp, errors.Wrap(err, "failed to get network")
 }
 
@@ -43,7 +43,7 @@ type NetworkAlternativeNames struct {
 func (nr *NetworksResource) GetAlternativeNames(id int) (*NetworkAlternativeNames, *http.Response, error) {
 	path := fmt.Sprintf("/network/%d/alternative_names", id)
 	var names NetworkAlternativeNames
-	resp, err := nr.client.getResource(path, nil, &names)
+	resp, err := nr.client.get(path, &names)
 	return &names, resp, errors.Wrap(err, "failed to get network alternative names")
 }
 
@@ -57,6 +57,6 @@ type NetworkImages struct {
 func (nr *NetworksResource) GetImages(id int) (*NetworkImages, *http.Response, error) {
 	path := fmt.Sprintf("/network/%d/images", id)
 	var images NetworkImages
-	resp, err := nr.client.getResource(path, nil, &images)
+	resp, err := nr.client.get(path, &images)
 	return &images, resp, errors.Wrap(err, "failed to get network images")
 }

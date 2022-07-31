@@ -37,6 +37,6 @@ type Review struct {
 func (rr *ReviewsResource) GetReview(id string) (*Review, *http.Response, error) {
 	path := fmt.Sprintf("/review/%s", id)
 	var review Review
-	resp, err := rr.client.getResource(path, nil, &review)
+	resp, err := rr.client.get(path, &review)
 	return &review, resp, errors.Wrap(err, "failed to get review")
 }

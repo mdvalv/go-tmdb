@@ -72,6 +72,6 @@ type Credit struct {
 func (cr *CreditsResource) GetCredit(id string) (*Credit, *http.Response, error) {
 	path := fmt.Sprintf("/credit/%s", id)
 	var credit Credit
-	resp, err := cr.client.getResource(path, nil, &credit)
+	resp, err := cr.client.get(path, &credit)
 	return &credit, resp, errors.Wrap(err, "failed to get credit")
 }

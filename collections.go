@@ -51,7 +51,7 @@ type CollectionsOptions struct {
 func (cr *CollectionsResource) GetCollection(id int, opt *CollectionsOptions) (*Collection, *http.Response, error) {
 	path := fmt.Sprintf("/collection/%d", id)
 	var collection Collection
-	resp, err := cr.client.getResource(path, opt, &collection)
+	resp, err := cr.client.get(path, &collection, WithQueryParams(opt))
 	return &collection, resp, errors.Wrap(err, "failed to get collection")
 }
 
@@ -79,7 +79,7 @@ type Images struct {
 func (cr *CollectionsResource) GetImages(id int, opt *CollectionsOptions) (*Images, *http.Response, error) {
 	path := fmt.Sprintf("/collection/%d/images", id)
 	var images Images
-	resp, err := cr.client.getResource(path, opt, &images)
+	resp, err := cr.client.get(path, &images, WithQueryParams(opt))
 	return &images, resp, errors.Wrap(err, "failed to get collection images")
 }
 
@@ -106,6 +106,6 @@ type Translations struct {
 func (cr *CollectionsResource) GetTranslations(id int, opt *CollectionsOptions) (*Translations, *http.Response, error) {
 	path := fmt.Sprintf("/collection/%d/translations", id)
 	var translations Translations
-	resp, err := cr.client.getResource(path, opt, &translations)
+	resp, err := cr.client.get(path, &translations, WithQueryParams(opt))
 	return &translations, resp, errors.Wrap(err, "failed to get collection translations")
 }

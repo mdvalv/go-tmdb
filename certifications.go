@@ -54,7 +54,7 @@ type tvCertifications struct {
 func (cr *CertificationsResource) GetMovieCertifications() (*MovieCertifications, *http.Response, error) {
 	path := "/certification/movie/list"
 	var certifications movieCertifications
-	resp, err := cr.client.getResource(path, nil, &certifications)
+	resp, err := cr.client.get(path, &certifications)
 	return &certifications.Certifications, resp, errors.Wrap(err, "failed to get movie certifications")
 }
 
@@ -62,6 +62,6 @@ func (cr *CertificationsResource) GetMovieCertifications() (*MovieCertifications
 func (cr *CertificationsResource) GetTVCertifications() (*TVCertifications, *http.Response, error) {
 	path := "/certification/tv/list"
 	var certifications tvCertifications
-	resp, err := cr.client.getResource(path, nil, &certifications)
+	resp, err := cr.client.get(path, &certifications)
 	return &certifications.Certifications, resp, errors.Wrap(err, "failed to get tv certifications")
 }

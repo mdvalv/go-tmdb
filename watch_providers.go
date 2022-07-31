@@ -48,7 +48,7 @@ func (pr *WatchProvidersResource) GetTVProviders(opt *ProvidersOptions) ([]Provi
 func (pr *WatchProvidersResource) getProviders(providerType string, opt *ProvidersOptions) ([]Provider, *http.Response, error) {
 	path := fmt.Sprintf("/watch/providers/%s", providerType)
 	var providers providers
-	resp, err := pr.client.getResource(path, opt, &providers)
+	resp, err := pr.client.get(path, &providers, WithQueryParams(opt))
 	return providers.Providers, resp, errors.Wrap(err, fmt.Sprintf("failed to get %s providers", providerType))
 }
 
@@ -75,6 +75,6 @@ type ProviderRegionsOptions struct {
 func (pr *WatchProvidersResource) GetProviderRegions(opt *ProviderRegionsOptions) ([]ProviderRegion, *http.Response, error) {
 	path := "/watch/providers/regions"
 	var providerRegions providerRegions
-	resp, err := pr.client.getResource(path, opt, &providerRegions)
+	resp, err := pr.client.get(path, &providerRegions, WithQueryParams(opt))
 	return providerRegions.ProviderRegions, resp, errors.Wrap(err, "failed to get provider regions")
 }

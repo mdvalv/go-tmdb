@@ -39,7 +39,7 @@ type Configuration struct {
 func (cr *ConfigurationResource) GetAPIConfiguration() (*Configuration, *http.Response, error) {
 	path := "/configuration"
 	var configuration Configuration
-	resp, err := cr.client.getResource(path, nil, &configuration)
+	resp, err := cr.client.get(path, &configuration)
 	return &configuration, resp, errors.Wrap(err, "failed to get API configuration")
 }
 
@@ -52,7 +52,7 @@ type Countries []struct {
 func (cr *ConfigurationResource) GetCountries() (Countries, *http.Response, error) {
 	path := "/configuration/countries"
 	var countries Countries
-	resp, err := cr.client.getResource(path, nil, &countries)
+	resp, err := cr.client.get(path, &countries)
 	return countries, resp, errors.Wrap(err, "failed to get countries")
 }
 
@@ -65,7 +65,7 @@ type Jobs []struct {
 func (cr *ConfigurationResource) GetJobs() (Jobs, *http.Response, error) {
 	path := "/configuration/jobs"
 	var jobs Jobs
-	resp, err := cr.client.getResource(path, nil, &jobs)
+	resp, err := cr.client.get(path, &jobs)
 	return jobs, resp, errors.Wrap(err, "failed to get jobs")
 }
 
@@ -79,7 +79,7 @@ type Languages []struct {
 func (cr *ConfigurationResource) GetLanguages() (Languages, *http.Response, error) {
 	path := "/configuration/languages"
 	var languages Languages
-	resp, err := cr.client.getResource(path, nil, &languages)
+	resp, err := cr.client.get(path, &languages)
 	return languages, resp, errors.Wrap(err, "failed to get languages")
 }
 
@@ -89,7 +89,7 @@ type PrimaryTranslations []string
 func (cr *ConfigurationResource) GetPrimaryTranslations() (PrimaryTranslations, *http.Response, error) {
 	path := "/configuration/primary_translations"
 	var translations PrimaryTranslations
-	resp, err := cr.client.getResource(path, nil, &translations)
+	resp, err := cr.client.get(path, &translations)
 	return translations, resp, errors.Wrap(err, "failed to get primary translations")
 }
 
@@ -102,6 +102,6 @@ type Timezones []struct {
 func (cr *ConfigurationResource) GetTimezones() (Timezones, *http.Response, error) {
 	path := "/configuration/timezones"
 	var timezones Timezones
-	resp, err := cr.client.getResource(path, nil, &timezones)
+	resp, err := cr.client.get(path, &timezones)
 	return timezones, resp, errors.Wrap(err, "failed to get timezones")
 }

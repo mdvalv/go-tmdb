@@ -33,7 +33,7 @@ type Company struct {
 func (cr *CompaniesResource) GetCompany(id int) (*Company, *http.Response, error) {
 	path := fmt.Sprintf("/company/%d", id)
 	var company Company
-	resp, err := cr.client.getResource(path, nil, &company)
+	resp, err := cr.client.get(path, &company)
 	return &company, resp, errors.Wrap(err, "failed to get company")
 }
 
@@ -51,7 +51,7 @@ type CompanyAlternativeNames struct {
 func (cr *CompaniesResource) GetAlternativeNames(id int) (*CompanyAlternativeNames, *http.Response, error) {
 	path := fmt.Sprintf("/company/%d/alternative_names", id)
 	var names CompanyAlternativeNames
-	resp, err := cr.client.getResource(path, nil, &names)
+	resp, err := cr.client.get(path, &names)
 	return &names, resp, errors.Wrap(err, "failed to get company alternative names")
 }
 
@@ -76,6 +76,6 @@ type CompanyImages struct {
 func (cr *CompaniesResource) GetImages(id int) (*CompanyImages, *http.Response, error) {
 	path := fmt.Sprintf("/company/%d/images", id)
 	var images CompanyImages
-	resp, err := cr.client.getResource(path, nil, &images)
+	resp, err := cr.client.get(path, &images)
 	return &images, resp, errors.Wrap(err, "failed to get company images")
 }

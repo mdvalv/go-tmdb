@@ -1,6 +1,7 @@
 package examples
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -20,11 +21,14 @@ func GetClient() *tmdb.Client {
 }
 
 func PrettyPrint(object interface{}) {
-	if j, err := json.MarshalIndent(object, "", "    "); err != nil {
+	buf := new(bytes.Buffer)
+	enc := json.NewEncoder(buf)
+	enc.SetEscapeHTML(false)
+	enc.SetIndent("", "    ")
+	if err := enc.Encode(object); err != nil {
 		panic(errors.Wrap(err, "failed to pretty print"))
-	} else {
-		fmt.Println(string(j))
 	}
+	fmt.Println(string(buf.String()))
 }
 
 func RunExamples(examples ...func()) {

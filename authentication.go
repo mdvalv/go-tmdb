@@ -32,7 +32,7 @@ type AuthToken struct {
 func (ar *AuthenticationResource) CreateRequestToken() (*AuthToken, *http.Response, error) {
 	path := "/authentication/token/new"
 	var response AuthToken
-	resp, err := ar.client.getResource(path, nil, &response)
+	resp, err := ar.client.get(path, &response)
 	return &response, resp, errors.Wrap(err, "failed to get request token")
 }
 
@@ -40,7 +40,7 @@ func (ar *AuthenticationResource) CreateRequestToken() (*AuthToken, *http.Respon
 func (ar *AuthenticationResource) CreateGuestSession() (*GuestSession, *http.Response, error) {
 	path := "/authentication/guest_session/new"
 	var session GuestSession
-	resp, err := ar.client.getResource(path, nil, &session)
+	resp, err := ar.client.get(path, &session)
 	return &session, resp, errors.Wrap(err, "failed to get guest session")
 }
 
@@ -51,7 +51,7 @@ func (ar *AuthenticationResource) CreateSession(requestToken string) (*Session, 
 		"request_token": requestToken,
 	}
 	var session Session
-	resp, err := ar.client.createResource(path, &opt, &session)
+	resp, err := ar.client.post(path, &session, WithBody(opt))
 	return &session, resp, errors.Wrap(err, "failed to get session")
 }
 
@@ -64,7 +64,7 @@ func (ar *AuthenticationResource) ValidateRequestToken(username, password, reque
 		"password":      password,
 	}
 	var session AuthToken
-	resp, err := ar.client.createResource(path, &opt, &session)
+	resp, err := ar.client.post(path, &session, WithBody(opt))
 	return &session, resp, errors.Wrap(err, "failed to get session")
 }
 
@@ -76,7 +76,7 @@ func (ar *AuthenticationResource) CreateSessionWithV4Token(accessToken string) (
 		"access_token": accessToken,
 	}
 	var session Session
-	resp, err := ar.client.createResource(path, &opt, &session)
+	resp, err := ar.client.post(path, &session, WithBody(opt))
 	return &session, resp, errors.Wrap(err, "failed to get session")
 }
 
@@ -91,6 +91,6 @@ func (ar *AuthenticationResource) DeleteSession(sessionId string) (bool, *http.R
 		"session_id": sessionId,
 	}
 	var deleteResponse deleteResponse
-	resp, err := ar.client.deleteResource(path, &opt, &deleteResponse)
+	resp, err := ar.client.delete(path, &deleteResponse, WithBody(opt))
 	return deleteResponse.Success, resp, errors.Wrap(err, "failed to delete session")
 }

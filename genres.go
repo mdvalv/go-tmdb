@@ -43,6 +43,6 @@ func (gr *GenresResource) GetTVGenres(opt *GenresOptions) ([]Genre, *http.Respon
 func (gr *GenresResource) getGenres(listType string, opt *GenresOptions) ([]Genre, *http.Response, error) {
 	path := fmt.Sprintf("/genre/%s/list", listType)
 	var genres genres
-	resp, err := gr.client.getResource(path, opt, &genres)
+	resp, err := gr.client.get(path, &genres, WithQueryParams(opt))
 	return genres.Genres, resp, errors.Wrap(err, fmt.Sprintf("failed to get %s genres", listType))
 }

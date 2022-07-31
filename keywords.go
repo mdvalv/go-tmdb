@@ -21,7 +21,7 @@ type Keyword struct {
 func (kr *KeywordsResource) GetKeyword(id int) (*Keyword, *http.Response, error) {
 	path := fmt.Sprintf("/keyword/%d", id)
 	var keyword Keyword
-	resp, err := kr.client.getResource(path, nil, &keyword)
+	resp, err := kr.client.get(path, &keyword)
 	return &keyword, resp, errors.Wrap(err, "failed to get keyword")
 }
 
@@ -53,6 +53,6 @@ type KeywordMoviesOptions struct {
 func (kr *KeywordsResource) GetKeywordMovies(id int, opt *KeywordMoviesOptions) (*KeywordMovies, *http.Response, error) {
 	path := fmt.Sprintf("/keyword/%d/movies", id)
 	var keyword KeywordMovies
-	resp, err := kr.client.getResource(path, opt, &keyword)
+	resp, err := kr.client.get(path, &keyword, WithQueryParams(opt))
 	return &keyword, resp, errors.Wrap(err, "failed to get keyword")
 }

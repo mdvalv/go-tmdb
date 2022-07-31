@@ -69,7 +69,7 @@ type TrendingTVShows struct {
 func (tr *TrendingResource) GetTrending(timeWindow string) (*Trending, *http.Response, error) {
 	path := fmt.Sprintf("/trending/all/%s", timeWindow)
 	var trending Trending
-	resp, err := tr.client.getResource(path, nil, &trending)
+	resp, err := tr.client.get(path, &trending)
 	return &trending, resp, errors.Wrap(err, "failed to get trending information")
 }
 
@@ -80,7 +80,7 @@ func (tr *TrendingResource) GetTrending(timeWindow string) (*Trending, *http.Res
 func (tr *TrendingResource) GetTrendingMovies(timeWindow string) (*TrendingMovies, *http.Response, error) {
 	path := fmt.Sprintf("/trending/movie/%s", timeWindow)
 	var trending TrendingMovies
-	resp, err := tr.client.getResource(path, nil, &trending)
+	resp, err := tr.client.get(path, &trending)
 	return &trending, resp, errors.Wrap(err, "failed to get trending movies")
 }
 
@@ -91,7 +91,7 @@ func (tr *TrendingResource) GetTrendingMovies(timeWindow string) (*TrendingMovie
 func (tr *TrendingResource) GetTrendingTVShows(timeWindow string) (*TrendingTVShows, *http.Response, error) {
 	path := fmt.Sprintf("/trending/tv/%s", timeWindow)
 	var trending TrendingTVShows
-	resp, err := tr.client.getResource(path, nil, &trending)
+	resp, err := tr.client.get(path, &trending)
 	return &trending, resp, errors.Wrap(err, "failed to get trending tv")
 }
 
@@ -102,7 +102,7 @@ func (tr *TrendingResource) GetTrendingTVShows(timeWindow string) (*TrendingTVSh
 func (tr *TrendingResource) GetTrendingPeople(timeWindow string) (*TrendingPeople, *http.Response, error) {
 	path := fmt.Sprintf("/trending/person/%s", timeWindow)
 	var trending TrendingPeople
-	resp, err := tr.client.getResource(path, nil, &trending)
+	resp, err := tr.client.get(path, &trending)
 	return &trending, resp, errors.Wrap(err, "failed to get trending people")
 }
 
