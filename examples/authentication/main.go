@@ -12,6 +12,15 @@ type example struct {
 	client *tmdb.Client
 }
 
+const (
+	username      = "username"
+	password      = "password"
+	requestToken  = "request_token"
+	accessToken   = "access_token"
+	accessTokenV4 = "v4_access_token"
+	sessionId     = "session_id"
+)
+
 func (e example) CreateGuestSession() {
 	session, _, err := e.client.Authentication.CreateGuestSession()
 	if err != nil {
@@ -29,7 +38,7 @@ func (e example) CreateRequestToken() {
 }
 
 func (e example) ValidateRequestToken() {
-	token, _, err := e.client.Authentication.ValidateRequestToken("username", "password", "request_token")
+	token, _, err := e.client.Authentication.ValidateRequestToken(username, password, requestToken)
 	if err != nil {
 		panic(errors.Wrap(err, "failed to validate request token"))
 	}
@@ -37,7 +46,7 @@ func (e example) ValidateRequestToken() {
 }
 
 func (e example) CreateSession() {
-	session, _, err := e.client.Authentication.CreateSession("request_token")
+	session, _, err := e.client.Authentication.CreateSession(requestToken)
 	if err != nil {
 		panic(errors.Wrap(err, "failed to create session"))
 	}
@@ -45,7 +54,7 @@ func (e example) CreateSession() {
 }
 
 func (e example) CreateSessionWithV4Token() {
-	session, _, err := e.client.Authentication.CreateSessionWithV4Token("v4_access_token")
+	session, _, err := e.client.Authentication.CreateSessionWithV4Token(accessTokenV4)
 	if err != nil {
 		panic(errors.Wrap(err, "failed to create session"))
 	}
@@ -53,7 +62,7 @@ func (e example) CreateSessionWithV4Token() {
 }
 
 func (e example) DeleteSession() {
-	success, _, err := e.client.Authentication.DeleteSession("session_id")
+	success, _, err := e.client.Authentication.DeleteSession(sessionId)
 	if err != nil {
 		panic(errors.Wrap(err, "failed to delete session"))
 	}
