@@ -45,6 +45,7 @@ type KeywordMoviesOptions struct {
 	// default: false
 	IncludeAdult bool `url:"include_adult,omitempty" json:"include_adult,omitempty"`
 
+	// Specify which page to query.
 	Page *int `url:"page,omitempty" json:"page,omitempty"`
 }
 
