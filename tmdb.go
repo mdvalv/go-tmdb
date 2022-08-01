@@ -36,6 +36,7 @@ type Client struct {
 	Companies      *CompaniesResource
 	Configuration  *ConfigurationResource
 	Credits        *CreditsResource
+	Discover       *DiscoverResource
 	Genres         *GenresResource
 	Keywords       *KeywordsResource
 	Networks       *NetworksResource
@@ -69,6 +70,7 @@ func NewClient(token string) (*Client, error) {
 	c.Companies = &CompaniesResource{client: c}
 	c.Configuration = &ConfigurationResource{client: c}
 	c.Credits = &CreditsResource{client: c}
+	c.Discover = &DiscoverResource{client: c}
 	c.Genres = &GenresResource{client: c}
 	c.Keywords = &KeywordsResource{client: c}
 	c.Networks = &NetworksResource{client: c}
