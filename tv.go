@@ -5,6 +5,31 @@ type TVResource struct {
 	client *Client
 }
 
+type Season struct {
+	season
+	MediaType string `json:"media_type"`
+}
+
+type season struct {
+	AirDate      string `json:"air_date"`
+	EpisodeCount int    `json:"episode_count"`
+	Id           int    `json:"id"`
+	Name         string `json:"name"`
+	Overview     string `json:"overview"`
+	PosterPath   string `json:"poster_path"`
+	SeasonNumber int    `json:"season_number"`
+}
+
+type TVShow struct {
+	tv
+	MediaType string `json:"media_type"`
+}
+
+type Episode struct {
+	episode
+	MediaType string `json:"media_type"`
+}
+
 type tv struct {
 	Adult            bool     `json:"adult"`
 	BackdropPath     *string  `json:"backdrop_path"`

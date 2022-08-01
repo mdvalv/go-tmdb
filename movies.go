@@ -5,6 +5,11 @@ type MoviesResource struct {
 	client *Client
 }
 
+type Movie struct {
+	movie
+	MediaType string `json:"media_type"`
+}
+
 type movie struct {
 	Adult            bool    `json:"adult"`
 	BackdropPath     *string `json:"backdrop_path"`

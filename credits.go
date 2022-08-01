@@ -12,16 +12,6 @@ type CreditsResource struct {
 	client *Client
 }
 
-type Season struct {
-	AirDate      string `json:"air_date"`
-	EpisodeCount int    `json:"episode_count"`
-	Id           int    `json:"id"`
-	Name         string `json:"name"`
-	Overview     string `json:"overview"`
-	PosterPath   string `json:"poster_path"`
-	SeasonNumber int    `json:"season_number"`
-}
-
 type Media struct {
 	Adult            bool      `json:"adult"`
 	BackdropPath     string    `json:"backdrop_path"`
@@ -38,7 +28,7 @@ type Media struct {
 	Overview         string    `json:"overview"`
 	Popularity       float64   `json:"popularity"`
 	PosterPath       string    `json:"poster_path"`
-	Seasons          []Season  `json:"seasons"`
+	Seasons          []season  `json:"seasons"`
 	VoteAverage      float64   `json:"vote_average"`
 	VoteCount        int       `json:"vote_count"`
 }

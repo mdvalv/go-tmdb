@@ -18,12 +18,7 @@ type TrendingOptions struct {
 	Page *int `url:"page,omitempty" json:"page,omitempty"`
 }
 
-type KnownFor map[string]interface{}
-
-type TrendingPerson struct {
-	person
-	KnownFor []KnownFor `json:"known_for"`
-}
+type TrendingPerson personKnownFor
 
 type TrendingPeople struct {
 	pagination
@@ -37,24 +32,14 @@ type Trending struct {
 	Results []TrendingResult `json:"results"`
 }
 
-type TrendingMovie struct {
-	movie
-	MediaType string `json:"media_type"`
-}
-
 type TrendingMovies struct {
 	pagination
-	Movies []TrendingMovie `json:"results"`
-}
-
-type TrendingTVShow struct {
-	tv
-	MediaType string `json:"media_type"`
+	Movies []Movie `json:"results"`
 }
 
 type TrendingTVShows struct {
 	pagination
-	TVShows []TrendingTVShow `json:"results"`
+	TVShows []TVShow `json:"results"`
 }
 
 // Get the daily or weekly trending items.
@@ -105,14 +90,14 @@ func (tr TrendingResult) GetMediaType() string {
 	return tr["media_type"].(string)
 }
 
-func (tr TrendingResult) ToMovie() (*TrendingMovie, error) {
+func (tr TrendingResult) ToMovie() (*Movie, error) {
 	if tr.GetMediaType() != "movie" {
 		return nil, errors.New(fmt.Sprintf("invalid conversion from %s to movie", tr.GetMediaType()))
 	}
 	return convertToMovie(tr)
 }
 
-func (tr TrendingResult) ToTVShow() (*TrendingTVShow, error) {
+func (tr TrendingResult) ToTVShow() (*TVShow, error) {
 	if tr.GetMediaType() != "tv" {
 		return nil, errors.New(fmt.Sprintf("invalid conversion from %s to tv", tr.GetMediaType()))
 	}
@@ -130,42 +115,4 @@ func (tr TrendingResult) ToPerson() (*TrendingPerson, error) {
 	var movie TrendingPerson
 	err = json.Unmarshal(result, &movie)
 	return &movie, err
-}
-
-func (kf KnownFor) GetMediaType() string {
-	return kf["media_type"].(string)
-}
-
-func (kf KnownFor) ToMovie() (*TrendingMovie, error) {
-	if kf.GetMediaType() != "movie" {
-		return nil, errors.New(fmt.Sprintf("invalid conversion from %s to movie", kf.GetMediaType()))
-	}
-	return convertToMovie(kf)
-}
-
-func (kf KnownFor) ToTVShow() (*TrendingTVShow, error) {
-	if kf.GetMediaType() != "tv" {
-		return nil, errors.New(fmt.Sprintf("invalid conversion from %s to tv", kf.GetMediaType()))
-	}
-	return convertToTVShow(kf)
-}
-
-func convertToMovie(obj interface{}) (*TrendingMovie, error) {
-	result, err := json.Marshal(obj)
-	if err != nil {
-		return nil, err
-	}
-	var movie TrendingMovie
-	err = json.Unmarshal(result, &movie)
-	return &movie, err
-}
-
-func convertToTVShow(obj interface{}) (*TrendingTVShow, error) {
-	result, err := json.Marshal(obj)
-	if err != nil {
-		return nil, err
-	}
-	var tvShow TrendingTVShow
-	err = json.Unmarshal(result, &tvShow)
-	return &tvShow, err
 }
