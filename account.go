@@ -50,7 +50,7 @@ type CreatedLists struct {
 
 type ratedMovie struct {
 	movie
-	Rating int `json:"rating"`
+	Rating float64 `json:"rating"`
 }
 
 type RatedMovies struct {
@@ -60,7 +60,7 @@ type RatedMovies struct {
 
 type ratedTVShow struct {
 	tv
-	Rating int `json:"rating"`
+	Rating float64 `json:"rating"`
 }
 
 type RatedTVShows struct {
@@ -70,7 +70,7 @@ type RatedTVShows struct {
 
 type ratedTVEpisode struct {
 	episode
-	Rating int `json:"rating"`
+	Rating float64 `json:"rating"`
 }
 
 type RatedTVEpisodes struct {
