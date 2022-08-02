@@ -178,11 +178,6 @@ func (ar *AccountResource) GetWatchlistTVShows(accountId int, sessionId string, 
 	return &tvShows, resp, errors.Wrap(err, "failed to get tv shows in watchlist")
 }
 
-type statusResponse struct {
-	StatusCode    int    `json:"status_code"`
-	StatusMessage string `json:"status_message"`
-}
-
 type Favorite struct {
 	MediaId   int    `json:"media_id"`
 	MediaType string `json:"media_type"`

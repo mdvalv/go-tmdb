@@ -39,8 +39,9 @@ type Client struct {
 	Discover       *DiscoverResource
 	Find           *FindResource
 	Genres         *GenresResource
-	GuestSession  *GuestSessionResource
+	GuestSession   *GuestSessionResource
 	Keywords       *KeywordsResource
+	Lists          *ListsResource
 	Networks       *NetworksResource
 	Reviews        *ReviewsResource
 	Trending       *TrendingResource
@@ -77,6 +78,7 @@ func NewClient(token string) (*Client, error) {
 	c.Genres = &GenresResource{client: c}
 	c.GuestSession = &GuestSessionResource{client: c}
 	c.Keywords = &KeywordsResource{client: c}
+	c.Lists = &ListsResource{client: c}
 	c.Networks = &NetworksResource{client: c}
 	c.Reviews = &ReviewsResource{client: c}
 	c.Trending = &TrendingResource{client: c}
@@ -206,4 +208,49 @@ func (c *Client) post(path string, resource interface{}, options ...requestOptio
 	}
 	resp, err := req.Post(path)
 	return resp.RawResponse, errors.Wrap(err, "failed to execute request")
+}
+
+type MovieOrTV map[string]interface{}
+
+func (mt MovieOrTV) GetMediaType() string {
+	return mt["media_type"].(string)
+}
+
+func (mt MovieOrTV) ToMovie() (*Movie, error) {
+	if mt.GetMediaType() != "movie" {
+		return nil, errors.New(fmt.Sprintf("invalid conversion from %s to movie", mt.GetMediaType()))
+	}
+	return convertToMovie(mt)
+}
+
+func (mt MovieOrTV) ToTVShow() (*TVShow, error) {
+	if mt.GetMediaType() != "tv" {
+		return nil, errors.New(fmt.Sprintf("invalid conversion from %s to tv", mt.GetMediaType()))
+	}
+	return convertToTVShow(mt)
+}
+
+func convertToMovie(obj interface{}) (*Movie, error) {
+	result, err := json.Marshal(obj)
+	if err != nil {
+		return nil, err
+	}
+	var movie Movie
+	err = json.Unmarshal(result, &movie)
+	return &movie, err
+}
+
+func convertToTVShow(obj interface{}) (*TVShow, error) {
+	result, err := json.Marshal(obj)
+	if err != nil {
+		return nil, err
+	}
+	var tvShow TVShow
+	err = json.Unmarshal(result, &tvShow)
+	return &tvShow, err
+}
+
+type statusResponse struct {
+	StatusCode    int    `json:"status_code"`
+	StatusMessage string `json:"status_message"`
 }
