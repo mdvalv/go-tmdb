@@ -166,8 +166,6 @@ func (dr *DiscoverResource) DiscoverMovies(opt *DiscoverMoviesOptions) (*Discove
 	return &discover, resp, errors.Wrap(err, "failed to discover movies")
 }
 
-// path := "/discover/tv"
-
 type DiscoverTVShowsOptions struct {
 	// Choose from one of the many available sort options:
 	//    vote_average.desc / vote_average.asc
