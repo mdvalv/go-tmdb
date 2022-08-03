@@ -112,7 +112,7 @@ func (tr TrendingResult) ToPerson() (*TrendingPerson, error) {
 	if err != nil {
 		return nil, err
 	}
-	var movie TrendingPerson
-	err = json.Unmarshal(result, &movie)
-	return &movie, err
+	var person TrendingPerson
+	err = json.Unmarshal(result, &person)
+	return &person, err
 }
