@@ -11,13 +11,13 @@ type Season struct {
 }
 
 type season struct {
-	AirDate      string `json:"air_date"`
-	EpisodeCount int    `json:"episode_count"`
-	Id           int    `json:"id"`
-	Name         string `json:"name"`
-	Overview     string `json:"overview"`
-	PosterPath   string `json:"poster_path"`
-	SeasonNumber int    `json:"season_number"`
+	AirDate      string  `json:"air_date"`
+	EpisodeCount int     `json:"episode_count"`
+	Id           int     `json:"id"`
+	Name         string  `json:"name"`
+	Overview     string  `json:"overview"`
+	PosterPath   *string `json:"poster_path"`
+	SeasonNumber int     `json:"season_number"`
 }
 
 type TVShow struct {
