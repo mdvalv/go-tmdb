@@ -13,12 +13,12 @@ type NetworksResource struct {
 }
 
 type Network struct {
-	Headquarters  string `json:"headquarters"`
-	Homepage      string `json:"homepage"`
-	Id            int    `json:"id"`
-	LogoPath      string `json:"logo_path"`
-	Name          string `json:"name"`
-	OriginCountry string `json:"origin_country"`
+	Headquarters  string  `json:"headquarters"`
+	Homepage      string  `json:"homepage"`
+	Id            int     `json:"id"`
+	LogoPath      *string `json:"logo_path"`
+	Name          string  `json:"name"`
+	OriginCountry string  `json:"origin_country"`
 }
 
 // Get network details by id.

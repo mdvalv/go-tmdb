@@ -12,10 +12,10 @@ type WatchProvidersResource struct {
 }
 
 type Provider struct {
-	DisplayPriority int    `json:"display_priority"`
-	LogoPath        string `json:"logo_path"`
-	ProviderName    string `json:"provider_name"`
-	ProviderId      int    `json:"provider_id"`
+	DisplayPriority int     `json:"display_priority"`
+	LogoPath        *string `json:"logo_path"`
+	ProviderName    string  `json:"provider_name"`
+	ProviderId      int     `json:"provider_id"`
 }
 
 type providers struct {

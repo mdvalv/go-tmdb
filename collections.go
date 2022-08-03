@@ -21,7 +21,7 @@ type Part struct {
 	OriginalTitle    string  `json:"original_title"`
 	Overview         string  `json:"overview"`
 	ReleaseDate      string  `json:"release_date"`
-	PosterPath       string  `json:"poster_path"`
+	PosterPath       *string `json:"poster_path"`
 	Popularity       float64 `json:"popularity"`
 	Title            string  `json:"title"`
 	Video            bool    `json:"video"`
@@ -34,7 +34,7 @@ type Collection struct {
 	Name         string  `json:"name"`
 	Overview     string  `json:"overview"`
 	PosterPath   *string `json:"poster_path"`
-	BackdropPath string  `json:"backdrop_path"`
+	BackdropPath *string `json:"backdrop_path"`
 	Parts        []Part  `json:"parts"`
 }
 

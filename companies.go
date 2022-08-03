@@ -12,21 +12,21 @@ type CompaniesResource struct {
 	client *Client
 }
 
-type ParentCompany struct {
-	Name     string `json:"name"`
-	Id       int    `json:"id"`
-	LogoPath string `json:"logo_path"`
+type company struct {
+	Name     string  `json:"name"`
+	Id       int     `json:"id"`
+	LogoPath *string `json:"logo_path"`
 }
 
 type Company struct {
-	Description   string         `json:"description"`
-	Headquarters  string         `json:"headquarters"`
-	Homepage      string         `json:"homepage"`
-	Id            int            `json:"id"`
-	LogoPath      string         `json:"logo_path"`
-	Name          string         `json:"name"`
-	OriginCountry string         `json:"origin_country"`
-	ParentCompany *ParentCompany `json:"parent_company"`
+	Description   string   `json:"description"`
+	Headquarters  string   `json:"headquarters"`
+	Homepage      string   `json:"homepage"`
+	Id            int      `json:"id"`
+	LogoPath      *string  `json:"logo_path"`
+	Name          string   `json:"name"`
+	OriginCountry string   `json:"origin_country"`
+	ParentCompany *company `json:"parent_company"`
 }
 
 // Get company details by id.

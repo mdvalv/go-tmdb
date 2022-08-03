@@ -14,7 +14,7 @@ type CreditsResource struct {
 
 type Media struct {
 	Adult            bool      `json:"adult"`
-	BackdropPath     string    `json:"backdrop_path"`
+	BackdropPath     *string   `json:"backdrop_path"`
 	Character        string    `json:"character"`
 	Episodes         []episode `json:"episodes"`
 	FirstAirDate     string    `json:"first_air_date"`
@@ -27,7 +27,7 @@ type Media struct {
 	OriginCountry    []string  `json:"origin_country"`
 	Overview         string    `json:"overview"`
 	Popularity       float64   `json:"popularity"`
-	PosterPath       string    `json:"poster_path"`
+	PosterPath       *string   `json:"poster_path"`
 	Seasons          []season  `json:"seasons"`
 	VoteAverage      float64   `json:"vote_average"`
 	VoteCount        int       `json:"vote_count"`
