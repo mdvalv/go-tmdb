@@ -1,7 +1,6 @@
 package tmdb
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -91,28 +90,15 @@ func (tr TrendingResult) GetMediaType() string {
 }
 
 func (tr TrendingResult) ToMovie() (*Movie, error) {
-	if tr.GetMediaType() != "movie" {
-		return nil, errors.New(fmt.Sprintf("invalid conversion from %s to movie", tr.GetMediaType()))
-	}
 	return convertToMovie(tr)
 }
 
 func (tr TrendingResult) ToTVShow() (*TVShow, error) {
-	if tr.GetMediaType() != "tv" {
-		return nil, errors.New(fmt.Sprintf("invalid conversion from %s to tv", tr.GetMediaType()))
-	}
 	return convertToTVShow(tr)
 }
 
 func (tr TrendingResult) ToPerson() (*TrendingPerson, error) {
-	if tr.GetMediaType() != "person" {
-		return nil, errors.New(fmt.Sprintf("invalid conversion from %s to person", tr.GetMediaType()))
-	}
-	result, err := json.Marshal(tr)
-	if err != nil {
-		return nil, err
-	}
 	var person TrendingPerson
-	err = json.Unmarshal(result, &person)
+	err := convert("person", tr, &person)
 	return &person, err
 }

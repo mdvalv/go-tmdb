@@ -212,6 +212,10 @@ func (c *Client) post(path string, resource interface{}, options ...requestOptio
 	return resp.RawResponse, errors.Wrap(err, "failed to execute request")
 }
 
+type media interface {
+	GetMediaType() string
+}
+
 type MovieOrTV map[string]interface{}
 
 func (mt MovieOrTV) GetMediaType() string {
@@ -219,37 +223,34 @@ func (mt MovieOrTV) GetMediaType() string {
 }
 
 func (mt MovieOrTV) ToMovie() (*Movie, error) {
-	if mt.GetMediaType() != "movie" {
-		return nil, errors.New(fmt.Sprintf("invalid conversion from %s to movie", mt.GetMediaType()))
-	}
 	return convertToMovie(mt)
 }
 
 func (mt MovieOrTV) ToTVShow() (*TVShow, error) {
-	if mt.GetMediaType() != "tv" {
-		return nil, errors.New(fmt.Sprintf("invalid conversion from %s to tv", mt.GetMediaType()))
-	}
 	return convertToTVShow(mt)
 }
 
-func convertToMovie(obj interface{}) (*Movie, error) {
-	result, err := json.Marshal(obj)
-	if err != nil {
-		return nil, err
-	}
+func convertToMovie(obj media) (*Movie, error) {
 	var movie Movie
-	err = json.Unmarshal(result, &movie)
-	return &movie, err
+	err := convert("movie", obj, &movie)
+	return &movie, errors.Wrap(err, "failed to convert object to movie")
 }
 
-func convertToTVShow(obj interface{}) (*TVShow, error) {
+func convertToTVShow(obj media) (*TVShow, error) {
+	var tvShow TVShow
+	err := convert("tv", obj, &tvShow)
+	return &tvShow, errors.Wrap(err, "failed to convert object to tv show")
+}
+
+func convert(expectedMedia string, obj media, to interface{}) error {
+	if obj.GetMediaType() != expectedMedia {
+		return errors.New(fmt.Sprintf("invalid conversion from %s to %s", obj.GetMediaType(), expectedMedia))
+	}
 	result, err := json.Marshal(obj)
 	if err != nil {
-		return nil, err
+		return errors.Wrap(err, "failed to marshal object")
 	}
-	var tvShow TVShow
-	err = json.Unmarshal(result, &tvShow)
-	return &tvShow, err
+	return json.Unmarshal(result, to)
 }
 
 type statusResponse struct {

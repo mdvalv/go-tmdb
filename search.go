@@ -1,8 +1,6 @@
 package tmdb
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/pkg/errors"
@@ -238,28 +236,15 @@ func (sr SearchMultiResults) GetMediaType() string {
 }
 
 func (sr SearchMultiResults) ToMovie() (*Movie, error) {
-	if sr.GetMediaType() != "movie" {
-		return nil, errors.New(fmt.Sprintf("invalid conversion from %s to movie", sr.GetMediaType()))
-	}
 	return convertToMovie(sr)
 }
 
 func (sr SearchMultiResults) ToTVShow() (*TVShow, error) {
-	if sr.GetMediaType() != "tv" {
-		return nil, errors.New(fmt.Sprintf("invalid conversion from %s to tv", sr.GetMediaType()))
-	}
 	return convertToTVShow(sr)
 }
 
 func (sr SearchMultiResults) ToPerson() (*SearchPerson, error) {
-	if sr.GetMediaType() != "person" {
-		return nil, errors.New(fmt.Sprintf("invalid conversion from %s to person", sr.GetMediaType()))
-	}
-	result, err := json.Marshal(sr)
-	if err != nil {
-		return nil, err
-	}
 	var person SearchPerson
-	err = json.Unmarshal(result, &person)
+	err := convert("person", sr, &person)
 	return &person, err
 }
