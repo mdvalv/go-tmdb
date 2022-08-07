@@ -69,43 +69,43 @@ type Backdrop image
 
 type Poster image
 
-type Images struct {
+type CollectionImages struct {
 	Id        int        `json:"id"`
 	Backdrops []Backdrop `json:"backdrops"`
 	Posters   []Poster   `json:"posters"`
 }
 
 // Get the images for a collection by id.
-func (cr *CollectionsResource) GetImages(id int, opt *CollectionsOptions) (*Images, *http.Response, error) {
+func (cr *CollectionsResource) GetImages(id int, opt *CollectionsOptions) (*CollectionImages, *http.Response, error) {
 	path := fmt.Sprintf("/collection/%d/images", id)
-	var images Images
+	var images CollectionImages
 	resp, err := cr.client.get(path, &images, WithQueryParams(opt))
 	return &images, resp, errors.Wrap(err, "failed to get collection images")
 }
 
-type Data struct {
+type CollectionData struct {
 	Title    string `json:"title"`
 	Overview string `json:"overview"`
 	Homepage string `json:"homepage"`
 }
 
-type Translation []struct {
-	ISO31661    string `json:"iso_3166_1"`
-	ISO6391     string `json:"iso_639_1"`
-	Name        string `json:"name"`
-	EnglishName string `json:"english_name"`
-	Data        Data   `json:"data"`
+type CollectionTranslation struct {
+	ISO31661    string         `json:"iso_3166_1"`
+	ISO6391     string         `json:"iso_639_1"`
+	Name        string         `json:"name"`
+	EnglishName string         `json:"english_name"`
+	Data        CollectionData `json:"data"`
 }
 
-type Translations struct {
-	Id           int         `json:"id"`
-	Translations Translation `json:"translations"`
+type CollectionTranslations struct {
+	Id           int                     `json:"id"`
+	Translations []CollectionTranslation `json:"translations"`
 }
 
 // Get the list translations for a collection by id.
-func (cr *CollectionsResource) GetTranslations(id int, opt *CollectionsOptions) (*Translations, *http.Response, error) {
+func (cr *CollectionsResource) GetTranslations(id int, opt *CollectionsOptions) (*CollectionTranslations, *http.Response, error) {
 	path := fmt.Sprintf("/collection/%d/translations", id)
-	var translations Translations
+	var translations CollectionTranslations
 	resp, err := cr.client.get(path, &translations, WithQueryParams(opt))
 	return &translations, resp, errors.Wrap(err, "failed to get collection translations")
 }
