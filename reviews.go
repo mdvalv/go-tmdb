@@ -19,18 +19,22 @@ type AuthorDetails struct {
 	Rating     float64 `json:"rating"`
 }
 
-type Review struct {
+type review struct {
 	Id            string        `json:"id"`
 	Author        string        `json:"author"`
 	AuthorDetails AuthorDetails `json:"author_details"`
 	Content       string        `json:"content"`
 	CreatedAt     string        `json:"created_at"`
+	UpdatedAt     string        `json:"updated_at"`
+	Url           string        `json:"url"`
+}
+
+type Review struct {
+	review
 	ISO6391       string        `json:"iso_639_1"`
 	MediaId       int           `json:"media_id"`
 	MediaTitle    string        `json:"media_title"`
 	MediaType     string        `json:"media_type"`
-	UpdatedAt     string        `json:"updated_at"`
-	Url           string        `json:"url"`
 }
 
 // Retrieve the details of a movie or TV show review.
