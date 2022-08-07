@@ -100,5 +100,5 @@ func (tr TrendingResult) ToTVShow() (*TVShow, error) {
 func (tr TrendingResult) ToPerson() (*TrendingPerson, error) {
 	var person TrendingPerson
 	err := convert("person", tr, &person)
-	return &person, err
+	return &person, errors.Wrap(err, "failed to convert object to person")
 }
