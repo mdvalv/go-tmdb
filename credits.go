@@ -12,10 +12,44 @@ type CreditsResource struct {
 	client *Client
 }
 
-type Media struct {
+func (mc MediaCredit) GetMediaType() string {
+	return mc["media_type"].(string)
+}
+
+func (mc MediaCredit) ToMovieCredit() (*MovieCredit, error) {
+	var credit MovieCredit
+	err := convert("movie", mc, &credit)
+	return &credit, errors.Wrap(err, "failed to convert object to movie credit")
+}
+
+func (mc MediaCredit) ToTVShowCredit() (*TVShowCredit, error) {
+	var credit TVShowCredit
+	err := convert("tv", mc, &credit)
+	return &credit, errors.Wrap(err, "failed to convert object to tv credit")
+}
+
+type MovieCredit struct {
+	Adult            bool    `json:"adult"`
+	BackdropPath     *string `json:"backdrop_path"`
+	Character        string  `json:"character"`
+	GenreIds         []int   `json:"genre_ids"`
+	Id               int     `json:"id"`
+	MediaType        string  `json:"media_type"`
+	OriginalLanguage string  `json:"original_language"`
+	OriginalTitle    string  `json:"original_title"`
+	Overview         string  `json:"overview"`
+	Popularity       float64 `json:"popularity"`
+	PosterPath       *string `json:"poster_path"`
+	ReleaseDate      string  `json:"release_date"`
+	Title            string  `json:"title"`
+	Video            bool    `json:"video"`
+	VoteAverage      float64 `json:"vote_average"`
+	VoteCount        int     `json:"vote_count"`
+}
+
+type TVShowCredit struct {
 	Adult            bool      `json:"adult"`
 	BackdropPath     *string   `json:"backdrop_path"`
-	Character        string    `json:"character"`
 	Episodes         []episode `json:"episodes"`
 	FirstAirDate     string    `json:"first_air_date"`
 	GenreIds         []int     `json:"genre_ids"`
@@ -33,14 +67,16 @@ type Media struct {
 	VoteCount        int       `json:"vote_count"`
 }
 
+type MediaCredit map[string]interface{}
+
 type Credit struct {
-	CreditType string `json:"credit_type"`
-	Department string `json:"department"`
-	Id         string `json:"id"`
-	Job        string `json:"job"`
-	Media      Media  `json:"media"`
-	MediaType  string `json:"media_type"`
-	Person     person `json:"person"`
+	CreditType string      `json:"credit_type"`
+	Department string      `json:"department"`
+	Id         string      `json:"id"`
+	Job        string      `json:"job"`
+	Media      MediaCredit `json:"media"`
+	MediaType  string      `json:"media_type"`
+	Person     person      `json:"person"`
 }
 
 // Get a movie or TV credit details by id.

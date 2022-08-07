@@ -10,10 +10,24 @@ type example struct {
 	client *tmdb.Client
 }
 
-func (e example) GetCredit() {
+func (e example) GetCreditTV() {
 	credit, _, err := e.client.Credits.GetCredit("525331fd19c295794001a5de")
 	if err != nil {
 		panic(errors.Wrap(err, "failed to get credits"))
+	}
+	if credit.Media.GetMediaType() != "tv" {
+		panic(errors.New("expected tv media type"))
+	}
+	examples.PrettyPrint(*credit)
+}
+
+func (e example) GetCreditMovie() {
+	credit, _, err := e.client.Credits.GetCredit("52fe43f9c3a368484e0089e3")
+	if err != nil {
+		panic(errors.Wrap(err, "failed to get credits"))
+	}
+	if credit.Media.GetMediaType() != "movie" {
+		panic(errors.New("expected movie media type"))
 	}
 	examples.PrettyPrint(*credit)
 }
@@ -24,6 +38,7 @@ func main() {
 	}
 
 	examples.RunExamples(
-		example.GetCredit,
+		example.GetCreditTV,
+		example.GetCreditMovie,
 	)
 }
