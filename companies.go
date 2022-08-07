@@ -55,7 +55,7 @@ func (cr *CompaniesResource) GetAlternativeNames(id int) (*CompanyAlternativeNam
 	return &names, resp, errors.Wrap(err, "failed to get company alternative names")
 }
 
-type Logo struct {
+type CompanyLogo struct {
 	AspectRatio float64 `json:"aspect_ratio"`
 	FilePath    string  `json:"file_path"`
 	Height      int     `json:"height"`
@@ -67,8 +67,8 @@ type Logo struct {
 }
 
 type CompanyImages struct {
-	Id    int    `json:"id"`
-	Logos []Logo `json:"logos"`
+	Id    int           `json:"id"`
+	Logos []CompanyLogo `json:"logos"`
 }
 
 // Get company logos by id.

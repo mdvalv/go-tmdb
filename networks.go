@@ -48,8 +48,8 @@ func (nr *NetworksResource) GetAlternativeNames(id int) (*NetworkAlternativeName
 }
 
 type NetworkImages struct {
-	Id    int    `json:"id"`
-	Logos []Logo `json:"logos"`
+	Id    int           `json:"id"`
+	Logos []CompanyLogo `json:"logos"`
 }
 
 // Get network logos by id.
