@@ -32,7 +32,7 @@ type WatchlistMovies paginatedMovies
 type FavoriteTVShows paginatedTVShows
 type WatchlistTVShows paginatedTVShows
 
-type CreatedList struct {
+type list struct {
 	Description   string  `json:"description"`
 	FavoriteCount int     `json:"favorite_count"`
 	Id            int     `json:"id"`
@@ -45,7 +45,7 @@ type CreatedList struct {
 
 type CreatedLists struct {
 	pagination
-	Lists []CreatedList `json:"results"`
+	Lists []list `json:"results"`
 }
 
 type ratedMovie struct {
