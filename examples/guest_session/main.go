@@ -11,7 +11,7 @@ type example struct {
 }
 
 const (
-	sessionId = "gest_session_id"
+	sessionId = "guest_session_id"
 )
 
 func (e example) GetRatedMovies() {
