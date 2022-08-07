@@ -31,11 +31,11 @@ type person struct {
 }
 
 type personAppendToResponse struct {
-	Changes         *PersonChanges      `json:"changes"`
+	Changes         *Changes            `json:"changes"`
 	CombinedCredits *combinedCredits    `json:"combined_credits"`
-	ExternalIds     *externalIds        `json:"external_ids"`
+	ExternalIds     *personExternalIds        `json:"external_ids"`
 	Images          *personImages       `json:"images"`
-	MovieCredits    *movieCredits       `json:"movie_credits"`
+	MovieCredits    *personMovieCredits `json:"movie_credits"`
 	TaggedImages    *taggedImages       `json:"tagged_images"`
 	Translations    *personTranslations `json:"translations"`
 	TVShowCredits   *tvShowCredits      `json:"tv_credits"`
@@ -63,82 +63,41 @@ type Profile struct {
 	FilePath *string `json:"file_path"`
 }
 
-type PeopleChangesOptions struct {
-	// Specify which page to query.
-	Page *int `url:"page,omitempty" json:"page,omitempty"`
-
-	// Filter the results with a start date.
-	// format: YYYY-MM-DD
-	StartDate string `url:"start_date,omitempty" json:"start_date,omitempty"`
-
-	// Filter the results with an end date.
-	// format: YYYY-MM-DD
-	EndDate string `url:"end_date,omitempty" json:"end_date,omitempty"`
-}
-
-type changeItem struct {
-	Id            string      `json:"id"`
-	Action        string      `json:"action"`
-	Time          string      `json:"time"`
-	ISO6391       string      `json:"iso_639_1"`
-	ISO31661      string      `json:"iso_3166_1"`
-	OriginalValue interface{} `json:"original_value"`
-	Value         interface{} `json:"value"`
-}
-
-type PersonChange struct {
-	Key   string       `json:"key"`
-	Items []changeItem `json:"items"`
-}
-
-type PersonChanges struct {
-	Changes []PersonChange `json:"changes"`
-}
-
-func (pr *PeopleResource) GetChanges(personId int, opt *PeopleChangesOptions) (*PersonChanges, *http.Response, error) {
+func (pr *PeopleResource) GetChanges(personId int, opt *ChangesOptions) (*Changes, *http.Response, error) {
 	path := fmt.Sprintf("/person/%d/changes", personId)
-	var changes PersonChanges
+	var changes Changes
 	resp, err := pr.client.get(path, &changes, WithQueryParams(opt))
 	return &changes, resp, errors.Wrap(err, "failed to get changes")
 }
 
-type MovieCast struct {
+type personMovieCast struct {
 	movie
 	Character string `json:"character"`
 	CreditId  string `json:"credit_id"`
 	Order     int    `json:"order"`
 }
 
-type MovieCrew struct {
+type personMovieCrew struct {
 	movie
 	CreditId   string `json:"credit_id"`
 	Department string `json:"department"`
 	Job        string `json:"job"`
 }
 
-type movieCredits struct {
-	Cast []MovieCast `json:"cast"`
-	Crew []MovieCrew `json:"crew"`
+type personMovieCredits struct {
+	Cast []personMovieCast `json:"cast"`
+	Crew []personMovieCrew `json:"crew"`
 }
 
-type MovieCredits struct {
+type PersonMovieCredits struct {
 	Id int `json:"id"`
-	movieCredits
-}
-
-type CreditsOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
+	personMovieCredits
 }
 
 // Get the movie credits for a person
-func (pr *PeopleResource) GetMovieCredits(personId int, opt *CreditsOptions) (*MovieCredits, *http.Response, error) {
+func (pr *PeopleResource) GetMovieCredits(personId int, opt *CreditsOptions) (*PersonMovieCredits, *http.Response, error) {
 	path := fmt.Sprintf("/person/%d/movie_credits", personId)
-	var credits MovieCredits
+	var credits PersonMovieCredits
 	resp, err := pr.client.get(path, &credits, WithQueryParams(opt))
 	return &credits, resp, errors.Wrap(err, "failed to get movie credits")
 }
@@ -205,7 +164,7 @@ func (pr *PeopleResource) GetTVCredits(personId int, opt *CreditsOptions) (*TVSh
 type CombinedCreditsCast map[string]interface{}
 
 type CombinedCreditsMovieCast struct {
-	MovieCast
+	personMovieCast
 	MediaType string `json:"media_type"`
 }
 
@@ -217,7 +176,7 @@ type CombinedCreditsTVShowCast struct {
 type CombinedCreditsCrew map[string]interface{}
 
 type CombinedCreditsMovieCrew struct {
-	MovieCrew
+	personMovieCrew
 	MediaType string `json:"media_type"`
 }
 
@@ -278,9 +237,9 @@ func (pr *PeopleResource) GetCombinedCredits(personId int, opt *CreditsOptions) 
 
 type ExternalIds struct {
 	Id int `json:"id"`
-	externalIds
+	personExternalIds
 }
-type externalIds struct {
+type personExternalIds struct {
 	FacebookId  *string `json:"facebook_id"`
 	FreebaseId  *string `json:"freebase_id"`
 	FreebaseMId *string `json:"freebase_mid"`
@@ -478,22 +437,12 @@ func (pr *PeopleResource) GetPopular(opt *PopularPeopleOptions) (*PopularPeople,
 	return &popular, resp, errors.Wrap(err, "failed to get popular people")
 }
 
-type peopleChange struct {
-	Adult *bool `json:"adult"`
-	Id    int   `json:"id"`
-}
-
-type PeopleChanges struct {
-	paginatedMovies
-	Changes []peopleChange `json:"results"`
-}
-
 // Get a list of all of the person ids that have been changed in the past 24 hours.
 // You can query it for up to 14 days worth of changed IDs at a time with the start_date and end_date query parameters.
 // 100 items are returned per page.
-func (pr *PeopleResource) GetPeopleChanges(opt *PeopleChangesOptions) (*PeopleChanges, *http.Response, error) {
+func (pr *PeopleResource) GetPeopleChanges(opt *ChangesOptions) (*MediaChanges, *http.Response, error) {
 	path := "/person/changes"
-	var changes PeopleChanges
+	var changes MediaChanges
 	resp, err := pr.client.get(path, &changes, WithQueryParams(opt))
 	return &changes, resp, errors.Wrap(err, "failed to get people changes")
 }
