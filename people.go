@@ -3,7 +3,6 @@ package tmdb
 import (
 	"fmt"
 	"net/http"
-	"strings"
 
 	"github.com/pkg/errors"
 )
@@ -46,16 +45,21 @@ type PersonDetails struct {
 	personAppendToResponse
 }
 
-func (pr *PeopleResource) GetPerson(personId int, appendToResponse ...string) (*PersonDetails, *http.Response, error) {
+type PersonDetailsOptions struct {
+	// Pass a ISO 639-1 value to display translated data for the fields that support it.
+	// minLength: 2
+	// pattern: ([a-z]{2})-([A-Z]{2})
+	// default: en-US
+	// If the provided language is wrong, it is ignored.
+	Language string `url:"language,omitempty" json:"language,omitempty"`
+
+	AppendToResponse string `url:"append_to_response,omitempty" json:"append_to_response,omitempty"`
+}
+
+func (pr *PeopleResource) GetPerson(personId int, opt *PersonDetailsOptions) (*PersonDetails, *http.Response, error) {
 	path := fmt.Sprintf("/person/%d", personId)
 	var person PersonDetails
-	var resp *http.Response
-	var err error
-	if len(appendToResponse) > 0 {
-		resp, err = pr.client.get(path, &person, WithQueryParam("append_to_response", strings.Join(appendToResponse, ",")))
-	} else {
-		resp, err = pr.client.get(path, &person)
-	}
+	resp, err := pr.client.get(path, &person, WithQueryParams(opt))
 	return &person, resp, errors.Wrap(err, "failed to get person")
 }
 

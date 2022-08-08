@@ -13,7 +13,7 @@ type example struct {
 }
 
 func (e example) GetPerson() {
-	person, _, err := e.client.People.GetPerson(1196961)
+	person, _, err := e.client.People.GetPerson(1196961, nil)
 	if err != nil {
 		panic(errors.Wrap(err, "failed to get person"))
 	}
@@ -21,7 +21,10 @@ func (e example) GetPerson() {
 }
 
 func (e example) GetPersonAppendToResponse() {
-	person, _, err := e.client.People.GetPerson(1196961, "changes", "combined_credits", "external_ids", "images", "movie_credits", "tagged_images", "translations", "tv_credits")
+	opt := tmdb.PersonDetailsOptions{
+		AppendToResponse: "changes,combined_credits,external_ids,images,movie_credits,tagged_images,translations,tv_credits",
+	}
+	person, _, err := e.client.People.GetPerson(1196961, &opt)
 	if err != nil {
 		panic(errors.Wrap(err, "failed to get person"))
 	}
@@ -29,7 +32,7 @@ func (e example) GetPersonAppendToResponse() {
 }
 
 func (e example) GetChanges() {
-	opt := tmdb.PeopleChangesOptions{
+	opt := tmdb.ChangesOptions{
 		StartDate: "2019-05-20",
 	}
 	changes, _, err := e.client.People.GetChanges(68813, &opt)
