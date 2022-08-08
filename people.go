@@ -32,7 +32,7 @@ type person struct {
 type personAppendToResponse struct {
 	Changes         *Changes            `json:"changes"`
 	CombinedCredits *combinedCredits    `json:"combined_credits"`
-	ExternalIds     *personExternalIds        `json:"external_ids"`
+	ExternalIds     *personExternalIds  `json:"external_ids"`
 	Images          *personImages       `json:"images"`
 	MovieCredits    *personMovieCredits `json:"movie_credits"`
 	TaggedImages    *taggedImages       `json:"tagged_images"`
