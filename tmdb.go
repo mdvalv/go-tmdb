@@ -42,6 +42,7 @@ type Client struct {
 	GuestSession   *GuestSessionResource
 	Keywords       *KeywordsResource
 	Lists          *ListsResource
+	Movies         *MoviesResource
 	Networks       *NetworksResource
 	People         *PeopleResource
 	Reviews        *ReviewsResource
@@ -81,6 +82,7 @@ func NewClient(token string) (*Client, error) {
 	c.GuestSession = &GuestSessionResource{client: c}
 	c.Keywords = &KeywordsResource{client: c}
 	c.Lists = &ListsResource{client: c}
+	c.Movies = &MoviesResource{client: c}
 	c.Networks = &NetworksResource{client: c}
 	c.People = &PeopleResource{client: c}
 	c.Reviews = &ReviewsResource{client: c}
@@ -258,4 +260,13 @@ func convert(expectedMedia string, obj media, to interface{}) error {
 type statusResponse struct {
 	StatusCode    int    `json:"status_code"`
 	StatusMessage string `json:"status_message"`
+}
+
+type CreditsOptions struct {
+	// Pass a ISO 639-1 value to display translated data for the fields that support it.
+	// minLength: 2
+	// pattern: ([a-z]{2})-([A-Z]{2})
+	// default: en-US
+	// If the provided language is wrong, it is ignored.
+	Language string `url:"language,omitempty" json:"language,omitempty"`
 }
