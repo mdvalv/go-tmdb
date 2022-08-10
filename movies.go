@@ -40,19 +40,19 @@ type paginatedMovies struct {
 }
 
 type movieAppendToResponse struct {
-	AlternativeTitles *alternativeTitles `json:"alternative_titles"`
-	Changes           *Changes           `json:"changes"`
-	Credits           *movieCredits      `json:"credits"`
-	ExternalIds       *movieExternalIds  `json:"external_ids"`
-	Images            *movieImages       `json:"images"`
-	Keywords          *movieKeywords     `json:"keywords"`
-	Lists             *MovieLists        `json:"lists"`
-	Recommendations   *RecommendedMovies `json:"recommendations"`
-	ReleaseDates      *movieReleaseDates `json:"release_dates"`
-	Reviews           *movieReviews      `json:"reviews"`
-	Similar           *SimilarMovies     `json:"similar"`
-	Translations      *movieTranslations `json:"translations"`
-	Videos            *videos            `json:"videos"`
+	AlternativeTitles *alternativeMovieTitles `json:"alternative_titles"`
+	Changes           *Changes                `json:"changes"`
+	Credits           *movieCredits           `json:"credits"`
+	ExternalIds       *movieExternalIds       `json:"external_ids"`
+	Images            *images                 `json:"images"`
+	Keywords          *movieKeywords          `json:"keywords"`
+	Lists             *MovieLists             `json:"lists"`
+	Recommendations   *RecommendedMovies      `json:"recommendations"`
+	ReleaseDates      *movieReleaseDates      `json:"release_dates"`
+	Reviews           *movieReviews           `json:"reviews"`
+	Similar           *SimilarMovies          `json:"similar"`
+	Translations      *movieTranslations      `json:"translations"`
+	Videos            *videos                 `json:"videos"`
 }
 
 type MovieDetails struct {
@@ -326,23 +326,23 @@ type Title struct {
 	Type     string `json:"type"`
 }
 
-type alternativeTitles struct {
+type alternativeMovieTitles struct {
 	Titles []Title `json:"titles"`
 }
 
-type AlternativeTitles struct {
-	alternativeTitles
+type AlternativeMovieTitles struct {
+	alternativeMovieTitles
 	Id int `json:"id"`
 }
 
-type AlternativeTitlesOptions struct {
+type MovieAlternativeTitlesOptions struct {
 	Country string `url:"country,omitempty" json:"country,omitempty"`
 }
 
 // Get all of the alternative titles for a movie.
-func (mr *MoviesResource) GetAlternativeTitles(movieId int, opt *AlternativeTitlesOptions) (*AlternativeTitles, *http.Response, error) {
+func (mr *MoviesResource) GetAlternativeTitles(movieId int, opt *MovieAlternativeTitlesOptions) (*AlternativeMovieTitles, *http.Response, error) {
 	path := fmt.Sprintf("/movie/%d/alternative_titles", movieId)
-	var titles AlternativeTitles
+	var titles AlternativeMovieTitles
 	resp, err := mr.client.get(path, &titles, WithQueryParams(opt))
 	return &titles, resp, errors.Wrap(err, "failed to get alternative titles")
 }
@@ -425,18 +425,18 @@ func (mr *MoviesResource) GetExternalIds(movieId int) (*MovieExternalIds, *http.
 
 type Logo image
 
-type movieImages struct {
+type images struct {
 	Backdrops []Backdrop `json:"backdrops"`
 	Posters   []Poster   `json:"posters"`
 	Logos     []Logo     `json:"logos"`
 }
 
-type MovieImages struct {
+type Images struct {
 	Id int `json:"id"`
-	movieImages
+	images
 }
 
-type MovieImagesOptions struct {
+type ImagesOptions struct {
 	// Pass a ISO 639-1 value to display translated data for the fields that support it.
 	// minLength: 2
 	// pattern: ([a-z]{2})-([A-Z]{2})
@@ -452,11 +452,11 @@ type MovieImagesOptions struct {
 // If you want to include a fallback language (especially useful for backdrops)
 // you can use the include_image_language parameter.
 // This should be a comma separated value like so: include_image_language=en,null.
-func (mr *MoviesResource) GetImages(movieId int, opt *MovieImagesOptions) (*MovieImages, *http.Response, error) {
+func (mr *MoviesResource) GetImages(movieId int, opt *ImagesOptions) (*Images, *http.Response, error) {
 	path := fmt.Sprintf("/movie/%d/images", movieId)
-	var images MovieImages
+	var images Images
 	resp, err := mr.client.get(path, &images, WithQueryParams(opt))
-	return &images, resp, errors.Wrap(err, "failed to get movie credits")
+	return &images, resp, errors.Wrap(err, "failed to get movie images")
 }
 
 type movieKeywords struct {

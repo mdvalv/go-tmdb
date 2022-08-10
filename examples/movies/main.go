@@ -57,7 +57,7 @@ func (e example) GetMovie() {
 }
 
 func (e example) GetAlternativeTitles() {
-	opt := tmdb.AlternativeTitlesOptions{
+	opt := tmdb.MovieAlternativeTitlesOptions{
 		Country: "BR",
 	}
 	titles, _, err := e.client.Movies.GetAlternativeTitles(597219, &opt)
@@ -95,7 +95,7 @@ func (e example) GetExternalIds() {
 }
 
 func (e example) GetImages() {
-	opt := tmdb.MovieImagesOptions{
+	opt := tmdb.ImagesOptions{
 		Language:             "pt-BR",
 		IncludeImageLanguage: "null,en",
 	}

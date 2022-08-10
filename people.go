@@ -30,14 +30,14 @@ type person struct {
 }
 
 type personAppendToResponse struct {
-	Changes         *Changes            `json:"changes"`
-	CombinedCredits *combinedCredits    `json:"combined_credits"`
-	ExternalIds     *personExternalIds  `json:"external_ids"`
-	Images          *personImages       `json:"images"`
-	MovieCredits    *personMovieCredits `json:"movie_credits"`
-	TaggedImages    *taggedImages       `json:"tagged_images"`
-	Translations    *personTranslations `json:"translations"`
-	TVShowCredits   *tvShowCredits      `json:"tv_credits"`
+	Changes         *Changes             `json:"changes"`
+	CombinedCredits *combinedCredits     `json:"combined_credits"`
+	ExternalIds     *personExternalIds   `json:"external_ids"`
+	Images          *personImages        `json:"images"`
+	MovieCredits    *personMovieCredits  `json:"movie_credits"`
+	TaggedImages    *taggedImages        `json:"tagged_images"`
+	Translations    *personTranslations  `json:"translations"`
+	TVShowCredits   *personTVShowCredits `json:"tv_credits"`
 }
 
 type PersonDetails struct {
@@ -106,7 +106,7 @@ func (pr *PeopleResource) GetMovieCredits(personId int, opt *CreditsOptions) (*P
 	return &credits, resp, errors.Wrap(err, "failed to get movie credits")
 }
 
-type TVShowCast struct {
+type personTVShowCast struct {
 	Adult            bool     `json:"adult"`
 	BackdropPath     *string  `json:"backdrop_path"`
 	Character        string   `json:"character"`
@@ -126,7 +126,7 @@ type TVShowCast struct {
 	VoteCount        int      `json:"vote_count"`
 }
 
-type TVShowCrew struct {
+type personTVShowCrew struct {
 	Adult            bool     `json:"adult"`
 	BackdropPath     *string  `json:"backdrop_path"`
 	CreditId         string   `json:"credit_id"`
@@ -147,20 +147,20 @@ type TVShowCrew struct {
 	VoteCount        int      `json:"vote_count"`
 }
 
-type tvShowCredits struct {
-	Cast []TVShowCast `json:"cast"`
-	Crew []TVShowCrew `json:"crew"`
+type personTVShowCredits struct {
+	Cast []personTVShowCast `json:"cast"`
+	Crew []personTVShowCrew `json:"crew"`
 }
 
-type TVShowCredits struct {
+type PersonTVShowCredits struct {
 	Id int `json:"id"`
-	tvShowCredits
+	personTVShowCredits
 }
 
 // Get the TV show credits for a person.
-func (pr *PeopleResource) GetTVCredits(personId int, opt *CreditsOptions) (*TVShowCredits, *http.Response, error) {
+func (pr *PeopleResource) GetTVCredits(personId int, opt *CreditsOptions) (*PersonTVShowCredits, *http.Response, error) {
 	path := fmt.Sprintf("/person/%d/tv_credits", personId)
-	var credits TVShowCredits
+	var credits PersonTVShowCredits
 	resp, err := pr.client.get(path, &credits, WithQueryParams(opt))
 	return &credits, resp, errors.Wrap(err, "failed to get tv show credits")
 }
@@ -173,7 +173,7 @@ type CombinedCreditsMovieCast struct {
 }
 
 type CombinedCreditsTVShowCast struct {
-	TVShowCast
+	personTVShowCast
 	MediaType string `json:"media_type"`
 }
 
@@ -185,7 +185,7 @@ type CombinedCreditsMovieCrew struct {
 }
 
 type CombinedCreditsTVShowCrew struct {
-	TVShowCrew
+	personTVShowCrew
 	MediaType string `json:"media_type"`
 }
 
@@ -239,10 +239,11 @@ func (pr *PeopleResource) GetCombinedCredits(personId int, opt *CreditsOptions) 
 	return &credits, resp, errors.Wrap(err, "failed to get combined credits")
 }
 
-type ExternalIds struct {
+type PersonExternalIds struct {
 	Id int `json:"id"`
 	personExternalIds
 }
+
 type personExternalIds struct {
 	FacebookId  *string `json:"facebook_id"`
 	FreebaseId  *string `json:"freebase_id"`
@@ -265,9 +266,9 @@ type ExternalIdOptions struct {
 // Get the external ids for a person.
 // Currently supported external sources:
 // IMDB ID, Facebook, Freebase MID, Freebase ID, Instagram, TVRage ID, Twitter
-func (pr *PeopleResource) GetExternalIDs(personId int, opt *ExternalIdOptions) (*ExternalIds, *http.Response, error) {
+func (pr *PeopleResource) GetExternalIDs(personId int, opt *ExternalIdOptions) (*PersonExternalIds, *http.Response, error) {
 	path := fmt.Sprintf("/person/%d/external_ids", personId)
-	var externalIds ExternalIds
+	var externalIds PersonExternalIds
 	resp, err := pr.client.get(path, &externalIds, WithQueryParams(opt))
 	return &externalIds, resp, errors.Wrap(err, "failed to get external ids")
 }
