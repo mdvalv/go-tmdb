@@ -48,6 +48,9 @@ type Client struct {
 	Reviews        *ReviewsResource
 	Search         *SearchResource
 	Trending       *TrendingResource
+	TV             *TVResource
+	TVEpisodes     *TVEpisodesResource
+	TVSeasons      *TVSeasonsResource
 	WatchProviders *WatchProvidersResource
 }
 
@@ -88,6 +91,9 @@ func NewClient(token string) (*Client, error) {
 	c.Reviews = &ReviewsResource{client: c}
 	c.Search = &SearchResource{client: c}
 	c.Trending = &TrendingResource{client: c}
+	c.TV = &TVResource{client: c}
+	c.TVEpisodes = &TVEpisodesResource{client: c}
+	c.TVSeasons = &TVSeasonsResource{client: c}
 	c.WatchProviders = &WatchProvidersResource{client: c}
 
 	return c, nil
