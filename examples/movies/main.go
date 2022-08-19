@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
 	"github.com/pkg/errors"
@@ -10,9 +12,7 @@ type example struct {
 	client *tmdb.Client
 }
 
-const (
-	sessionId = "session_id"
-)
+var sessionId = os.Getenv("SESSIONID")
 
 func (e example) GetAccountStates() {
 	states, _, err := e.client.Movies.GetAccountStates(531428, sessionId)

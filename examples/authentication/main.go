@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
@@ -16,10 +17,10 @@ const (
 	username      = "username"
 	password      = "password"
 	requestToken  = "request_token"
-	accessToken   = "access_token"
 	accessTokenV4 = "v4_access_token"
-	sessionId     = "session_id"
 )
+
+var sessionId = os.Getenv("SESSIONID")
 
 func (e example) CreateGuestSession() {
 	session, _, err := e.client.Authentication.CreateGuestSession()

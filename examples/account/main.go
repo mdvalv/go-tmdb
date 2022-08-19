@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
 	"github.com/pkg/errors"
@@ -12,8 +14,9 @@ type example struct {
 
 const (
 	accountId = 123
-	sessionId = "session_id"
 )
+
+var sessionId = os.Getenv("SESSIONID")
 
 func (e example) GetAccount() {
 	account, _, err := e.client.Account.GetAccount(sessionId)

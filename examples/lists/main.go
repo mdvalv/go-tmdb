@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
@@ -14,8 +15,9 @@ type example struct {
 
 const (
 	listId    = "list_id"
-	sessionId = "session_id"
 )
+
+var sessionId = os.Getenv("SESSIONID")
 
 func (e example) GetList() {
 	list, _, err := e.client.Lists.GetList(listId, nil)
