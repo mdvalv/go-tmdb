@@ -26,7 +26,7 @@ func (e example) Rate() {
 	sessionId := tmdb.Auth{
 		SessionId: sessionId,
 	}
-	states, _, err := e.client.Movies.Rate(8.5, 28031, sessionId)
+	states, _, err := e.client.Movies.Rate(28031, 8.5, sessionId)
 	if err != nil {
 		panic(errors.Wrap(err, "failed to rate movie"))
 	}

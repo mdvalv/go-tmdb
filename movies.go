@@ -298,9 +298,9 @@ type RateMovieResponse struct {
 
 // Rate a movie.
 // A valid session or guest session ID is required.
-func (mr *MoviesResource) Rate(rating float64, movieId int, sessionId Auth) (*RateMovieResponse, *http.Response, error) {
+func (mr *MoviesResource) Rate(movieId int, rating float64, sessionId Auth) (*RateResponse, *http.Response, error) {
 	path := fmt.Sprintf("/movie/%d/rating", movieId)
-	var response RateMovieResponse
+	var response RateResponse
 	resp, err := mr.client.post(path, &response, WithBody(map[string]float64{"value": rating}), WithQueryParams(sessionId))
 	return &response, resp, errors.Wrap(err, "failed to rate movie")
 }
