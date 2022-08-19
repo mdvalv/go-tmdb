@@ -132,7 +132,7 @@ type movieInfo struct {
 	Tagline             string               `json:"tagline"`
 }
 
-type LatestMovieOptions struct {
+type LatestOptions struct {
 	// Pass a ISO 639-1 value to display translated data for the fields that support it.
 	// minLength: 2
 	// pattern: ([a-z]{2})-([A-Z]{2})
@@ -142,7 +142,7 @@ type LatestMovieOptions struct {
 }
 
 // Get the most newly created movie. This is a live response and will continuously change.
-func (mr *MoviesResource) GetLatest(opt *LatestMovieOptions) (*LatestMovie, *http.Response, error) {
+func (mr *MoviesResource) GetLatest(opt *LatestOptions) (*LatestMovie, *http.Response, error) {
 	path := "/movie/latest"
 	var latest LatestMovie
 	resp, err := mr.client.get(path, &latest, WithQueryParams(opt))
@@ -290,7 +290,7 @@ type Auth struct {
 	GuestSessionId string `url:"guest_session_id,omitempty" json:"guest_session_id,omitempty"`
 }
 
-type RateMovieResponse struct {
+type RateResponse struct {
 	StatusCode    int    `json:"status_code"`
 	StatusMessage string `json:"status_message"`
 	Success       bool   `json:"success"`
@@ -610,7 +610,7 @@ func (mr *MoviesResource) GetTranslations(movieId int) (*MovieTranslations, *htt
 	return &translations, resp, errors.Wrap(err, "failed to get movie translations")
 }
 
-type MovieVideosOptions struct {
+type VideosOptions struct {
 	// Pass a ISO 639-1 value to display translated data for the fields that support it.
 	// minLength: 2
 	// pattern: ([a-z]{2})-([A-Z]{2})
@@ -644,18 +644,18 @@ type Videos struct {
 }
 
 // Get the videos that have been added to a movie.
-func (mr *MoviesResource) GetVideos(movieId int, opt *MovieVideosOptions) (*Videos, *http.Response, error) {
+func (mr *MoviesResource) GetVideos(movieId int, opt *VideosOptions) (*Videos, *http.Response, error) {
 	path := fmt.Sprintf("/movie/%d/videos", movieId)
 	var videos Videos
 	resp, err := mr.client.get(path, &videos, WithQueryParams(opt))
 	return &videos, resp, errors.Wrap(err, "failed to get movie videos")
 }
 
-type MovieProviders map[string]interface{}
+type Providers map[string]interface{}
 
-type MovieWatchProviders struct {
-	Id        int            `json:"id"`
-	Providers MovieProviders `json:"results"`
+type WatchProviders struct {
+	Id        int       `json:"id"`
+	Providers Providers `json:"results"`
 }
 
 // Powered by the partnership with JustWatch, use this method to get a list of the availabilities per country by provider.
@@ -663,9 +663,9 @@ type MovieWatchProviders struct {
 // Link to the provided TMDB URL to help support TMDB and provide the actual deep links to the content.
 // Please note: In order to use this data you MUST attribute the source of the data as JustWatch.
 // If any usage is found not complying with these terms the access to the API will be revoked.
-func (mr *MoviesResource) GetWatchProviders(movieId int) (*MovieWatchProviders, *http.Response, error) {
+func (mr *MoviesResource) GetWatchProviders(movieId int) (*WatchProviders, *http.Response, error) {
 	path := fmt.Sprintf("/movie/%d/watch/providers", movieId)
-	var providers MovieWatchProviders
+	var providers WatchProviders
 	resp, err := mr.client.get(path, &providers)
 	return &providers, resp, errors.Wrap(err, "failed to get movie watch providers")
 }
