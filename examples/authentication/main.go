@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/mdvalv/go-tmdb"
@@ -67,7 +66,7 @@ func (e example) DeleteSession() {
 	if err != nil {
 		panic(errors.Wrap(err, "failed to delete session"))
 	}
-	fmt.Println("Deleted successfully?", success)
+	examples.PrettyPrint(*success)
 }
 
 func main() {
