@@ -13,11 +13,24 @@ type MoviesResource struct {
 }
 
 type Movie struct {
-	movie
-	MediaType string `json:"media_type"`
+	Adult            bool    `json:"adult"`
+	BackdropPath     *string `json:"backdrop_path"`
+	GenreIds         []int   `json:"genre_ids"`
+	Id               int     `json:"id"`
+	MediaType        string  `json:"media_type"`
+	OriginalLanguage string  `json:"original_language"`
+	OriginalTitle    string  `json:"original_title"`
+	Overview         string  `json:"overview"`
+	Popularity       float64 `json:"popularity"`
+	PosterPath       *string `json:"poster_path"`
+	ReleaseDate      string  `json:"release_date"`
+	Title            string  `json:"title"`
+	Video            bool    `json:"video"`
+	VoteAverage      float64 `json:"vote_average"`
+	VoteCount        int     `json:"vote_count"`
 }
 
-type movie struct {
+type MovieResult struct {
 	Adult            bool    `json:"adult"`
 	BackdropPath     *string `json:"backdrop_path"`
 	GenreIds         []int   `json:"genre_ids"`
@@ -36,28 +49,51 @@ type movie struct {
 
 type paginatedMovies struct {
 	pagination
-	Movies []movie `json:"results"`
-}
-
-type movieAppendToResponse struct {
-	AlternativeTitles *alternativeMovieTitles `json:"alternative_titles"`
-	Changes           *Changes                `json:"changes"`
-	Credits           *movieCredits           `json:"credits"`
-	ExternalIds       *movieExternalIds       `json:"external_ids"`
-	Images            *images                 `json:"images"`
-	Keywords          *movieKeywords          `json:"keywords"`
-	Lists             *MovieLists             `json:"lists"`
-	Recommendations   *RecommendedMovies      `json:"recommendations"`
-	ReleaseDates      *movieReleaseDates      `json:"release_dates"`
-	Reviews           *movieReviews           `json:"reviews"`
-	Similar           *SimilarMovies          `json:"similar"`
-	Translations      *movieTranslations      `json:"translations"`
-	Videos            *videos                 `json:"videos"`
+	Movies []MovieResult `json:"results"`
 }
 
 type MovieDetails struct {
-	movieInfo
-	movieAppendToResponse
+	Adult               bool                 `json:"adult"`
+	BackdropPath        *string              `json:"backdrop_path"`
+	BelongsToCollection *BelongsToCollection `json:"belongs_to_collection"`
+	Budget              int                  `json:"budget"`
+	GenreIds            []int                `json:"genre_ids"`
+	Genres              []Genre              `json:"genres"`
+	Homepage            string               `json:"homepage"`
+	Id                  int                  `json:"id"`
+	IMDbId              string               `json:"imdb_id"`
+	OriginalLanguage    string               `json:"original_language"`
+	OriginalTitle       string               `json:"original_title"`
+	Overview            string               `json:"overview"`
+	Popularity          float64              `json:"popularity"`
+	PosterPath          *string              `json:"poster_path"`
+	ProductionCompanies []ProductionCompany  `json:"production_companies"`
+	ProductionCountries []ProductionCountry  `json:"production_countries"`
+	ReleaseDate         string               `json:"release_date"`
+	Revenue             int                  `json:"revenue"`
+	Runtime             int                  `json:"runtime"`
+	SpokenLanguages     []SpokenLanguage     `json:"spoken_languages"`
+	Status              string               `json:"status"`
+	Tagline             string               `json:"tagline"`
+	Title               string               `json:"title"`
+	Video               bool                 `json:"video"`
+	VoteAverage         float64              `json:"vote_average"`
+	VoteCount           int                  `json:"vote_count"`
+
+	// append to response
+	AlternativeTitles *AlternativeMovieTitles `json:"alternative_titles"`
+	Changes           *Changes                `json:"changes"`
+	Credits           *MovieCredits           `json:"credits"`
+	ExternalIds       *MovieExternalIds       `json:"external_ids"`
+	Images            *Images                 `json:"images"`
+	Keywords          *MovieKeywords          `json:"keywords"`
+	Lists             *MovieLists             `json:"lists"`
+	Recommendations   *RecommendedMovies      `json:"recommendations"`
+	ReleaseDates      *MovieReleaseDates      `json:"release_dates"`
+	Reviews           *MovieReviews           `json:"reviews"`
+	Similar           *SimilarMovies          `json:"similar"`
+	Translations      *MovieTranslations      `json:"translations"`
+	Videos            *Videos                 `json:"videos"`
 }
 
 type MovieDetailsOptions struct {
@@ -114,32 +150,36 @@ type BelongsToCollection struct {
 	PosterPath   *string `json:"poster_path"`
 }
 
-type LatestMovie movieInfo
-
-type movieInfo struct {
-	movie
+type LatestMovie struct {
+	Adult               bool                 `json:"adult"`
+	BackdropPath        *string              `json:"backdrop_path"`
 	BelongsToCollection *BelongsToCollection `json:"belongs_to_collection"`
 	Budget              int                  `json:"budget"`
+	GenreIds            []int                `json:"genre_ids"`
 	Genres              []Genre              `json:"genres"`
 	Homepage            string               `json:"homepage"`
+	Id                  int                  `json:"id"`
 	IMDbId              string               `json:"imdb_id"`
+	OriginalLanguage    string               `json:"original_language"`
+	OriginalTitle       string               `json:"original_title"`
+	Overview            string               `json:"overview"`
+	Popularity          float64              `json:"popularity"`
+	PosterPath          *string              `json:"poster_path"`
 	ProductionCompanies []ProductionCompany  `json:"production_companies"`
 	ProductionCountries []ProductionCountry  `json:"production_countries"`
+	ReleaseDate         string               `json:"release_date"`
 	Revenue             int                  `json:"revenue"`
 	Runtime             int                  `json:"runtime"`
 	SpokenLanguages     []SpokenLanguage     `json:"spoken_languages"`
 	Status              string               `json:"status"`
 	Tagline             string               `json:"tagline"`
+	Title               string               `json:"title"`
+	Video               bool                 `json:"video"`
+	VoteAverage         float64              `json:"vote_average"`
+	VoteCount           int                  `json:"vote_count"`
 }
 
-type LatestOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-}
+type LatestOptions languageOptions
 
 // Get the most newly created movie. This is a live response and will continuously change.
 func (mr *MoviesResource) GetLatest(opt *LatestOptions) (*LatestMovie, *http.Response, error) {
@@ -170,8 +210,9 @@ type DateRange struct {
 }
 
 type NowPlayingMovies struct {
-	paginatedMovies
-	Dates DateRange `json:"dates"`
+	pagination
+	Movies []MovieResult `json:"results"`
+	Dates  DateRange     `json:"dates"`
 }
 
 // Get a list of movies in theatres.
@@ -252,8 +293,9 @@ type UpcomingMoviesOptions struct {
 }
 
 type UpcomingMovies struct {
-	paginatedMovies
-	Dates DateRange `json:"dates"`
+	pagination
+	Movies []MovieResult `json:"results"`
+	Dates  DateRange     `json:"dates"`
 }
 
 // Get a list of upcoming movies in theatres.
@@ -326,13 +368,9 @@ type Title struct {
 	Type     string `json:"type"`
 }
 
-type alternativeMovieTitles struct {
-	Titles []Title `json:"titles"`
-}
-
 type AlternativeMovieTitles struct {
-	alternativeMovieTitles
-	Id int `json:"id"`
+	Id     *int    `json:"id"`
+	Titles []Title `json:"titles"`
 }
 
 type MovieAlternativeTitlesOptions struct {
@@ -356,7 +394,7 @@ func (mr *MoviesResource) GetChanges(movieId int, opt *ChangesOptions) (*Changes
 	return &changes, resp, errors.Wrap(err, "failed to get movie changes")
 }
 
-type movieCast struct {
+type MovieCast struct {
 	Adult              bool    `json:"adult"`
 	CastId             int     `json:"cast_id"`
 	Character          string  `json:"character"`
@@ -371,7 +409,7 @@ type movieCast struct {
 	ProfilePath        *string `json:"profile_path"`
 }
 
-type movieCrew struct {
+type MovieCrew struct {
 	Adult              bool    `json:"adult"`
 	CreditId           string  `json:"credit_id"`
 	Department         string  `json:"department"`
@@ -385,14 +423,10 @@ type movieCrew struct {
 	ProfilePath        *string `json:"profile_path"`
 }
 
-type movieCredits struct {
-	Cast []movieCast `json:"cast"`
-	Crew []movieCrew `json:"crew"`
-}
-
 type MovieCredits struct {
-	Id int `json:"id"`
-	movieCredits
+	Id   *int        `json:"id"`
+	Cast []MovieCast `json:"cast"`
+	Crew []MovieCrew `json:"crew"`
 }
 
 // Get the cast and crew for a movie.
@@ -403,16 +437,12 @@ func (mr *MoviesResource) GetCredits(movieId int, opt *CreditsOptions) (*MovieCr
 	return &credits, resp, errors.Wrap(err, "failed to get movie credits")
 }
 
-type movieExternalIds struct {
+type MovieExternalIds struct {
+	Id          *int    `json:"id"`
 	IMDbId      *string `json:"imdb_id"`
 	FacebookId  *string `json:"facebook_id"`
 	InstagramId *string `json:"instagram_id"`
 	TwitterId   *string `json:"twitter_id"`
-}
-
-type MovieExternalIds struct {
-	Id int `json:"id"`
-	movieExternalIds
 }
 
 // Get the external ids for a movie.
@@ -423,17 +453,13 @@ func (mr *MoviesResource) GetExternalIds(movieId int) (*MovieExternalIds, *http.
 	return &ids, resp, errors.Wrap(err, "failed to get movie external ids")
 }
 
-type Logo image
+type Logo Image
 
-type images struct {
+type Images struct {
+	Id        *int       `json:"id"`
 	Backdrops []Backdrop `json:"backdrops"`
 	Posters   []Poster   `json:"posters"`
 	Logos     []Logo     `json:"logos"`
-}
-
-type Images struct {
-	Id int `json:"id"`
-	images
 }
 
 type ImagesOptions struct {
@@ -459,13 +485,9 @@ func (mr *MoviesResource) GetImages(movieId int, opt *ImagesOptions) (*Images, *
 	return &images, resp, errors.Wrap(err, "failed to get movie images")
 }
 
-type movieKeywords struct {
-	Keywords []Keyword `json:"keywords"`
-}
-
 type MovieKeywords struct {
-	Id int `json:"id"`
-	movieKeywords
+	Id       *int      `json:"id"`
+	Keywords []Keyword `json:"keywords"`
 }
 
 // Get the keywords that have been added to a movie.
@@ -476,22 +498,23 @@ func (mr *MoviesResource) GetKeywords(movieId int) (*MovieKeywords, *http.Respon
 	return &keywords, resp, errors.Wrap(err, "failed to get movie keywords")
 }
 
+type MovieList struct {
+	Description   string  `json:"description"`
+	FavoriteCount int     `json:"favorite_count"`
+	Id            int     `json:"id"`
+	ISO6391       string  `json:"iso_639_1"`
+	ItemCount     int     `json:"item_count"`
+	ListType      string  `json:"list_type"`
+	Name          string  `json:"name"`
+	PosterPath    *string `json:"poster_path"`
+}
+
 type MovieLists struct {
 	pagination
-	Lists []list `json:"results"`
+	Lists []MovieList `json:"results"`
 }
 
-type MoviesOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-
-	// Specify which page to query.
-	Page *int `url:"page,omitempty" json:"page,omitempty"`
-}
+type MoviesOptions languagePageOptions
 
 func (mr *MoviesResource) GetLists(movieId int, opt *MoviesOptions) (*MovieLists, *http.Response, error) {
 	path := fmt.Sprintf("/movie/%d/lists", movieId)
@@ -522,17 +545,13 @@ type MovieReleaseDate struct {
 }
 
 type MovieRelease struct {
-	Iso31661     string             `json:"iso_3166_1"`
+	ISO31661     string             `json:"iso_3166_1"`
 	ReleaseDates []MovieReleaseDate `json:"release_dates"`
 }
 
-type movieReleaseDates struct {
-	Releases []MovieRelease `json:"results"`
-}
-
 type MovieReleaseDates struct {
-	Id int `json:"id"`
-	movieReleaseDates
+	Id       *int           `json:"id"`
+	Releases []MovieRelease `json:"results"`
 }
 
 // Get the release date along with the certification for a movie.
@@ -550,14 +569,10 @@ func (mr *MoviesResource) GetReleaseDates(movieId int) (*MovieReleaseDates, *htt
 	return &dates, resp, errors.Wrap(err, "failed to get movie release dates")
 }
 
-type movieReviews struct {
-	pagination
-	Reviews []review `json:"results"`
-}
-
 type MovieReviews struct {
-	Id int `json:"id"`
-	movieReviews
+	pagination
+	Id      *int     `json:"id"`
+	Reviews []Review `json:"results"`
 }
 
 // Get the user reviews for a movie.
@@ -577,13 +592,9 @@ func (mr *MoviesResource) GetSimilar(movieId int, opt *MoviesOptions) (*SimilarM
 	return &movies, resp, errors.Wrap(err, "failed to get similar movies")
 }
 
-type movieTranslations struct {
-	Translations []MovieTranslation `json:"translations"`
-}
-
 type MovieTranslations struct {
-	Id int `json:"id"`
-	movieTranslations
+	Id           *int               `json:"id"`
+	Translations []MovieTranslation `json:"translations"`
 }
 
 type MovieData struct {
@@ -634,13 +645,9 @@ type Video struct {
 	Type        string `json:"type"`
 }
 
-type videos struct {
-	Videos []Video `json:"results"`
-}
-
 type Videos struct {
-	Id int `json:"id"`
-	videos
+	Id     *int    `json:"id"`
+	Videos []Video `json:"results"`
 }
 
 // Get the videos that have been added to a movie.

@@ -17,12 +17,6 @@ const (
 	BASE_URL = "https://api.themoviedb.org/3"
 )
 
-type pagination struct {
-	Page         int `json:"page"`
-	TotalPages   int `json:"total_pages"`
-	TotalResults int `json:"total_results"`
-}
-
 // Client handles interaction with TMDb API.
 type Client struct {
 	// HTTP client used to communicate with the API.
@@ -226,20 +220,6 @@ type media interface {
 	GetMediaType() string
 }
 
-type MovieOrTV map[string]interface{}
-
-func (mt MovieOrTV) GetMediaType() string {
-	return mt["media_type"].(string)
-}
-
-func (mt MovieOrTV) ToMovie() (*Movie, error) {
-	return convertToMovie(mt)
-}
-
-func (mt MovieOrTV) ToTVShow() (*TVShow, error) {
-	return convertToTVShow(mt)
-}
-
 func convertToMovie(obj media) (*Movie, error) {
 	var movie Movie
 	err := convert("movie", obj, &movie)
@@ -268,11 +248,8 @@ type statusResponse struct {
 	StatusMessage string `json:"status_message"`
 }
 
-type CreditsOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
+type pagination struct {
+	Page         int `json:"page"`
+	TotalPages   int `json:"total_pages"`
+	TotalResults int `json:"total_results"`
 }

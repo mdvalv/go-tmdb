@@ -13,7 +13,7 @@ type SearchResource struct {
 
 type SearchCompanies struct {
 	pagination
-	Results []company `json:"results"`
+	Results []Company `json:"results"`
 }
 
 type SearchCompaniesOptions struct {
@@ -45,17 +45,7 @@ type SearchCollections struct {
 	Collections []SearchCollection `json:"results"`
 }
 
-type SearchCollectionsOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-
-	// Specify which page to query.
-	Page *int `url:"page,omitempty" json:"page,omitempty"`
-}
+type SearchCollectionsOptions languagePageOptions
 
 // Search for collections.
 func (sr *SearchResource) Collections(query string, opt *SearchCollectionsOptions) (*SearchCollections, *http.Response, error) {
@@ -137,7 +127,21 @@ type SearchPeopleOptions struct {
 	Region string `url:"region,omitempty" json:"region,omitempty"`
 }
 
-type searchPerson struct {
+type MovieOrTV map[string]interface{}
+
+func (mt MovieOrTV) GetMediaType() string {
+	return mt["media_type"].(string)
+}
+
+func (mt MovieOrTV) ToMovie() (*Movie, error) {
+	return convertToMovie(mt)
+}
+
+func (mt MovieOrTV) ToTVShow() (*TVShow, error) {
+	return convertToTVShow(mt)
+}
+
+type SearchPerson struct {
 	Adult              bool        `json:"adult"`
 	Gender             int         `json:"gender"`
 	Id                 int         `json:"id"`
@@ -150,7 +154,7 @@ type searchPerson struct {
 
 type SearchPeople struct {
 	pagination
-	People []searchPerson `json:"results"`
+	People []SearchPerson `json:"results"`
 }
 
 // Search for people.
@@ -210,9 +214,16 @@ type SearchMultiOptions struct {
 	Region string `url:"region,omitempty" json:"region,omitempty"`
 }
 
-type SearchPerson struct {
-	searchPerson
-	MediaType string `json:"media_type"`
+type SearchMultiPerson struct {
+	Adult              bool        `json:"adult"`
+	Gender             int         `json:"gender"`
+	Id                 int         `json:"id"`
+	KnownFor           []MovieOrTV `json:"known_for"`
+	KnownForDepartment string      `json:"known_for_department"`
+	Name               string      `json:"name"`
+	Popularity         float64     `json:"popularity"`
+	ProfilePath        *string     `json:"profile_path"`
+	MediaType          string      `json:"media_type"`
 }
 
 type SearchMultiResults map[string]interface{}
@@ -243,8 +254,8 @@ func (sr SearchMultiResults) ToTVShow() (*TVShow, error) {
 	return convertToTVShow(sr)
 }
 
-func (sr SearchMultiResults) ToPerson() (*SearchPerson, error) {
-	var person SearchPerson
+func (sr SearchMultiResults) ToPerson() (*SearchMultiPerson, error) {
+	var person SearchMultiPerson
 	err := convert("person", sr, &person)
 	return &person, err
 }
