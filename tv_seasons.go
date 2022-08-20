@@ -12,15 +12,6 @@ type TVSeasonsResource struct {
 	client *Client
 }
 
-type tvSeasonAppendToResponse struct {
-	AggregateCredits *AggregateCredits     `json:"aggregate_credits"`
-	Credits          *TVShowCredits        `json:"credits"`
-	ExternalIds      *TVSeasonExternalIds  `json:"external_ids"`
-	Images           *TVSeasonImages         `json:"images"`
-	Translations     *TVSeasonTranslations `json:"translations"`
-	Videos           *Videos               `json:"videos"`
-}
-
 type TVEpisode struct {
 	AirDate        string       `json:"air_date"`
 	Crew           []TVShowCrew `json:"crew"`
@@ -38,7 +29,6 @@ type TVEpisode struct {
 }
 
 type TVSeasonDetails struct {
-	tvSeasonAppendToResponse
 	Id           int         `json:"id"`
 	AirDate      string      `json:"air_date"`
 	Episodes     []TVEpisode `json:"episodes"`
@@ -46,6 +36,14 @@ type TVSeasonDetails struct {
 	Overview     string      `json:"overview"`
 	PosterPath   *string     `json:"poster_path"`
 	SeasonNumber int         `json:"season_number"`
+
+	// append to response
+	AggregateCredits *AggregateCredits     `json:"aggregate_credits"`
+	Credits          *TVShowCredits        `json:"credits"`
+	ExternalIds      *TVSeasonExternalIds  `json:"external_ids"`
+	Images           *TVSeasonImages       `json:"images"`
+	Translations     *TVSeasonTranslations `json:"translations"`
+	Videos           *Videos               `json:"videos"`
 }
 
 type TVSeasonDetailsOptions struct {
