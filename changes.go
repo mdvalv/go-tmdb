@@ -13,7 +13,7 @@ type ChangesOptions struct {
 	EndDate string `url:"end_date,omitempty" json:"end_date,omitempty"`
 }
 
-type changeItem struct {
+type ChangeItem struct {
 	Id            string      `json:"id"`
 	Action        string      `json:"action"`
 	Time          string      `json:"time"`
@@ -25,19 +25,19 @@ type changeItem struct {
 
 type Change struct {
 	Key   string       `json:"key"`
-	Items []changeItem `json:"items"`
+	Items []ChangeItem `json:"items"`
 }
 
 type Changes struct {
 	Changes []Change `json:"changes"`
 }
 
-type mediaChange struct {
+type MediaChange struct {
 	Adult *bool `json:"adult"`
 	Id    int   `json:"id"`
 }
 
 type MediaChanges struct {
 	pagination
-	Changes []mediaChange `json:"results"`
+	Changes []MediaChange `json:"results"`
 }
