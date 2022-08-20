@@ -12,27 +12,56 @@ type TVResource struct {
 	client *Client
 }
 
-type tvShowAppendToResponse struct {
-	AggregateCredits     *aggregateCredits        `json:"aggregate_credits"`
-	AlternativeTitles    *alternativeTVShowTitles `json:"alternative_titles"`
-	Changes              *Changes                 `json:"changes"`
-	ContentRatings       *contentRatings          `json:"content_ratings"`
-	Credits              *tvShowCredits           `json:"credits"`
-	EpisodeGroups        *episodeGroups           `json:"episode_groups"`
-	ExternalIds          *tvShowExternalIds       `json:"external_ids"`
-	Images               *images                  `json:"images"`
-	Keywords             *tvShowKeywords          `json:"keywords"`
-	Recommendations      *RecommendedTVShows      `json:"recommendations"`
-	Reviews              *tvShowReviews           `json:"reviews"`
-	ScreenedTheatrically *screenedTheatrically    `json:"screened_theatrically"`
-	Similar              *SimilarTVShows          `json:"similar"`
-	Translations         *tvShowTranslations      `json:"translations"`
-	Videos               *videos                  `json:"videos"`
-}
-
 type TVShowDetails struct {
-	tvShowAppendToResponse
-	tvShowInfo
+	Adult               bool                `json:"adult"`
+	BackdropPath        *string             `json:"backdrop_path"`
+	CreatedBy           []TVCreatedBy       `json:"created_by"`
+	EpisodeRunTime      []int               `json:"episode_run_time"`
+	FirstAirDate        string              `json:"first_air_date"`
+	Genres              []Genre             `json:"genres"`
+	Homepage            string              `json:"homepage"`
+	Id                  int                 `json:"id"`
+	InProduction        bool                `json:"in_production"`
+	Languages           []string            `json:"languages"`
+	LastAirDate         string              `json:"last_air_date"`
+	LastEpisodeToAir    *TVEpisode          `json:"last_episode_to_air"`
+	Name                string              `json:"name"`
+	Networks            []TVShowNetwork     `json:"networks"`
+	NextEpisodeToAir    *TVEpisode          `json:"next_episode_to_air"`
+	NumberOfEpisodes    int                 `json:"number_of_episodes"`
+	NumberOfSeasons     int                 `json:"number_of_seasons"`
+	OriginCountry       []string            `json:"origin_country"`
+	OriginalLanguage    string              `json:"original_language"`
+	OriginalName        string              `json:"original_name"`
+	Overview            string              `json:"overview"`
+	Popularity          float64             `json:"popularity"`
+	PosterPath          *string             `json:"poster_path"`
+	ProductionCompanies []ProductionCompany `json:"production_companies"`
+	ProductionCountries []ProductionCountry `json:"production_countries"`
+	Seasons             []Season            `json:"seasons"`
+	SpokenLanguages     []SpokenLanguage    `json:"spoken_languages"`
+	Status              string              `json:"status"`
+	Tagline             string              `json:"tagline"`
+	Type                string              `json:"type"`
+	VoteAverage         float64             `json:"vote_average"`
+	VoteCount           int                 `json:"vote_count"`
+
+	// append to response
+	AggregateCredits     *AggregateCredits        `json:"aggregate_credits"`
+	AlternativeTitles    *TVShowAlternativeTitles `json:"alternative_titles"`
+	Changes              *Changes                 `json:"changes"`
+	ContentRatings       *ContentRatings          `json:"content_ratings"`
+	Credits              *TVShowCredits           `json:"credits"`
+	EpisodeGroups        *EpisodeGroups           `json:"episode_groups"`
+	ExternalIds          *TVShowExternalIds       `json:"external_ids"`
+	Images               *Images                  `json:"images"`
+	Keywords             *TVShowKeywords          `json:"keywords"`
+	Recommendations      *RecommendedTVShows      `json:"recommendations"`
+	Reviews              *TVShowReviews           `json:"reviews"`
+	ScreenedTheatrically *ScreenedTheatrically    `json:"screened_theatrically"`
+	Similar              *SimilarTVShows          `json:"similar"`
+	Translations         *TVShowTranslations      `json:"translations"`
+	Videos               *Videos                  `json:"videos"`
 }
 
 type TVShowDetailsOptions struct {
@@ -72,11 +101,6 @@ func (tr *TVResource) GetTVShow(tvId int, opt *TVShowDetailsOptions) (*TVShowDet
 }
 
 type Season struct {
-	season
-	MediaType string `json:"media_type"`
-}
-
-type season struct {
 	AirDate      string  `json:"air_date"`
 	EpisodeCount int     `json:"episode_count"`
 	Id           int     `json:"id"`
@@ -87,16 +111,39 @@ type season struct {
 }
 
 type TVShow struct {
-	tv
-	MediaType string `json:"media_type"`
+	Adult            bool     `json:"adult"`
+	BackdropPath     *string  `json:"backdrop_path"`
+	FirstAirDate     string   `json:"first_air_date"`
+	GenreIds         []int    `json:"genre_ids"`
+	Id               int      `json:"id"`
+	MediaType        string   `json:"media_type"`
+	Name             string   `json:"name"`
+	OriginalLanguage string   `json:"original_language"`
+	OriginalName     string   `json:"original_name"`
+	OriginCountry    []string `json:"origin_country"`
+	Overview         string   `json:"overview"`
+	Popularity       float64  `json:"popularity"`
+	PosterPath       *string  `json:"poster_path"`
+	VoteAverage      float64  `json:"vote_average"`
+	VoteCount        int      `json:"vote_count"`
 }
 
-type Episode struct {
-	episode
-	MediaType string `json:"media_type"`
+type TVEpisode struct {
+	AirDate        string  `json:"air_date"`
+	EpisodeNumber  int     `json:"episode_number"`
+	Id             int     `json:"id"`
+	Name           string  `json:"name"`
+	Overview       string  `json:"overview"`
+	ProductionCode string  `json:"production_code"`
+	Runtime        int     `json:"runtime"`
+	SeasonNumber   int     `json:"season_number"`
+	ShowId         int     `json:"show_id"`
+	StillPath      *string `json:"still_path"`
+	VoteAverage    float64 `json:"vote_average"`
+	VoteCount      int     `json:"vote_count"`
 }
 
-type tv struct {
+type TVShowResult struct {
 	Adult            bool     `json:"adult"`
 	BackdropPath     *string  `json:"backdrop_path"`
 	FirstAirDate     string   `json:"first_air_date"`
@@ -113,24 +160,9 @@ type tv struct {
 	VoteCount        int      `json:"vote_count"`
 }
 
-type episode struct {
-	AirDate        string  `json:"air_date"`
-	EpisodeNumber  int     `json:"episode_number"`
-	Id             int     `json:"id"`
-	Name           string  `json:"name"`
-	Overview       string  `json:"overview"`
-	ProductionCode string  `json:"production_code"`
-	Runtime        int     `json:"runtime"`
-	SeasonNumber   int     `json:"season_number"`
-	ShowId         int     `json:"show_id"`
-	StillPath      *string `json:"still_path"`
-	VoteAverage    float64 `json:"vote_average"`
-	VoteCount      int     `json:"vote_count"`
-}
-
 type paginatedTVShows struct {
 	pagination
-	TVShows []tv `json:"results"`
+	TVShows []TVShowResult `json:"results"`
 }
 
 // Grab the following account states for a session:
@@ -144,14 +176,7 @@ func (tr *TVResource) GetAccountStates(tvId int, sessionId string) (*AccountStat
 	return &states, resp, errors.Wrap(err, "failed to get account states")
 }
 
-type AggregateCreditsOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-}
+type AggregateCreditsOptions languageOptions
 
 type Role struct {
 	CreditId     string `json:"credit_id"`
@@ -193,14 +218,10 @@ type AggregateCreditsCrew struct {
 	TotalEpisodeCount  int     `json:"total_episode_count"`
 }
 
-type aggregateCredits struct {
+type AggregateCredits struct {
+	Id   *int                   `json:"id"`
 	Cast []AggregateCreditsCast `json:"cast"`
 	Crew []AggregateCreditsCrew `json:"crew"`
-}
-
-type AggregateCredits struct {
-	Id int `json:"id"`
-	aggregateCredits
 }
 
 // Get the aggregate credits (cast and crew) that have been added to a TV show.
@@ -213,28 +234,17 @@ func (tr *TVResource) GetAggregateCredits(tvId int, opt *AggregateCreditsOptions
 	return &credits, resp, errors.Wrap(err, "failed to get aggregate credits")
 }
 
-type TVShowAlternativeTitlesOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-}
+type TVShowAlternativeTitlesOptions languageOptions
 
-type alternativeTVShowTitles struct {
+type TVShowAlternativeTitles struct {
+	Id     *int    `json:"id"`
 	Titles []Title `json:"results"`
 }
 
-type AlternativeTVShowTitles struct {
-	alternativeTVShowTitles
-	Id int `json:"id"`
-}
-
 // Get all of the alternative titles for a tv show.
-func (tr *TVResource) GetAlternativeTitles(tvId int, opt *TVShowAlternativeTitlesOptions) (*AlternativeTVShowTitles, *http.Response, error) {
+func (tr *TVResource) GetAlternativeTitles(tvId int, opt *TVShowAlternativeTitlesOptions) (*TVShowAlternativeTitles, *http.Response, error) {
 	path := fmt.Sprintf("/tv/%d/alternative_titles", tvId)
-	var titles AlternativeTVShowTitles
+	var titles TVShowAlternativeTitles
 	resp, err := tr.client.get(path, &titles, WithQueryParams(opt))
 	return &titles, resp, errors.Wrap(err, "failed to get alternative titles")
 }
@@ -252,27 +262,16 @@ func (tr *TVResource) GetChanges(tvId int, opt *ChangesOptions) (*Changes, *http
 	return &changes, resp, errors.Wrap(err, "failed to get changes")
 }
 
-type ContentRatingsOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-}
+type ContentRatingsOptions languageOptions
 
 type Rating struct {
 	ISO31661 string `json:"iso_3166_1"`
 	Rating   string `json:"rating"`
 }
 
-type contentRatings struct {
-	Ratings []Rating `json:"results"`
-}
-
 type ContentRatings struct {
-	contentRatings
-	Id int `json:"id"`
+	Id      *int     `json:"id"`
+	Ratings []Rating `json:"results"`
 }
 
 // Get the list of content ratings (certifications) that have been added to a TV show.
@@ -311,14 +310,10 @@ type TVShowCrew struct {
 	ProfilePath        *string `json:"profile_path"`
 }
 
-type tvShowCredits struct {
+type TVShowCredits struct {
+	Id   *int         `json:"id"`
 	Cast []TVShowCast `json:"cast"`
 	Crew []TVShowCrew `json:"crew"`
-}
-
-type TVShowCredits struct {
-	Id int `json:"id"`
-	tvShowCredits
 }
 
 // Get the credits (cast and crew) that have been added to a TV show.
@@ -346,23 +341,12 @@ type TVShowEpisodeGroup struct {
 	Type         int           `json:"type"`
 }
 
-type episodeGroups struct {
+type EpisodeGroups struct {
+	Id     *int                 `json:"id"`
 	Groups []TVShowEpisodeGroup `json:"results"`
 }
 
-type EpisodeGroups struct {
-	episodeGroups
-	Id int `json:"id"`
-}
-
-type EpisodeGroupsOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-}
+type EpisodeGroupsOptions languageOptions
 
 // Get all of the episode groups that have been created for a TV show.
 func (tr *TVResource) GetEpisodeGroups(tvId int, opt *EpisodeGroupsOptions) (*EpisodeGroups, *http.Response, error) {
@@ -373,11 +357,7 @@ func (tr *TVResource) GetEpisodeGroups(tvId int, opt *EpisodeGroupsOptions) (*Ep
 }
 
 type TVShowExternalIds struct {
-	Id int `json:"id"`
-	tvShowExternalIds
-}
-
-type tvShowExternalIds struct {
+	Id          *int    `json:"id"`
 	FacebookId  *string `json:"facebook_id"`
 	FreebaseId  *string `json:"freebase_id"`
 	FreebaseMId *string `json:"freebase_mid"`
@@ -388,14 +368,7 @@ type tvShowExternalIds struct {
 	TwitterId   *string `json:"twitter_id"`
 }
 
-type ExternalIdsOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-}
+type ExternalIdsOptions languageOptions
 
 // Get the external ids for a TV show.
 func (tr *TVResource) GetExternalIds(tvId int, opt *ExternalIdsOptions) (*TVShowExternalIds, *http.Response, error) {
@@ -416,13 +389,9 @@ func (tr *TVResource) GetImages(tvId int, opt *ImagesOptions) (*Images, *http.Re
 	return &images, resp, errors.Wrap(err, "failed to get images")
 }
 
-type tvShowKeywords struct {
-	Keywords []Keyword `json:"results"`
-}
-
 type TVShowKeywords struct {
-	Id int `json:"id"`
-	tvShowKeywords
+	Id       *int      `json:"id"`
+	Keywords []Keyword `json:"results"`
 }
 
 // Get the keywords that have been added to a TV show.
@@ -433,17 +402,7 @@ func (tr *TVResource) GetKeywords(tvId int) (*TVShowKeywords, *http.Response, er
 	return &keywords, resp, errors.Wrap(err, "failed to get keywords")
 }
 
-type RecommendationsOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-
-	// Specify which page to query.
-	Page *int `url:"page,omitempty" json:"page,omitempty"`
-}
+type RecommendationsOptions languagePageOptions
 
 type RecommendedTVShows struct {
 	pagination
@@ -458,26 +417,12 @@ func (tr *TVResource) GetRecommendations(tvId int, opt *RecommendationsOptions) 
 	return &tvShows, resp, errors.Wrap(err, "failed to get tv shows recommendations")
 }
 
-type ReviewsOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-
-	// Specify which page to query.
-	Page *int `url:"page,omitempty" json:"page,omitempty"`
-}
-
-type tvShowReviews struct {
-	pagination
-	Reviews []review `json:"results"`
-}
+type ReviewsOptions languagePageOptions
 
 type TVShowReviews struct {
-	Id int `json:"id"`
-	tvShowReviews
+	pagination
+	Id      *int     `json:"id"`
+	Reviews []Review `json:"results"`
 }
 
 // Get the reviews for a TV show.
@@ -488,19 +433,15 @@ func (tr *TVResource) GetReviews(tvId int, opt *ReviewsOptions) (*TVShowReviews,
 	return &reviews, resp, errors.Wrap(err, "failed to get reviews")
 }
 
-type theatricalScreens struct {
+type TheatricalScreens struct {
 	Id            int `json:"id"`
 	EpisodeNumber int `json:"episode_number"`
 	SeasonNumber  int `json:"season_number"`
 }
 
-type screenedTheatrically struct {
-	Results []theatricalScreens `json:"results"`
-}
-
 type ScreenedTheatrically struct {
-	screenedTheatrically
-	Id int `json:"id"`
+	Id      *int                `json:"id"`
+	Results []TheatricalScreens `json:"results"`
 }
 
 // Get a list of seasons or episodes that have been screened in a film festival or theatre.
@@ -513,17 +454,7 @@ func (tr *TVResource) GetScreenedTheatrically(tvId int) (*ScreenedTheatrically, 
 
 type SimilarTVShows paginatedTVShows
 
-type SimilarTVShowsOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-
-	// Specify which page to query.
-	Page *int `url:"page,omitempty" json:"page,omitempty"`
-}
+type SimilarTVShowsOptions languagePageOptions
 
 // Get a list of similar TV shows. These items are assembled by looking at keywords and genres.
 func (tr *TVResource) GetSimilar(tvId int, opt *SimilarTVShowsOptions) (*SimilarTVShows, *http.Response, error) {
@@ -548,13 +479,9 @@ type TVShowTranslation struct {
 	Data        TVData `json:"data"`
 }
 
-type tvShowTranslations struct {
-	Translations []TVShowTranslation `json:"translations"`
-}
-
 type TVShowTranslations struct {
-	Id int `json:"id"`
-	tvShowTranslations
+	Id           *int                `json:"id"`
+	Translations []TVShowTranslation `json:"translations"`
 }
 
 // Get a list of the translations that exist for a TV show.
@@ -576,7 +503,7 @@ func (tr *TVResource) GetVideos(tvId int, opt *VideosOptions) (*Videos, *http.Re
 // Powered by the partnership with JustWatch, use this method to get a list of the availabilities per country by provider.
 // This is not going to return full deep links, but rather, it's just enough information to display what's available where.
 // Link to the provided TMDB URL to help support TMDB and provide the actual deep links to the content.
-// Please note: In order to use this data you MUST attribute the source of the data as JustWatch.
+// Please note: In order to use this data it's REQUIRED to attribute the source of the data as JustWatch.
 // If any usage is found not complying with these terms the access to the API will be revoked.
 func (tr *TVResource) GetWatchProviders(tvId int) (*WatchProviders, *http.Response, error) {
 	path := fmt.Sprintf("/tv/%d/watch/providers", tvId)
@@ -593,9 +520,7 @@ type TVCreatedBy struct {
 	PosterPath *string `json:"poster_path"`
 }
 
-type LatestTVShow tvShowInfo
-
-type tvShowInfo struct {
+type LatestTVShow struct {
 	Adult               bool                `json:"adult"`
 	BackdropPath        *string             `json:"backdrop_path"`
 	CreatedBy           []TVCreatedBy       `json:"created_by"`
@@ -607,10 +532,10 @@ type tvShowInfo struct {
 	InProduction        bool                `json:"in_production"`
 	Languages           []string            `json:"languages"`
 	LastAirDate         string              `json:"last_air_date"`
-	LastEpisodeToAir    *episode            `json:"last_episode_to_air"`
+	LastEpisodeToAir    *TVEpisode          `json:"last_episode_to_air"`
 	Name                string              `json:"name"`
 	Networks            []TVShowNetwork     `json:"networks"`
-	NextEpisodeToAir    *episode            `json:"next_episode_to_air"`
+	NextEpisodeToAir    *TVEpisode          `json:"next_episode_to_air"`
 	NumberOfEpisodes    int                 `json:"number_of_episodes"`
 	NumberOfSeasons     int                 `json:"number_of_seasons"`
 	OriginCountry       []string            `json:"origin_country"`
@@ -621,7 +546,7 @@ type tvShowInfo struct {
 	PosterPath          *string             `json:"poster_path"`
 	ProductionCompanies []ProductionCompany `json:"production_companies"`
 	ProductionCountries []ProductionCountry `json:"production_countries"`
-	Seasons             []season            `json:"seasons"`
+	Seasons             []Season            `json:"seasons"`
 	SpokenLanguages     []SpokenLanguage    `json:"spoken_languages"`
 	Status              string              `json:"status"`
 	Tagline             string              `json:"tagline"`
@@ -659,17 +584,7 @@ type TVShowsAiring struct {
 	TVShows []TVShowAiring `json:"results"`
 }
 
-type TVShowsAiringOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-
-	// Specify which page to query.
-	Page *int `url:"page,omitempty" json:"page,omitempty"`
-}
+type TVShowsAiringOptions languagePageOptions
 
 // Get a list of TV shows that are airing today.
 // This query is purely day based as TMDb currently doesn't support airing times.
@@ -720,17 +635,7 @@ type PopularTVShows struct {
 	TVShows []PopularTVShow `json:"results"`
 }
 
-type PopularTVShowsOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-
-	// Specify which page to query.
-	Page *int `url:"page,omitempty" json:"page,omitempty"`
-}
+type PopularTVShowsOptions languagePageOptions
 
 // Get a list of the current popular TV shows on TMDB. This list updates daily.
 func (tr *TVResource) GetPopular(opt *PopularTVShowsOptions) (*PopularTVShows, *http.Response, error) {
@@ -761,17 +666,7 @@ type TopRatedTVShows struct {
 	TVShows []TopRatedTVShow `json:"results"`
 }
 
-type TopRatedTVShowOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-
-	// Specify which page to query.
-	Page *int `url:"page,omitempty" json:"page,omitempty"`
-}
+type TopRatedTVShowOptions languagePageOptions
 
 // Get a list of the top rated TV shows on TMDB.
 func (tr *TVResource) GetTopRated(opt *TopRatedTVShowOptions) (*TopRatedTVShows, *http.Response, error) {
@@ -781,7 +676,7 @@ func (tr *TVResource) GetTopRated(opt *TopRatedTVShowOptions) (*TopRatedTVShows,
 	return &topRated, resp, errors.Wrap(err, "failed to get top rated tv shows")
 }
 
-type episodeGroup struct {
+type GroupEpisode struct {
 	AirDate        string  `json:"air_date"`
 	EpisodeNumber  int     `json:"episode_number"`
 	Id             int     `json:"id"`
@@ -801,7 +696,7 @@ type Group struct {
 	Id       string         `json:"id"`
 	Name     string         `json:"name"`
 	Order    int            `json:"order"`
-	Episodes []episodeGroup `json:"episodes"`
+	Episodes []GroupEpisode `json:"episodes"`
 	Locked   bool           `json:"locked"`
 }
 
@@ -816,14 +711,7 @@ type EpisodeGroup struct {
 	Type         int           `json:"type"`
 }
 
-type EpisodeGroupOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-}
+type EpisodeGroupOptions languageOptions
 
 // Get the details of a TV episode group. Groups support 7 different types which are enumerated as the following:
 // 1. Original air date

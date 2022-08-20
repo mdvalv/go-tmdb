@@ -106,16 +106,16 @@ type DiscoverMoviesOptions struct {
 	// A comma separated list of production company ID's. Only include movies that have one of the ID's added as a production company.
 	WithCompanies string `url:"with_companies,omitempty" json:"with_companies,omitempty"`
 
-	// Comma separated value of genre ids that you want to include in the results.
+	// Comma separated value of genre ids to be included in the results.
 	WithGenres string `url:"with_genres,omitempty" json:"with_genres,omitempty"`
 
-	// Comma separated value of genre ids that you want to exclude from the results.
+	// Comma separated value of genre ids to be excluded from the results.
 	WithoutGenres string `url:"without_genres,omitempty" json:"without_genres,omitempty"`
 
 	// A comma separated list of keyword ID's. Only includes movies that have one of the ID's added as a keyword.
 	WithKeywords string `url:"with_keywords,omitempty" json:"with_keywords,omitempty"`
 
-	// Exclude items with certain keywords. You can comma and pipe separate these values to create an 'AND' or 'OR' logic.
+	// Exclude items with certain keywords. Comma and pipe separate these values to create an 'AND' or 'OR' logic.
 	WithoutKeywords string `url:"without_keywords,omitempty" json:"without_keywords,omitempty"`
 
 	// Filter and only include movies that have a runtime that is greater or equal to a value.
@@ -128,29 +128,29 @@ type DiscoverMoviesOptions struct {
 	WithOriginalLanguage string `url:"with_original_language,omitempty" json:"with_original_language,omitempty"`
 
 	// A comma or pipe separated list of watch provider ID's.
-	// Combine this filter with `watch_region` in order to filter your results by a specific watch provider in a specific region.
+	// Combine this filter with `watch_region` in order to filter results by a specific watch provider in a specific region.
 	WithWatchProviders string `url:"with_watch_providers,omitempty" json:"with_watch_providers,omitempty"`
 
 	// An ISO 3166-1 code.
-	// Combine this filter with `with_watch_providers` in order to filter your results by a specific watch provider in a specific region.
+	// Combine this filter with `with_watch_providers` in order to filter results by a specific watch provider in a specific region.
 	WatchRegion string `url:"watch_region,omitempty" json:"watch_region,omitempty"`
 
-	// In combination with `watch_region`, you can filter by monetization type.
+	// In combination with `watch_region`, filter by monetization type.
 	// types: flatrate, free, ads, rent, buy
 	WithWatchMonetizationTypes string `url:"with_watch_monetization_types,omitempty" json:"with_watch_monetization_types,omitempty"`
 
-	// Filter the results to exclude the specific production companies you specify here. `AND` / `OR` filters are supported.
+	// Filter the results to exclude the specific production companies specified here. `AND` / `OR` filters are supported.
 	WithoutCompanies string `url:"without_companies,omitempty" json:"without_companies,omitempty"`
 }
 
 // Discover movies by different types of data like average rating, number of votes, genres and certifications.
 //
-// Please note, when using certification/certification.lte you must also specify certification_country.
+// Please note, when using certification/certification.lte it's required to also specify certification_country.
 // These two parameters work together in order to filter the results.
-// You can only filter results with the countries we have added to our certifications list.
+// Results can oly be filtered with the countries added to the certifications list.
 //
-// If you specify the region parameter, the regional release date will be used instead of the primary release date.
-// The date returned will be the first date based on your query (ie. if a with_release_type is specified).
+// If the region parameter is specified, the regional release date will be used instead of the primary release date.
+// The date returned will be the first date based on the query (ie. if a with_release_type is specified).
 // It's important to note the order of the release types that are used.
 // Specifying "2|3" would return the limited theatrical release date
 // as opposed to "3|2" which would return the theatrical date.
@@ -183,16 +183,16 @@ type DiscoverTVShowsOptions struct {
 	AirDateLte string `url:"air_date.lte,omitempty" json:"air_date.lte,omitempty"`
 
 	// Filter and only include TV shows that have a original air date that is greater or equal to the specified value.
-	// Can be used in conjunction with the "include_null_first_air_dates" filter if you want to include items with no air date.
+	// Can be used in conjunction with the "include_null_first_air_dates" filter to include items with no air date.
 	// format: YYYY-MM-DD
 	FirstAirDateGte string `url:"first_air_date.gte,omitempty" json:"first_air_date.gte,omitempty"`
 
 	// Filter and only include TV shows that have a original air date that is less than or equal to the specified value.
-	// Can be used in conjunction with the "include_null_first_air_dates" filter if you want to include items with no air date.
+	// Can be used in conjunction with the "include_null_first_air_dates" filter to include items with no air date.
 	FirstAirDateLte string `url:"first_air_date.lte,omitempty" json:"first_air_date.lte,omitempty"`
 
 	// Filter and only include TV shows that have a original air date year that equal to the specified value.
-	// Can be used in conjunction with the "include_null_first_air_dates" filter if you want to include items with no air date.
+	// Can be used in conjunction with the "include_null_first_air_dates" filter to include items with no air date.
 	FirstAirDateYear *int `url:"first_air_date_year,omitempty" json:"first_air_date_year,omitempty"`
 
 	// Specify a language to query translatable fields with.
@@ -218,13 +218,13 @@ type DiscoverTVShowsOptions struct {
 	// Filter and only include movies that have a vote count that is less or equal to the specified value.
 	VoteCountLte *int `url:"vote_count.lte,omitempty" json:"vote_count.lte,omitempty"`
 
-	// Comma separated value of genre ids that you want to include in the results.
+	// Comma separated value of genre ids to be included in the results.
 	WithGenres string `url:"with_genres,omitempty" json:"with_genres,omitempty"`
 
-	// Comma separated value of network ids that you want to include in the results.
+	// Comma separated value of network ids to be included in the results.
 	WithNetworks string `url:"with_networks,omitempty" json:"with_networks,omitempty"`
 
-	// Comma separated value of genre ids that you want to exclude from the results.
+	// Comma separated value of genre ids to be excluded from the results.
 	WithoutGenres string `url:"without_genres,omitempty" json:"without_genres,omitempty"`
 
 	// Filter and only include TV shows with an episode runtime that is greater than or equal to a value.
@@ -240,7 +240,7 @@ type DiscoverTVShowsOptions struct {
 	// Specify an ISO 639-1 string to filter results by their original language value.
 	WithOriginalLanguage string `url:"with_original_language,omitempty" json:"with_original_language,omitempty"`
 
-	// Exclude items with certain keywords. You can comma and pipe separate these values to create an 'AND' or 'OR' logic.
+	// Exclude items with certain keywords. Comma and pipe separate these values to create an 'AND' or 'OR' logic.
 	WithoutKeywords string `url:"without_keywords,omitempty" json:"without_keywords,omitempty"`
 
 	// Filter results to include items that have been screened theatrically.
@@ -253,14 +253,14 @@ type DiscoverTVShowsOptions struct {
 	WithKeywords string `url:"with_keywords,omitempty" json:"with_keywords,omitempty"`
 
 	// A comma or pipe separated list of watch provider ID's.
-	// Combine this filter with `watch_region` in order to filter your results by a specific watch provider in a specific region.
+	// Combine this filter with `watch_region` in order to filter the results by a specific watch provider in a specific region.
 	WithWatchProviders string `url:"with_watch_providers,omitempty" json:"with_watch_providers,omitempty"`
 
 	// An ISO 3166-1 code.
-	// Combine this filter with `with_watch_providers` in order to filter your results by a specific watch provider in a specific region.
+	// Combine this filter with `with_watch_providers` in order to filter the results by a specific watch provider in a specific region.
 	WatchRegion string `url:"watch_region,omitempty" json:"watch_region,omitempty"`
 
-	// In combination with `watch_region`, you can filter by monetization type.
+	// In combination with `watch_region`, filter by monetization type.
 	// types: flatrate, free, ads, rent, buy
 	WithWatchMonetizationTypes string `url:"with_watch_monetization_types,omitempty" json:"with_watch_monetization_types,omitempty"`
 
@@ -283,7 +283,7 @@ type DiscoverTVShowsOptions struct {
 	// Video: 6
 	WithType string `url:"with_type,omitempty" json:"with_type,omitempty"`
 
-	// Filter the results to exclude the specific production companies you specify here. `AND` / `OR` filters are supported.
+	// Filter the results to exclude the specific production companies specified here. `AND` / `OR` filters are supported.
 	WithoutCompanies string `url:"without_companies,omitempty" json:"without_companies,omitempty"`
 }
 

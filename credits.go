@@ -48,35 +48,47 @@ type MovieCredit struct {
 }
 
 type TVShowCredit struct {
-	Adult            bool      `json:"adult"`
-	BackdropPath     *string   `json:"backdrop_path"`
-	Episodes         []episode `json:"episodes"`
-	FirstAirDate     string    `json:"first_air_date"`
-	GenreIds         []int     `json:"genre_ids"`
-	Id               int       `json:"id"`
-	MediaType        string    `json:"media_type"`
-	Name             string    `json:"name"`
-	OriginalLanguage string    `json:"original_language"`
-	OriginalName     string    `json:"original_name"`
-	OriginCountry    []string  `json:"origin_country"`
-	Overview         string    `json:"overview"`
-	Popularity       float64   `json:"popularity"`
-	PosterPath       *string   `json:"poster_path"`
-	Seasons          []season  `json:"seasons"`
-	VoteAverage      float64   `json:"vote_average"`
-	VoteCount        int       `json:"vote_count"`
+	Adult            bool        `json:"adult"`
+	BackdropPath     *string     `json:"backdrop_path"`
+	Episodes         []TVEpisode `json:"episodes"`
+	FirstAirDate     string      `json:"first_air_date"`
+	GenreIds         []int       `json:"genre_ids"`
+	Id               int         `json:"id"`
+	MediaType        string      `json:"media_type"`
+	Name             string      `json:"name"`
+	OriginalLanguage string      `json:"original_language"`
+	OriginalName     string      `json:"original_name"`
+	OriginCountry    []string    `json:"origin_country"`
+	Overview         string      `json:"overview"`
+	Popularity       float64     `json:"popularity"`
+	PosterPath       *string     `json:"poster_path"`
+	Seasons          []Season    `json:"seasons"`
+	VoteAverage      float64     `json:"vote_average"`
+	VoteCount        int         `json:"vote_count"`
 }
 
 type MediaCredit map[string]interface{}
 
+type PersonCredit struct {
+	Adult              bool    `json:"adult"`
+	Gender             int     `json:"gender"`
+	Id                 int     `json:"id"`
+	KnownForDepartment string  `json:"known_for_department"`
+	MediaType          string  `json:"media_type"`
+	Name               string  `json:"name"`
+	OriginalName       string  `json:"original_name"`
+	Popularity         float64 `json:"popularity"`
+	ProfilePath        string  `json:"profile_path"`
+}
+
 type Credit struct {
-	CreditType string      `json:"credit_type"`
-	Department string      `json:"department"`
-	Id         string      `json:"id"`
-	Job        string      `json:"job"`
-	Media      MediaCredit `json:"media"`
-	MediaType  string      `json:"media_type"`
-	Person     person      `json:"person"`
+	CreditType string       `json:"credit_type"`
+	Department string       `json:"department"`
+	Id         string       `json:"id"`
+	Job        string       `json:"job"`
+	Media      MediaCredit  `json:"media"`
+	MediaType  string       `json:"media_type"`
+	Person     PersonCredit `json:"person"`
 }
 
 // Get a movie or TV credit details by id.

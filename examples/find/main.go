@@ -30,7 +30,7 @@ func (e example) FindPerson() {
 	if err != nil {
 		panic(errors.Wrap(err, "failed to find person"))
 	}
-	for _, person := range findings.PersonResults {
+	for _, person := range findings.People {
 		fmt.Println("->", person.Name, "known for:")
 		for _, work := range person.KnownFor {
 			switch work.GetMediaType() {
