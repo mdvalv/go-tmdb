@@ -48,7 +48,7 @@ func (cr *CollectionsResource) GetCollection(id int, opt *CollectionsOptions) (*
 	return &collection, resp, errors.Wrap(err, "failed to get collection")
 }
 
-type image struct {
+type Image struct {
 	AspectRatio float64 `json:"aspect_ratio"`
 	FilePath    string  `json:"file_path"`
 	Height      int     `json:"height"`
@@ -58,9 +58,9 @@ type image struct {
 	Width       int     `json:"width"`
 }
 
-type Backdrop image
+type Backdrop Image
 
-type Poster image
+type Poster Image
 
 type CollectionImages struct {
 	Id        int        `json:"id"`
