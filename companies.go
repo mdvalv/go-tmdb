@@ -12,13 +12,13 @@ type CompaniesResource struct {
 	client *Client
 }
 
-type company struct {
+type Company struct {
 	Name     string  `json:"name"`
 	Id       int     `json:"id"`
 	LogoPath *string `json:"logo_path"`
 }
 
-type Company struct {
+type CompanyDetails struct {
 	Description   string   `json:"description"`
 	Headquarters  string   `json:"headquarters"`
 	Homepage      string   `json:"homepage"`
@@ -26,13 +26,13 @@ type Company struct {
 	LogoPath      *string  `json:"logo_path"`
 	Name          string   `json:"name"`
 	OriginCountry string   `json:"origin_country"`
-	ParentCompany *company `json:"parent_company"`
+	ParentCompany *Company `json:"parent_company"`
 }
 
 // Get company details by id.
-func (cr *CompaniesResource) GetCompany(id int) (*Company, *http.Response, error) {
+func (cr *CompaniesResource) GetCompany(id int) (*CompanyDetails, *http.Response, error) {
 	path := fmt.Sprintf("/company/%d", id)
-	var company Company
+	var company CompanyDetails
 	resp, err := cr.client.get(path, &company)
 	return &company, resp, errors.Wrap(err, "failed to get company")
 }
