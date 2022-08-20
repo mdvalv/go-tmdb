@@ -44,7 +44,7 @@ func (tr *TrendingResource) GetTrendingTVShows(timeWindow string) (*TrendingTVSh
 	return &trending, resp, errors.Wrap(err, "failed to get trending tv")
 }
 
-type TrendingPerson person
+type TrendingPerson Person
 
 type TrendingPeople struct {
 	pagination
