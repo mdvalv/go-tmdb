@@ -17,25 +17,25 @@ type Genre struct {
 	Name string `json:"name"`
 }
 
-type genres struct {
+type GenresResponse struct {
 	Genres []Genre `json:"genres"`
 }
 
 type GenresOptions languageOptions
 
 // Get the list of official genres for movies.
-func (gr *GenresResource) GetMovieGenres(opt *GenresOptions) ([]Genre, *http.Response, error) {
+func (gr *GenresResource) GetMovieGenres(opt *GenresOptions) (*GenresResponse, *http.Response, error) {
 	return gr.getGenres("movie", opt)
 }
 
 // Get the list of official genres for TV shows.
-func (gr *GenresResource) GetTVGenres(opt *GenresOptions) ([]Genre, *http.Response, error) {
+func (gr *GenresResource) GetTVGenres(opt *GenresOptions) (*GenresResponse, *http.Response, error) {
 	return gr.getGenres("tv", opt)
 }
 
-func (gr *GenresResource) getGenres(listType string, opt *GenresOptions) ([]Genre, *http.Response, error) {
+func (gr *GenresResource) getGenres(listType string, opt *GenresOptions) (*GenresResponse, *http.Response, error) {
 	path := fmt.Sprintf("/genre/%s/list", listType)
-	var genres genres
-	resp, err := gr.client.get(path, &genres, WithQueryParams(opt))
-	return genres.Genres, resp, errors.Wrap(err, fmt.Sprintf("failed to get %s genres", listType))
+	var response GenresResponse
+	resp, err := gr.client.get(path, &response, WithQueryParams(opt))
+	return &response, resp, errors.Wrap(err, fmt.Sprintf("failed to get %s genres", listType))
 }
