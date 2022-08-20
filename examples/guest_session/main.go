@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
-	"github.com/pkg/errors"
 )
 
 type example struct {
@@ -16,25 +15,19 @@ const (
 
 func (e example) GetRatedMovies() {
 	account, _, err := e.client.GuestSession.GetRatedMovies(sessionId, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get rated movies"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*account)
 }
 
 func (e example) GetRatedTVShows() {
 	tvShows, _, err := e.client.GuestSession.GetRatedTVShows(sessionId, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get rated tv shows"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*tvShows)
 }
 
 func (e example) GetRatedTVEpisodes() {
 	episodes, _, err := e.client.GuestSession.GetRatedTVEpisodes(sessionId, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get rated tv episodes"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*episodes)
 }
 
@@ -44,8 +37,8 @@ func main() {
 	}
 
 	examples.RunExamples(
-		example.GetRatedMovies,
-		example.GetRatedTVShows,
-		example.GetRatedTVEpisodes,
+		example.GetRatedMovies,     // 1
+		example.GetRatedTVShows,    // 2
+		example.GetRatedTVEpisodes, // 3
 	)
 }

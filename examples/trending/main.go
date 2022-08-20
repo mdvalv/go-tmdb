@@ -5,7 +5,6 @@ import (
 
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
-	"github.com/pkg/errors"
 )
 
 type example struct {
@@ -14,9 +13,7 @@ type example struct {
 
 func (e example) GetTrendingParsingMediaTypes() {
 	trending, _, err := e.client.Trending.GetTrending("week")
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get trending"))
-	}
+	examples.PanicOnError(err)
 	for _, result := range trending.Results {
 		switch result.GetMediaType() {
 		case "movie":
@@ -43,9 +40,7 @@ func (e example) GetTrendingParsingMediaTypes() {
 
 func (e example) GetTrendingPeopleParsingKnowFor() {
 	trending, _, err := e.client.Trending.GetTrendingPeople("week")
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get trending people"))
-	}
+	examples.PanicOnError(err)
 	for _, person := range trending.People {
 		fmt.Println("->", person.Name, "known for:")
 		for _, work := range person.KnownFor {
@@ -69,33 +64,25 @@ func (e example) GetTrendingPeopleParsingKnowFor() {
 
 func (e example) GetTrending() {
 	trending, _, err := e.client.Trending.GetTrending("day")
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get trending"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(trending)
 }
 
 func (e example) GetTrendingMovies() {
 	trending, _, err := e.client.Trending.GetTrendingMovies("day")
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get trending movies"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(trending)
 }
 
 func (e example) GetTrendingTVShows() {
 	trending, _, err := e.client.Trending.GetTrendingTVShows("day")
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get trending tv shows"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(trending)
 }
 
 func (e example) GetTrendingPeople() {
 	trending, _, err := e.client.Trending.GetTrendingPeople("day")
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get trending people"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(trending)
 }
 
@@ -105,11 +92,11 @@ func main() {
 	}
 
 	examples.RunExamples(
-		example.GetTrendingParsingMediaTypes,
-		example.GetTrendingPeopleParsingKnowFor,
-		example.GetTrending,
-		example.GetTrendingMovies,
-		example.GetTrendingTVShows,
-		example.GetTrendingPeople,
+		example.GetTrendingParsingMediaTypes,    // 1
+		example.GetTrendingPeopleParsingKnowFor, // 2
+		example.GetTrending,                     // 3
+		example.GetTrendingMovies,               // 4
+		example.GetTrendingTVShows,              // 5
+		example.GetTrendingPeople,               // 6
 	)
 }

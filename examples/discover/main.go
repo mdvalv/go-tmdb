@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
-	"github.com/pkg/errors"
 )
 
 type example struct {
@@ -12,9 +11,7 @@ type example struct {
 
 func (e example) DiscoverMovies() {
 	discover, _, err := e.client.Discover.DiscoverMovies(nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get discover movies"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*discover)
 }
 
@@ -27,17 +24,13 @@ func (e example) DiscoverMoviesWithOptions() {
 		WithOriginalLanguage: "pt",
 	}
 	discover, _, err := e.client.Discover.DiscoverMovies(&opt)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get discover movies with options"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*discover)
 }
 
 func (e example) DiscoverTvShows() {
 	discover, _, err := e.client.Discover.DiscoverTVShows(nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get discover tv shows"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*discover)
 }
 
@@ -52,9 +45,7 @@ func (e example) DiscoverTvShowsWithOptions() {
 		WithStatus:           "3",
 	}
 	discover, _, err := e.client.Discover.DiscoverTVShows(&opt)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get discover tv shows with options"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*discover)
 }
 
@@ -64,9 +55,9 @@ func main() {
 	}
 
 	examples.RunExamples(
-		example.DiscoverMovies,
-		example.DiscoverMoviesWithOptions,
-		example.DiscoverTvShows,
-		example.DiscoverTvShowsWithOptions,
+		example.DiscoverMovies,             // 1
+		example.DiscoverMoviesWithOptions,  // 2
+		example.DiscoverTvShows,            // 3
+		example.DiscoverTvShowsWithOptions, // 4
 	)
 }

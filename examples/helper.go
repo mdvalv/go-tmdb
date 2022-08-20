@@ -38,11 +38,17 @@ func RunExamples(examples ...func()) {
 			fmt.Println("invalid option")
 			return
 		} else {
-			examples[arg - 1]()
+			examples[arg-1]()
 		}
 	} else {
 		for _, example := range examples {
 			example()
 		}
+	}
+}
+
+func PanicOnError(err error) {
+	if err != nil {
+		panic(errors.Wrap(err, "failed to run example"))
 	}
 }

@@ -5,7 +5,6 @@ import (
 
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
-	"github.com/pkg/errors"
 )
 
 type example struct {
@@ -23,49 +22,37 @@ var sessionId = os.Getenv("SESSIONID")
 
 func (e example) CreateGuestSession() {
 	session, _, err := e.client.Authentication.CreateGuestSession()
-	if err != nil {
-		panic(errors.Wrap(err, "failed to create guest session"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*session)
 }
 
 func (e example) CreateRequestToken() {
 	token, _, err := e.client.Authentication.CreateRequestToken()
-	if err != nil {
-		panic(errors.Wrap(err, "failed to create request token"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*token)
 }
 
 func (e example) ValidateRequestToken() {
 	token, _, err := e.client.Authentication.ValidateRequestToken(username, password, requestToken)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to validate request token"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*token)
 }
 
 func (e example) CreateSession() {
 	session, _, err := e.client.Authentication.CreateSession(requestToken)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to create session"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*session)
 }
 
 func (e example) CreateSessionWithV4Token() {
 	session, _, err := e.client.Authentication.CreateSessionWithV4Token(accessTokenV4)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to create session"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*session)
 }
 
 func (e example) DeleteSession() {
 	success, _, err := e.client.Authentication.DeleteSession(sessionId)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to delete session"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*success)
 }
 
@@ -75,11 +62,11 @@ func main() {
 	}
 
 	examples.RunExamples(
-		example.CreateGuestSession,
-		example.CreateRequestToken,
-		example.ValidateRequestToken,
-		example.CreateSession,
-		example.CreateSessionWithV4Token,
-		example.DeleteSession,
+		example.CreateGuestSession,       // 1
+		example.CreateRequestToken,       // 2
+		example.ValidateRequestToken,     // 3
+		example.CreateSession,            // 4
+		example.CreateSessionWithV4Token, // 5
+		example.DeleteSession,            // 6
 	)
 }

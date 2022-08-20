@@ -6,7 +6,6 @@ import (
 
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
-	"github.com/pkg/errors"
 )
 
 type example struct {
@@ -14,16 +13,14 @@ type example struct {
 }
 
 const (
-	listId    = "list_id"
+	listId = "list_id"
 )
 
 var sessionId = os.Getenv("SESSIONID")
 
 func (e example) GetList() {
 	list, _, err := e.client.Lists.GetList(listId, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get list"))
-	}
+	examples.PanicOnError(err)
 
 	for _, item := range list.Items {
 		switch item.GetMediaType() {
@@ -48,9 +45,7 @@ func (e example) GetListWithOptions() {
 		Language: "pt-BR",
 	}
 	list, _, err := e.client.Lists.GetList(listId, &opt)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get list"))
-	}
+	examples.PanicOnError(err)
 	for _, item := range list.Items {
 		switch item.GetMediaType() {
 		case "movie":
@@ -71,9 +66,7 @@ func (e example) GetListWithOptions() {
 
 func (e example) GetItemStatus() {
 	status, _, err := e.client.Lists.GetItemStatus(listId, 73939)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get item status"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*status)
 }
 
@@ -84,41 +77,31 @@ func (e example) CreateList() {
 	}
 
 	response, _, err := e.client.Lists.CreateList(sessionId, list)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to create list"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*response)
 }
 
 func (e example) AddMovie() {
 	response, _, err := e.client.Lists.AddMovie(sessionId, listId, 597219)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to add movie"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*response)
 }
 
 func (e example) RemoveMovie() {
 	response, _, err := e.client.Lists.RemoveMovie(sessionId, listId, 597219)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to remove movie"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*response)
 }
 
 func (e example) Clear() {
 	response, _, err := e.client.Lists.Clear(sessionId, listId)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to clear list"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*response)
 }
 
 func (e example) Delete() {
 	response, _, err := e.client.Lists.Delete(sessionId, listId)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to delete list"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*response)
 }
 
@@ -128,13 +111,13 @@ func main() {
 	}
 
 	examples.RunExamples(
-		example.GetList,
-		example.GetListWithOptions,
-		example.GetItemStatus,
-		example.CreateList,
-		example.AddMovie,
-		example.RemoveMovie,
-		example.Clear,
-		example.Delete,
+		example.GetList,            // 1
+		example.GetListWithOptions, // 2
+		example.GetItemStatus,      // 3
+		example.CreateList,         // 4
+		example.AddMovie,           // 5
+		example.RemoveMovie,        // 6
+		example.Clear,              // 7
+		example.Delete,             // 8
 	)
 }

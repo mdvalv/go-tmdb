@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
-	"github.com/pkg/errors"
 )
 
 type example struct {
@@ -12,49 +11,37 @@ type example struct {
 
 func (e example) GetAPIConfiguration() {
 	configuration, _, err := e.client.Configuration.GetAPIConfiguration()
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get configuration"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*configuration)
 }
 
 func (e example) GetCountries() {
 	countries, _, err := e.client.Configuration.GetCountries()
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get countries"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(countries)
 }
 
 func (e example) GetJobs() {
 	jobs, _, err := e.client.Configuration.GetJobs()
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get jobs"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(jobs)
 }
 
 func (e example) GetLanguages() {
 	languages, _, err := e.client.Configuration.GetLanguages()
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get languages"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(languages)
 }
 
 func (e example) GetPrimaryTranslations() {
 	translations, _, err := e.client.Configuration.GetPrimaryTranslations()
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get translations"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(translations)
 }
 
 func (e example) GetTimezones() {
 	timezones, _, err := e.client.Configuration.GetTimezones()
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get timezones"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(timezones)
 }
 
@@ -64,11 +51,11 @@ func main() {
 	}
 
 	examples.RunExamples(
-		example.GetAPIConfiguration,
-		example.GetCountries,
-		example.GetJobs,
-		example.GetLanguages,
-		example.GetPrimaryTranslations,
-		example.GetTimezones,
+		example.GetAPIConfiguration,    // 1
+		example.GetCountries,           // 2
+		example.GetJobs,                // 3
+		example.GetLanguages,           // 4
+		example.GetPrimaryTranslations, // 5
+		example.GetTimezones,           // 6
 	)
 }

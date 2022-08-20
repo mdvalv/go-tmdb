@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
-	"github.com/pkg/errors"
 )
 
 type example struct {
@@ -12,9 +11,7 @@ type example struct {
 
 func (e example) GetCollection() {
 	collection, _, err := e.client.Collections.GetCollection(131635, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get collection"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*collection)
 }
 
@@ -23,25 +20,19 @@ func (e example) GetCollectionWithOptions() {
 		Language: "pt-BR",
 	}
 	collection, _, err := e.client.Collections.GetCollection(131635, &options)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get collection with options"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*collection)
 }
 
 func (e example) GetCollectionImages() {
 	images, _, err := e.client.Collections.GetImages(131635, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get collection images"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*images)
 }
 
 func (e example) GetCollectionTranslations() {
 	images, _, err := e.client.Collections.GetTranslations(131635, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get collection translations"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*images)
 }
 
@@ -51,9 +42,9 @@ func main() {
 	}
 
 	examples.RunExamples(
-		example.GetCollection,
-		example.GetCollectionWithOptions,
-		example.GetCollectionImages,
-		example.GetCollectionTranslations,
+		example.GetCollection,             // 1
+		example.GetCollectionWithOptions,  // 2
+		example.GetCollectionImages,       // 3
+		example.GetCollectionTranslations, // 4
 	)
 }

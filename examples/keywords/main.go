@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
-	"github.com/pkg/errors"
 )
 
 type example struct {
@@ -12,17 +11,13 @@ type example struct {
 
 func (e example) GetKeyword() {
 	keyword, _, err := e.client.Keywords.GetKeyword(4344)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get keyword"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*keyword)
 }
 
 func (e example) GetKeywordMovies() {
 	keywordMovies, _, err := e.client.Keywords.GetKeywordMovies(4344, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get keyword movies"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*keywordMovies)
 }
 
@@ -32,9 +27,7 @@ func (e example) GetKeywordMoviesWithOptions() {
 		Page: &page,
 	}
 	keywordMovies, _, err := e.client.Keywords.GetKeywordMovies(4344, &options)
-	if err != nil {
-		panic(errors.Wrap(err, "failed get keyword movies with options"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*keywordMovies)
 }
 
@@ -44,8 +37,8 @@ func main() {
 	}
 
 	examples.RunExamples(
-		example.GetKeyword,
-		example.GetKeywordMovies,
-		example.GetKeywordMoviesWithOptions,
+		example.GetKeyword,                  // 1
+		example.GetKeywordMovies,            // 2
+		example.GetKeywordMoviesWithOptions, // 3
 	)
 }

@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
-	"github.com/pkg/errors"
 )
 
 type example struct {
@@ -12,9 +11,7 @@ type example struct {
 
 func (e example) GetMovieProviders() {
 	providers, _, err := e.client.WatchProviders.GetMovieProviders(nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get movie providers"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(providers)
 }
 
@@ -24,17 +21,13 @@ func (e example) GetMovieProvidersWithOptions() {
 		WatchRegion: "BR",
 	}
 	providers, _, err := e.client.WatchProviders.GetMovieProviders(&options)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get movie providers with options"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(providers)
 }
 
 func (e example) GetTVProviders() {
 	providers, _, err := e.client.WatchProviders.GetTVProviders(nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get TV providers"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(providers)
 }
 
@@ -44,17 +37,13 @@ func (e example) GetTVProvidersWithOptions() {
 		WatchRegion: "BR",
 	}
 	providers, _, err := e.client.WatchProviders.GetTVProviders(&options)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get TV providers with options"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(providers)
 }
 
 func (e example) GetProviderRegions() {
 	providerRegions, _, err := e.client.WatchProviders.GetProviderRegions(nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get provider regions"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(providerRegions)
 }
 
@@ -63,9 +52,7 @@ func (e example) GetProviderRegionsWithOptions() {
 		Language: "pt-BR",
 	}
 	providerRegions, _, err := e.client.WatchProviders.GetProviderRegions(&options)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get provider regions with options"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(providerRegions)
 }
 
@@ -75,11 +62,11 @@ func main() {
 	}
 
 	examples.RunExamples(
-		example.GetMovieProviders,
-		example.GetMovieProvidersWithOptions,
-		example.GetTVProviders,
-		example.GetTVProvidersWithOptions,
-		example.GetProviderRegions,
-		example.GetProviderRegionsWithOptions,
+		example.GetMovieProviders,             // 1
+		example.GetMovieProvidersWithOptions,  // 2
+		example.GetTVProviders,                // 3
+		example.GetTVProvidersWithOptions,     // 4
+		example.GetProviderRegions,            // 5
+		example.GetProviderRegionsWithOptions, // 6
 	)
 }

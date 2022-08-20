@@ -5,7 +5,6 @@ import (
 
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
-	"github.com/pkg/errors"
 )
 
 type example struct {
@@ -20,33 +19,25 @@ func (e example) GetTVShow() {
 			"external_ids,images,keywords,recommendations,reviews,screened_theatrically,similar,translations,videos",
 	}
 	tvShow, _, err := e.client.TV.GetTVShow(107005, &opt)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get tv show"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*tvShow)
 }
 
 func (e example) GetAccountStates() {
 	states, _, err := e.client.TV.GetAccountStates(47801, sessionId)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get account states"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*states)
 }
 
 func (e example) GetAggregateCredits() {
 	states, _, err := e.client.TV.GetAggregateCredits(76148, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get aggregate credits"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*states)
 }
 
 func (e example) GetAlternativeTitles() {
 	titles, _, err := e.client.TV.GetAlternativeTitles(66732, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get alternative titles"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*titles)
 }
 
@@ -55,41 +46,31 @@ func (e example) GetChanges() {
 		StartDate: "2018-05-05",
 	}
 	titles, _, err := e.client.TV.GetChanges(76438, &opt)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get tv show changes"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*titles)
 }
 
 func (e example) GetContentRatings() {
 	ratings, _, err := e.client.TV.GetContentRatings(61664, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get content ratings"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*ratings)
 }
 
 func (e example) GetCredits() {
 	credits, _, err := e.client.TV.GetCredits(90766, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get tv show credits"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*credits)
 }
 
 func (e example) GetEpisodeGroups() {
 	groups, _, err := e.client.TV.GetEpisodeGroups(30983, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get tv show episode groups"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*groups)
 }
 
 func (e example) GetExternalIds() {
 	ids, _, err := e.client.TV.GetExternalIds(4616, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get tv show external ids"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*ids)
 }
 
@@ -99,129 +80,97 @@ func (e example) GetImages() {
 		IncludeImageLanguage: "null,en",
 	}
 	images, _, err := e.client.TV.GetImages(91977, &opt)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get tv show images"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*images)
 }
 
 func (e example) GetKeywords() {
 	keywords, _, err := e.client.TV.GetKeywords(65320)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get tv show keywords"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*keywords)
 }
 
 func (e example) GetRecommendations() {
 	movies, _, err := e.client.TV.GetRecommendations(79084, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get tv show recommendations"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*movies)
 }
 
 func (e example) GetReviews() {
 	reviews, _, err := e.client.TV.GetReviews(1399, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get tv show reviews"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*reviews)
 }
 
 func (e example) GetScreenedTheatrically() {
 	screenedTheatrically, _, err := e.client.TV.GetScreenedTheatrically(68716)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get screened theatrically info"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*screenedTheatrically)
 }
 
 func (e example) GetAiringToday() {
 	tvShows, _, err := e.client.TV.GetAiringToday(nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get airing today"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*tvShows)
 }
 
 func (e example) GetTVShowsChanges() {
 	changes, _, err := e.client.TV.GetTVShowsChanges(nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get tv shows changes"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*changes)
 }
 
 func (e example) GetOnTheAir() {
 	changes, _, err := e.client.TV.GetOnTheAir(nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get on the air"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*changes)
 }
 
 func (e example) GetSimilar() {
 	similar, _, err := e.client.TV.GetSimilar(33852, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get similar"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*similar)
 }
 
 func (e example) GetTranslations() {
 	translations, _, err := e.client.TV.GetTranslations(61056)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get translations"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*translations)
 }
 
 func (e example) GetVideos() {
 	videos, _, err := e.client.TV.GetVideos(56296, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get tv show videos"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*videos)
 }
 
 func (e example) GetWatchProviders() {
 	providers, _, err := e.client.TV.GetWatchProviders(42009)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get tv show watch providers"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*providers)
 }
 
 func (e example) GetLatest() {
 	latest, _, err := e.client.TV.GetLatest(nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get latest tv show"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*latest)
 }
 
 func (e example) GetPopular() {
 	popular, _, err := e.client.TV.GetPopular(nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get popular tv shows"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*popular)
 }
 
 func (e example) GetTopRated() {
 	topRated, _, err := e.client.TV.GetTopRated(nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get top rated tv shows"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*topRated)
 }
 
 func (e example) GetEpisodeGroup() {
 	group, _, err := e.client.TV.GetEpisodeGroup("5acf93e60e0a26346d0000ce", nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get episode group"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*group)
 }
 
@@ -230,9 +179,7 @@ func (e example) Rate() {
 		SessionId: sessionId,
 	}
 	states, _, err := e.client.TV.Rate(31917, 7.5, sessionId)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to rate tv show"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*states)
 }
 
@@ -241,9 +188,7 @@ func (e example) DeleteRating() {
 		SessionId: sessionId,
 	}
 	states, _, err := e.client.TV.DeleteRating(31917, sessionId)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to delete rating"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*states)
 }
 

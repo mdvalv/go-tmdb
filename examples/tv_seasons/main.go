@@ -5,7 +5,6 @@ import (
 
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
-	"github.com/pkg/errors"
 )
 
 type example struct {
@@ -19,25 +18,19 @@ func (e example) GetSeason() {
 		AppendToResponse: "aggregate_credits,credits,external_ids,images,translations,videos",
 	}
 	season, _, err := e.client.TVSeasons.GetSeason(61849, 1, &opt)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get season"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*season)
 }
 
 func (e example) GetAccountStates() {
 	states, _, err := e.client.TVSeasons.GetAccountStates(1424, 1, sessionId)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get account states for season"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*states)
 }
 
 func (e example) GetAggregateCredits() {
 	states, _, err := e.client.TVSeasons.GetAggregateCredits(86163, 1, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get aggregate credits"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*states)
 }
 
@@ -46,25 +39,19 @@ func (e example) GetChanges() {
 		StartDate: "2019-06-19",
 	}
 	titles, _, err := e.client.TVSeasons.GetChanges(119450, &opt)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get changes"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*titles)
 }
 
 func (e example) GetCredits() {
 	credits, _, err := e.client.TVSeasons.GetCredits(13812, 1, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get credits"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*credits)
 }
 
 func (e example) GetExternalIds() {
 	ids, _, err := e.client.TVSeasons.GetExternalIds(67466, 1, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get external ids"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*ids)
 }
 
@@ -74,25 +61,19 @@ func (e example) GetImages() {
 		IncludeImageLanguage: "null,en",
 	}
 	images, _, err := e.client.TVSeasons.GetImages(61406, 1, &opt)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get tv show images"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*images)
 }
 
 func (e example) GetTranslations() {
 	translations, _, err := e.client.TVSeasons.GetTranslations(407, 1)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get translations"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*translations)
 }
 
 func (e example) GetVideos() {
 	videos, _, err := e.client.TVSeasons.GetVideos(76922, 6, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get videos"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*videos)
 }
 

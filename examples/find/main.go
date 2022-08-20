@@ -5,7 +5,6 @@ import (
 
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
-	"github.com/pkg/errors"
 )
 
 type example struct {
@@ -19,17 +18,13 @@ const (
 
 func (e example) FindMovie() {
 	findings, _, err := e.client.Find.Find("tt0421994", imdbId, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to find movie"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*findings)
 }
 
 func (e example) FindPerson() {
 	findings, _, err := e.client.Find.Find("nm6442992", imdbId, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to find person"))
-	}
+	examples.PanicOnError(err)
 	for _, person := range findings.People {
 		fmt.Println("->", person.Name, "known for:")
 		for _, work := range person.KnownFor {
@@ -53,25 +48,19 @@ func (e example) FindPerson() {
 
 func (e example) FindTVShow() {
 	findings, _, err := e.client.Find.Find("tt10638036", imdbId, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to find tv show"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*findings)
 }
 
 func (e example) FindEpisode() {
 	findings, _, err := e.client.Find.Find("tt8160066", imdbId, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to find episode"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*findings)
 }
 
 func (e example) FindSeason() {
 	findings, _, err := e.client.Find.Find("668343", tvdbId, nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to find season"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*findings)
 }
 
@@ -81,10 +70,10 @@ func main() {
 	}
 
 	examples.RunExamples(
-		example.FindMovie,
-		example.FindPerson,
-		example.FindTVShow,
-		example.FindEpisode,
-		example.FindSeason,
+		example.FindMovie,   // 1
+		example.FindPerson,  // 2
+		example.FindTVShow,  // 3
+		example.FindEpisode, // 4
+		example.FindSeason,  // 5
 	)
 }

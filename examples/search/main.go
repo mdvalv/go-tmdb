@@ -5,7 +5,6 @@ import (
 
 	"github.com/mdvalv/go-tmdb"
 	"github.com/mdvalv/go-tmdb/examples"
-	"github.com/pkg/errors"
 )
 
 type example struct {
@@ -14,33 +13,25 @@ type example struct {
 
 func (e example) Companies() {
 	companies, _, err := e.client.Search.Companies("walt disney", nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to search for companies"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*companies)
 }
 
 func (e example) Collections() {
 	collections, _, err := e.client.Search.Collections("hunger games", nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to search for collections"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*collections)
 }
 
 func (e example) Keywords() {
 	keywords, _, err := e.client.Search.Keywords("coming of age", nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to search for keywords"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*keywords)
 }
 
 func (e example) Movies() {
 	movies, _, err := e.client.Search.Movies("alice junior", nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to search for movies"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*movies)
 }
 
@@ -50,17 +41,13 @@ func (e example) TVShows() {
 		FirstAirDateYear: &year,
 	}
 	tvShows, _, err := e.client.Search.TVShows("feel good", &opt)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to search for tv shows"))
-	}
+	examples.PanicOnError(err)
 	examples.PrettyPrint(*tvShows)
 }
 
 func (e example) People() {
 	people, _, err := e.client.Search.People("alice wu", nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to search for people"))
-	}
+	examples.PanicOnError(err)
 	for _, person := range people.People {
 		fmt.Printf("-> %s (%s), known for:\n", person.Name, person.KnownForDepartment)
 		for _, work := range person.KnownFor {
@@ -84,9 +71,7 @@ func (e example) People() {
 
 func (e example) Multi() {
 	multi, _, err := e.client.Search.Multi("carol", nil)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to search multi media"))
-	}
+	examples.PanicOnError(err)
 	for _, result := range multi.Results {
 		switch result.GetMediaType() {
 		case "movie":
@@ -117,12 +102,12 @@ func main() {
 	}
 
 	examples.RunExamples(
-		example.Companies,
-		example.Collections,
-		example.Keywords,
-		example.Movies,
-		example.TVShows,
-		example.People,
-		example.Multi,
+		example.Companies,   // 1
+		example.Collections, // 2
+		example.Keywords,    // 3
+		example.Movies,      // 4
+		example.TVShows,     // 5
+		example.People,      // 6
+		example.Multi,       // 7
 	)
 }

@@ -12,9 +12,7 @@ type example struct {
 
 func (e example) GetCreditTV() {
 	credit, _, err := e.client.Credits.GetCredit("525331fd19c295794001a5de")
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get credits"))
-	}
+	examples.PanicOnError(err)
 	if credit.Media.GetMediaType() != "tv" {
 		panic(errors.New("expected tv media type"))
 	}
@@ -23,9 +21,7 @@ func (e example) GetCreditTV() {
 
 func (e example) GetCreditMovie() {
 	credit, _, err := e.client.Credits.GetCredit("52fe43f9c3a368484e0089e3")
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get credits"))
-	}
+	examples.PanicOnError(err)
 	if credit.Media.GetMediaType() != "movie" {
 		panic(errors.New("expected movie media type"))
 	}
@@ -38,7 +34,7 @@ func main() {
 	}
 
 	examples.RunExamples(
-		example.GetCreditTV,
-		example.GetCreditMovie,
+		example.GetCreditTV,    // 1
+		example.GetCreditMovie, // 2
 	)
 }
