@@ -24,14 +24,7 @@ type List struct {
 	PosterPath    *string     `json:"poster_path"`
 }
 
-type ListOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-}
+type ListOptions languageOptions
 
 // Get the details of a list.
 func (lr *ListsResource) GetList(listId string, opt *ListOptions) (*List, *http.Response, error) {
