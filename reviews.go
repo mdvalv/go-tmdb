@@ -19,7 +19,7 @@ type AuthorDetails struct {
 	Rating     float64 `json:"rating"`
 }
 
-type review struct {
+type Review struct {
 	Id            string        `json:"id"`
 	Author        string        `json:"author"`
 	AuthorDetails AuthorDetails `json:"author_details"`
@@ -29,18 +29,24 @@ type review struct {
 	Url           string        `json:"url"`
 }
 
-type Review struct {
-	review
+type ReviewDetails struct {
+	Author        string        `json:"author"`
+	AuthorDetails AuthorDetails `json:"author_details"`
+	Content       string        `json:"content"`
+	CreatedAt     string        `json:"created_at"`
+	Id            string        `json:"id"`
 	ISO6391       string        `json:"iso_639_1"`
 	MediaId       int           `json:"media_id"`
 	MediaTitle    string        `json:"media_title"`
 	MediaType     string        `json:"media_type"`
+	UpdatedAt     string        `json:"updated_at"`
+	Url           string        `json:"url"`
 }
 
 // Retrieve the details of a movie or TV show review.
-func (rr *ReviewsResource) GetReview(id string) (*Review, *http.Response, error) {
+func (rr *ReviewsResource) GetReview(id string) (*ReviewDetails, *http.Response, error) {
 	path := fmt.Sprintf("/review/%s", id)
-	var review Review
+	var review ReviewDetails
 	resp, err := rr.client.get(path, &review)
 	return &review, resp, errors.Wrap(err, "failed to get review")
 }
