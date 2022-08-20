@@ -40,11 +40,11 @@ type SeasonFinding struct {
 }
 
 type Findings struct {
-	MovieResults     []Movie          `json:"movie_results"`
-	PersonResults    []Person         `json:"person_results"`
-	TVResults        []TVShow         `json:"tv_results"`
-	TVEpisodeResults []EpisodeFinding `json:"tv_episode_results"`
-	TVSeasonResults  []SeasonFinding  `json:"tv_season_results"`
+	Movies     []Movie          `json:"movie_results"`
+	People     []Person         `json:"person_results"`
+	TVShows    []TVShow         `json:"tv_results"`
+	TVEpisodes []EpisodeFinding `json:"tv_episode_results"`
+	TVSeasons  []SeasonFinding  `json:"tv_season_results"`
 }
 
 type FindOptions languageOptions
