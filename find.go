@@ -13,21 +13,14 @@ type FindResource struct {
 }
 
 type Findings struct {
-	MovieResults     []Movie          `json:"movie_results"`
-	PersonResults    []personKnownFor `json:"person_results"`
-	TvResults        []TVShow         `json:"tv_results"`
-	TvEpisodeResults []Episode        `json:"tv_episode_results"`
-	TvSeasonResults  []Season         `json:"tv_season_results"`
+	MovieResults     []Movie   `json:"movie_results"`
+	PersonResults    []Person  `json:"person_results"`
+	TvResults        []TVShow  `json:"tv_results"`
+	TvEpisodeResults []Episode `json:"tv_episode_results"`
+	TvSeasonResults  []Season  `json:"tv_season_results"`
 }
 
-type FindOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-}
+type FindOptions languageOptions
 
 // The find method makes it easy to search for objects in our database by an external id.
 // This method will search all objects (movies, TV shows and people) and return the results in a single response.
