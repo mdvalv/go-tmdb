@@ -13,23 +13,39 @@ type TVSeasonsResource struct {
 }
 
 type tvSeasonAppendToResponse struct {
-	AggregateCredits *aggregateCredits     `json:"aggregate_credits"`
-	Credits          *tvShowCredits        `json:"credits"`
-	ExternalIds      *tvSeasonExternalIds  `json:"external_ids"`
-	Images           *seasonImages         `json:"images"`
-	Translations     *tvSeasonTranslations `json:"translations"`
-	Videos           *videos               `json:"videos"`
+	AggregateCredits *AggregateCredits     `json:"aggregate_credits"`
+	Credits          *TVShowCredits        `json:"credits"`
+	ExternalIds      *TVSeasonExternalIds  `json:"external_ids"`
+	Images           *TVSeasonImages         `json:"images"`
+	Translations     *TVSeasonTranslations `json:"translations"`
+	Videos           *Videos               `json:"videos"`
+}
+
+type TVEpisode struct {
+	AirDate        string       `json:"air_date"`
+	Crew           []TVShowCrew `json:"crew"`
+	EpisodeNumber  int          `json:"episode_number"`
+	GuestStars     []TVShowCast `json:"guest_stars"`
+	Id             int          `json:"id"`
+	Name           string       `json:"name"`
+	Overview       string       `json:"overview"`
+	ProductionCode *string      `json:"production_code"`
+	Runtime        int          `json:"runtime"`
+	SeasonNumber   int          `json:"season_number"`
+	StillPath      *string      `json:"still_path"`
+	VoteAverage    float64      `json:"vote_average"`
+	VoteCount      int          `json:"vote_count"`
 }
 
 type TVSeasonDetails struct {
 	tvSeasonAppendToResponse
-	Id           int           `json:"id"`
-	AirDate      string        `json:"air_date"`
-	Episodes     []episodeInfo `json:"episodes"`
-	Name         string        `json:"name"`
-	Overview     string        `json:"overview"`
-	PosterPath   *string       `json:"poster_path"`
-	SeasonNumber int           `json:"season_number"`
+	Id           int         `json:"id"`
+	AirDate      string      `json:"air_date"`
+	Episodes     []TVEpisode `json:"episodes"`
+	Name         string      `json:"name"`
+	Overview     string      `json:"overview"`
+	PosterPath   *string     `json:"poster_path"`
+	SeasonNumber int         `json:"season_number"`
 }
 
 type TVSeasonDetailsOptions struct {
@@ -106,11 +122,7 @@ func (tr *TVSeasonsResource) GetCredits(tvId, seasonNumber int, opt *CreditsOpti
 }
 
 type TVSeasonExternalIds struct {
-	Id int `json:"id"`
-	tvSeasonExternalIds
-}
-
-type tvSeasonExternalIds struct {
+	Id          *int    `json:"id"`
 	FreebaseId  *string `json:"freebase_id"`
 	FreebaseMId *string `json:"freebase_mid"`
 	TVDbId      *int    `json:"tvdb_id"`
@@ -125,22 +137,18 @@ func (tr *TVSeasonsResource) GetExternalIds(tvId, seasonNumber int, opt *Externa
 	return &ids, resp, errors.Wrap(err, "failed to get external ids")
 }
 
-type seasonImages struct {
+type TVSeasonImages struct {
+	Id      *int     `json:"id"`
 	Posters []Poster `json:"posters"`
-}
-
-type SeasonImages struct {
-	Id int `json:"id"`
-	seasonImages
 }
 
 // Get the images that belong to a TV season.
 // Querying images with a language parameter will filter the results.
 // To include a fallback language (especially useful for backdrops), use the include_image_language parameter.
 // This should be a comma separated value like so: include_image_language=en,null.
-func (tr *TVSeasonsResource) GetImages(tvId, seasonNumber int, opt *ImagesOptions) (*SeasonImages, *http.Response, error) {
+func (tr *TVSeasonsResource) GetImages(tvId, seasonNumber int, opt *ImagesOptions) (*TVSeasonImages, *http.Response, error) {
 	path := fmt.Sprintf("/tv/%d/season/%d/images", tvId, seasonNumber)
-	var images SeasonImages
+	var images TVSeasonImages
 	resp, err := tr.client.get(path, &images, WithQueryParams(opt))
 	return &images, resp, errors.Wrap(err, "failed to get images")
 }
@@ -158,13 +166,9 @@ type TVSeasonTranslation struct {
 	Data        TVSeasonData `json:"data"`
 }
 
-type tvSeasonTranslations struct {
-	Translations []TVSeasonTranslation `json:"translations"`
-}
-
 type TVSeasonTranslations struct {
-	Id int `json:"id"`
-	tvSeasonTranslations
+	Id           int                   `json:"id"`
+	Translations []TVSeasonTranslation `json:"translations"`
 }
 
 // Get a list of the translations that exist for a TV show.
