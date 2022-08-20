@@ -101,8 +101,21 @@ func (ar *AccountResource) GetFavoriteTVShows(accountId int, sessionId string, o
 }
 
 type RatedMovie struct {
-	movie
-	Rating float64 `json:"rating"`
+	Adult            bool    `json:"adult"`
+	BackdropPath     *string `json:"backdrop_path"`
+	GenreIds         []int   `json:"genre_ids"`
+	Id               int     `json:"id"`
+	OriginalLanguage string  `json:"original_language"`
+	OriginalTitle    string  `json:"original_title"`
+	Overview         string  `json:"overview"`
+	Popularity       float64 `json:"popularity"`
+	PosterPath       *string `json:"poster_path"`
+	Rating           float64 `json:"rating"`
+	ReleaseDate      string  `json:"release_date"`
+	Title            string  `json:"title"`
+	Video            bool    `json:"video"`
+	VoteAverage      float64 `json:"vote_average"`
+	VoteCount        int     `json:"vote_count"`
 }
 
 type RatedMovies struct {
@@ -119,8 +132,21 @@ func (ar *AccountResource) GetRatedMovies(accountId int, sessionId string, opt *
 }
 
 type RatedTVShow struct {
-	tv
-	Rating float64 `json:"rating"`
+	Adult            bool     `json:"adult"`
+	BackdropPath     *string  `json:"backdrop_path"`
+	FirstAirDate     string   `json:"first_air_date"`
+	GenreIds         []int    `json:"genre_ids"`
+	Id               int      `json:"id"`
+	Name             string   `json:"name"`
+	OriginalLanguage string   `json:"original_language"`
+	OriginalName     string   `json:"original_name"`
+	OriginCountry    []string `json:"origin_country"`
+	Overview         string   `json:"overview"`
+	Popularity       float64  `json:"popularity"`
+	PosterPath       *string  `json:"poster_path"`
+	Rating           float64  `json:"rating"`
+	VoteAverage      float64  `json:"vote_average"`
+	VoteCount        int      `json:"vote_count"`
 }
 
 type RatedTVShows struct {
@@ -137,8 +163,19 @@ func (ar *AccountResource) GetRatedTVShows(accountId int, sessionId string, opt 
 }
 
 type RatedTVEpisode struct {
-	episode
-	Rating float64 `json:"rating"`
+	AirDate        string  `json:"air_date"`
+	EpisodeNumber  int     `json:"episode_number"`
+	Id             int     `json:"id"`
+	Name           string  `json:"name"`
+	Overview       string  `json:"overview"`
+	ProductionCode string  `json:"production_code"`
+	Rating         float64 `json:"rating"`
+	Runtime        int     `json:"runtime"`
+	SeasonNumber   int     `json:"season_number"`
+	ShowId         int     `json:"show_id"`
+	StillPath      *string `json:"still_path"`
+	VoteAverage    float64 `json:"vote_average"`
+	VoteCount      int     `json:"vote_count"`
 }
 
 type RatedTVEpisodes struct {
