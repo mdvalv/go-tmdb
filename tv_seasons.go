@@ -12,7 +12,7 @@ type TVSeasonsResource struct {
 	client *Client
 }
 
-type TVEpisode struct {
+type SeasonEpisode struct {
 	AirDate        string       `json:"air_date"`
 	Crew           []TVShowCrew `json:"crew"`
 	EpisodeNumber  int          `json:"episode_number"`
@@ -29,13 +29,13 @@ type TVEpisode struct {
 }
 
 type TVSeasonDetails struct {
-	Id           int         `json:"id"`
-	AirDate      string      `json:"air_date"`
-	Episodes     []TVEpisode `json:"episodes"`
-	Name         string      `json:"name"`
-	Overview     string      `json:"overview"`
-	PosterPath   *string     `json:"poster_path"`
-	SeasonNumber int         `json:"season_number"`
+	Id           int             `json:"id"`
+	AirDate      string          `json:"air_date"`
+	Episodes     []SeasonEpisode `json:"episodes"`
+	Name         string          `json:"name"`
+	Overview     string          `json:"overview"`
+	PosterPath   *string         `json:"poster_path"`
+	SeasonNumber int             `json:"season_number"`
 
 	// append to response
 	AggregateCredits *AggregateCredits     `json:"aggregate_credits"`
