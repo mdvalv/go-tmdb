@@ -62,14 +62,7 @@ type providerRegions struct {
 	ProviderRegions []ProviderRegion `json:"results"`
 }
 
-type ProviderRegionsOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-}
+type ProviderRegionsOptions languageOptions
 
 // Returns a list of all of the countries TMDb has watch provider (OTT/streaming) data for.
 func (pr *WatchProvidersResource) GetProviderRegions(opt *ProviderRegionsOptions) ([]ProviderRegion, *http.Response, error) {
