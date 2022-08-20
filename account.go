@@ -30,7 +30,7 @@ type Account struct {
 	Username     string `json:"username"`
 }
 
-// Get your account details.
+// Get account details.
 func (ar *AccountResource) GetAccount(sessionId string) (*Account, *http.Response, error) {
 	path := "/account"
 	var account Account
@@ -56,7 +56,7 @@ type CreatedLists struct {
 
 type AccountListsOptions languagePageOptions
 
-// Get all of the lists created by an account. Will include private lists if you are the owner.
+// Get all of the lists created by an account. Will include private lists if the requester is the owner.
 func (ar *AccountResource) GetCreatedLists(accountId int, sessionId string, opt *AccountListsOptions) (*CreatedLists, *http.Response, error) {
 	path := fmt.Sprintf("/account/%d/lists", accountId)
 	var lists CreatedLists

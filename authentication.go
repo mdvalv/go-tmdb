@@ -68,8 +68,9 @@ func (ar *AuthenticationResource) ValidateRequestToken(username, password, reque
 	return &session, resp, errors.Wrap(err, "failed to get session")
 }
 
-// Use this method to create a v3 session ID if you already have a valid v4 access token.
-// The v4 token needs to be authenticated by the user. Your standard "read token" will not validate to create a session ID.
+// Use this method to create a v3 session ID from a valid v4 access token.
+// The v4 token needs to be authenticated by the user.
+// The standard "read token" will not validate to create a session ID.
 func (ar *AuthenticationResource) CreateSessionWithV4Token(accessToken string) (*Session, *http.Response, error) {
 	path := "/authentication/session/convert/4"
 	opt := map[string]string{
@@ -84,7 +85,7 @@ type DeleteSessionResponse struct {
 	Success bool `json:"success"`
 }
 
-// If you would like to delete (or "logout") from a session, call this method with a valid session ID.
+// Delete (or "logout") from a session.
 func (ar *AuthenticationResource) DeleteSession(sessionId string) (*DeleteSessionResponse, *http.Response, error) {
 	path := "/authentication/session"
 	opt := map[string]string{

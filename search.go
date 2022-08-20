@@ -181,7 +181,7 @@ type SearchTVShowsOptions struct {
 	IncludeAdult bool `url:"include_adult,omitempty" json:"include_adult,omitempty"`
 
 	// Filter and only include TV shows that have a original air date year that equal to the specified value.
-	// Can be used in conjunction with the "include_null_first_air_dates" filter if you want to include items with no air date.
+	// Can be used in conjunction with the "include_null_first_air_dates" filter to include items with no air date.
 	FirstAirDateYear *int `url:"first_air_date_year,omitempty" json:"first_air_date_year,omitempty"`
 }
 

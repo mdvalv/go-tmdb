@@ -116,7 +116,7 @@ func (mr *MoviesResource) GetMovie(movieId int, opt *MovieDetailsOptions) (*Movi
 }
 
 // Get a list of all of the movie ids that have been changed in the past 24 hours.
-// You can query it for up to 14 days worth of changed IDs at a time with the start_date and end_date query parameters.
+// Query it for up to 14 days worth of changed IDs at a time with the start_date and end_date query parameters.
 // 100 items are returned per page.
 func (mr *MoviesResource) GetMoviesChanges(opt *ChangesOptions) (*MediaChanges, *http.Response, error) {
 	path := "/movie/changes"
@@ -300,7 +300,7 @@ type UpcomingMovies struct {
 
 // Get a list of upcoming movies in theatres.
 // This is a release type query that looks for all movies that have a release type of 2 or 3 within the specified date range.
-// You can optionally specify a region parameter which will narrow the search to only look for theatrical release dates
+// Optionally specify a region parameter which will narrow the search to only look for theatrical release dates
 // within the specified country.
 func (mr *MoviesResource) GetUpcoming(opt *UpcomingMoviesOptions) (*UpcomingMovies, *http.Response, error) {
 	path := "/movie/upcoming"
@@ -386,7 +386,7 @@ func (mr *MoviesResource) GetAlternativeTitles(movieId int, opt *MovieAlternativ
 }
 
 // Get the changes for a movie. By default only the last 24 hours are returned.
-// You can query up to 14 days in a single query by using the `start_date` and `end_date` query parameters.
+// Query up to 14 days in a single query by using the `start_date` and `end_date` query parameters.
 func (mr *MoviesResource) GetChanges(movieId int, opt *ChangesOptions) (*Changes, *http.Response, error) {
 	path := fmt.Sprintf("/movie/%d/changes", movieId)
 	var changes Changes
@@ -475,8 +475,7 @@ type ImagesOptions struct {
 
 // Get the images that belong to a movie.
 // Querying images with a language parameter will filter the results.
-// If you want to include a fallback language (especially useful for backdrops)
-// you can use the include_image_language parameter.
+// To include a fallback language (especially useful for backdrops), use the include_image_language parameter.
 // This should be a comma separated value like so: include_image_language=en,null.
 func (mr *MoviesResource) GetImages(movieId int, opt *ImagesOptions) (*Images, *http.Response, error) {
 	path := fmt.Sprintf("/movie/%d/images", movieId)
@@ -668,7 +667,7 @@ type WatchProviders struct {
 // Powered by the partnership with JustWatch, use this method to get a list of the availabilities per country by provider.
 // This is not going to return full deep links, but rather, it's just enough information to display what's available where.
 // Link to the provided TMDB URL to help support TMDB and provide the actual deep links to the content.
-// Please note: In order to use this data you MUST attribute the source of the data as JustWatch.
+// Please note: In order to use this data it's REQUIRED to attribute the source of the data as JustWatch.
 // If any usage is found not complying with these terms the access to the API will be revoked.
 func (mr *MoviesResource) GetWatchProviders(movieId int) (*WatchProviders, *http.Response, error) {
 	path := fmt.Sprintf("/movie/%d/watch/providers", movieId)

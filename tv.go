@@ -503,7 +503,7 @@ func (tr *TVResource) GetVideos(tvId int, opt *VideosOptions) (*Videos, *http.Re
 // Powered by the partnership with JustWatch, use this method to get a list of the availabilities per country by provider.
 // This is not going to return full deep links, but rather, it's just enough information to display what's available where.
 // Link to the provided TMDB URL to help support TMDB and provide the actual deep links to the content.
-// Please note: In order to use this data you MUST attribute the source of the data as JustWatch.
+// Please note: In order to use this data it's REQUIRED to attribute the source of the data as JustWatch.
 // If any usage is found not complying with these terms the access to the API will be revoked.
 func (tr *TVResource) GetWatchProviders(tvId int) (*WatchProviders, *http.Response, error) {
 	path := fmt.Sprintf("/tv/%d/watch/providers", tvId)

@@ -472,7 +472,7 @@ func (pr *PeopleResource) GetPopular(opt *PopularPeopleOptions) (*PopularPeople,
 }
 
 // Get a list of all of the person ids that have been changed in the past 24 hours.
-// You can query it for up to 14 days worth of changed IDs at a time with the start_date and end_date query parameters.
+// Query it for up to 14 days worth of changed IDs at a time with the start_date and end_date query parameters.
 // 100 items are returned per page.
 func (pr *PeopleResource) GetPeopleChanges(opt *ChangesOptions) (*MediaChanges, *http.Response, error) {
 	path := "/person/changes"
