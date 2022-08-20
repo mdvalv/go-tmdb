@@ -42,26 +42,26 @@ type TVCertifications struct {
 	US []Certification `json:"US"`
 }
 
-type movieCertifications struct {
+type MovieCertificationsResponse struct {
 	Certifications MovieCertifications `json:"certifications"`
 }
 
-type tvCertifications struct {
+type TVCertificationsResponse struct {
 	Certifications TVCertifications `json:"certifications"`
 }
 
 // GetMovieCertifications gets an up to date list of the officially supported movie certifications on TMDB.
-func (cr *CertificationsResource) GetMovieCertifications() (*MovieCertifications, *http.Response, error) {
+func (cr *CertificationsResource) GetMovieCertifications() (*MovieCertificationsResponse, *http.Response, error) {
 	path := "/certification/movie/list"
-	var certifications movieCertifications
+	var certifications MovieCertificationsResponse
 	resp, err := cr.client.get(path, &certifications)
-	return &certifications.Certifications, resp, errors.Wrap(err, "failed to get movie certifications")
+	return &certifications, resp, errors.Wrap(err, "failed to get movie certifications")
 }
 
 // GetTVCertifications gets an up to date list of the officially supported TV show certifications on TMDB.
-func (cr *CertificationsResource) GetTVCertifications() (*TVCertifications, *http.Response, error) {
+func (cr *CertificationsResource) GetTVCertifications() (*TVCertificationsResponse, *http.Response, error) {
 	path := "/certification/tv/list"
-	var certifications tvCertifications
+	var certifications TVCertificationsResponse
 	resp, err := cr.client.get(path, &certifications)
-	return &certifications.Certifications, resp, errors.Wrap(err, "failed to get tv certifications")
+	return &certifications, resp, errors.Wrap(err, "failed to get tv certifications")
 }
