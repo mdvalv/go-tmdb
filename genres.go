@@ -21,14 +21,7 @@ type genres struct {
 	Genres []Genre `json:"genres"`
 }
 
-type GenresOptions struct {
-	// Pass a ISO 639-1 value to display translated data for the fields that support it.
-	// minLength: 2
-	// pattern: ([a-z]{2})-([A-Z]{2})
-	// default: en-US
-	// If the provided language is wrong, it is ignored.
-	Language string `url:"language,omitempty" json:"language,omitempty"`
-}
+type GenresOptions languageOptions
 
 // Get the list of official genres for movies.
 func (gr *GenresResource) GetMovieGenres(opt *GenresOptions) ([]Genre, *http.Response, error) {
