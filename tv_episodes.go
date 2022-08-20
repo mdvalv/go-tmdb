@@ -12,15 +12,7 @@ type TVEpisodesResource struct {
 	client *Client
 }
 
-type tvEpisodeAppendToResponse struct {
-	Credits      *tvEpisodeCredits      `json:"credits"`
-	ExternalIds  *tvEpisodeExternalIds  `json:"external_ids"`
-	Images       *episodeImages         `json:"images"`
-	Translations *tvEpisodeTranslations `json:"translations"`
-	Videos       *videos                `json:"videos"`
-}
-
-type episodeInfo struct {
+type TVEpisodeDetails struct {
 	AirDate        string       `json:"air_date"`
 	Crew           []TVShowCrew `json:"crew"`
 	EpisodeNumber  int          `json:"episode_number"`
@@ -34,11 +26,13 @@ type episodeInfo struct {
 	StillPath      *string      `json:"still_path"`
 	VoteAverage    float64      `json:"vote_average"`
 	VoteCount      int          `json:"vote_count"`
-}
 
-type TVEpisodeDetails struct {
-	tvEpisodeAppendToResponse
-	episodeInfo
+	// append to response
+	Credits      *TVEpisodeCredits      `json:"credits"`
+	ExternalIds  *TVEpisodeExternalIds  `json:"external_ids"`
+	Images       *TVEpisodeImages       `json:"images"`
+	Translations *TVEpisodeTranslations `json:"translations"`
+	Videos       *Videos                `json:"videos"`
 }
 
 type TVEpisodeDetailsOptions struct {
@@ -90,14 +84,10 @@ func (tr *TVEpisodesResource) GetChanges(episodeId int, opt *ChangesOptions) (*C
 }
 
 type TVEpisodeCredits struct {
-	tvEpisodeCredits
-	Id int `json:"id"`
-}
-
-type tvEpisodeCredits struct {
 	Cast       []TVShowCast `json:"cast"`
 	Crew       []TVShowCrew `json:"crew"`
 	GuestStars []TVShowCast `json:"guest_stars"`
+	Id         *int         `json:"id"`
 }
 
 // Get the credits (cast, crew and guest stars) for a TV episode.
@@ -109,11 +99,7 @@ func (tr *TVEpisodesResource) GetCredits(tvId, seasonNumber, episodeNumber int, 
 }
 
 type TVEpisodeExternalIds struct {
-	Id int `json:"id"`
-	tvEpisodeExternalIds
-}
-
-type tvEpisodeExternalIds struct {
+	Id          *int    `json:"id"`
 	FreebaseId  *string `json:"freebase_id"`
 	FreebaseMId *string `json:"freebase_mid"`
 	IMDbId      *string `json:"imdb_id"`
@@ -129,24 +115,20 @@ func (tr *TVEpisodesResource) GetExternalIds(tvId, seasonNumber, episodeNumber i
 	return &ids, resp, errors.Wrap(err, "failed to get external ids")
 }
 
-type Still image
+type Still Image
 
-type episodeImages struct {
+type TVEpisodeImages struct {
+	Id     *int    `json:"id"`
 	Stills []Still `json:"stills"`
-}
-
-type EpisodeImages struct {
-	Id int `json:"id"`
-	episodeImages
 }
 
 // Get the images that belong to a TV episode.
 // Querying images with a language parameter will filter the results.
 // To include a fallback language (especially useful for backdrops), use the include_image_language parameter.
 // This should be a comma separated value like so: include_image_language=en,null.
-func (tr *TVEpisodesResource) GetImages(tvId, seasonNumber, episodeNumber int, opt *ImagesOptions) (*EpisodeImages, *http.Response, error) {
+func (tr *TVEpisodesResource) GetImages(tvId, seasonNumber, episodeNumber int, opt *ImagesOptions) (*TVEpisodeImages, *http.Response, error) {
 	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/images", tvId, seasonNumber, episodeNumber)
-	var images EpisodeImages
+	var images TVEpisodeImages
 	resp, err := tr.client.get(path, &images, WithQueryParams(opt))
 	return &images, resp, errors.Wrap(err, "failed to get images")
 }
@@ -164,13 +146,9 @@ type TVEpisodeTranslation struct {
 	Data        TVEpisodeData `json:"data"`
 }
 
-type tvEpisodeTranslations struct {
-	Translations []TVEpisodeTranslation `json:"translations"`
-}
-
 type TVEpisodeTranslations struct {
-	Id int `json:"id"`
-	tvEpisodeTranslations
+	Id           *int                   `json:"id"`
+	Translations []TVEpisodeTranslation `json:"translations"`
 }
 
 // Get a list of the translations that exist for a TV show.
