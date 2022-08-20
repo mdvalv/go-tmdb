@@ -11,7 +11,7 @@ type ConfigurationResource struct {
 	client *Client
 }
 
-type imagesConfiguration struct {
+type ConfigurationImages struct {
 	BaseUrl       string   `json:"base_url"`
 	SecureBaseUrl string   `json:"secure_base_url"`
 	BackdropSizes []string `json:"backdrop_sizes"`
@@ -22,7 +22,7 @@ type imagesConfiguration struct {
 }
 
 type Configuration struct {
-	Images     imagesConfiguration `json:"images"`
+	Images     ConfigurationImages `json:"images"`
 	ChangeKeys []string            `json:"change_keys"`
 }
 
@@ -44,7 +44,7 @@ func (cr *ConfigurationResource) GetAPIConfiguration() (*Configuration, *http.Re
 }
 
 type Countries []struct {
-	Iso31661    string `json:"iso_3166_1"`
+	ISO31661    string `json:"iso_3166_1"`
 	EnglishName string `json:"english_name"`
 }
 
