@@ -81,7 +81,6 @@ func (e example) CreateList() {
 	list := tmdb.CreateList{
 		Name:        "new list",
 		Description: "new list description",
-		Language:    "asdf",
 	}
 
 	response, _, err := e.client.Lists.CreateList(sessionId, list)
