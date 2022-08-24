@@ -12,23 +12,26 @@ type GenresResource struct {
 	client *Client
 }
 
+// Genre represents a genre in TMDb.
 type Genre struct {
-	Id   int    `json:"id"`
+	ID   int    `json:"id"`
 	Name string `json:"name"`
 }
 
+// GenresResponse represents the response for retrieving genres from TMDb.
 type GenresResponse struct {
 	Genres []Genre `json:"genres"`
 }
 
+// GenresOptions represents the available options for the request.
 type GenresOptions languageOptions
 
-// Get the list of official genres for movies.
+// GetMovieGenres retrieves the list of official genres for movies.
 func (gr *GenresResource) GetMovieGenres(opt *GenresOptions) (*GenresResponse, *http.Response, error) {
 	return gr.getGenres("movie", opt)
 }
 
-// Get the list of official genres for TV shows.
+// GetTVGenres retrieves the list of official genres for TV shows.
 func (gr *GenresResource) GetTVGenres(opt *GenresOptions) (*GenresResponse, *http.Response, error) {
 	return gr.getGenres("tv", opt)
 }

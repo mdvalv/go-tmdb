@@ -12,24 +12,26 @@ type CompaniesResource struct {
 	client *Client
 }
 
+// Company represents a company in TMDb.
 type Company struct {
 	Name     string  `json:"name"`
-	Id       int     `json:"id"`
+	ID       int     `json:"id"`
 	LogoPath *string `json:"logo_path"`
 }
 
+// CompanyDetails represents company details in TMDb.
 type CompanyDetails struct {
 	Description   string   `json:"description"`
 	Headquarters  string   `json:"headquarters"`
 	Homepage      string   `json:"homepage"`
-	Id            int      `json:"id"`
+	ID            int      `json:"id"`
 	LogoPath      *string  `json:"logo_path"`
 	Name          string   `json:"name"`
 	OriginCountry string   `json:"origin_country"`
 	ParentCompany *Company `json:"parent_company"`
 }
 
-// Get company details by id.
+// GetCompany retrieves company details by id.
 func (cr *CompaniesResource) GetCompany(id int) (*CompanyDetails, *http.Response, error) {
 	path := fmt.Sprintf("/company/%d", id)
 	var company CompanyDetails
@@ -37,17 +39,19 @@ func (cr *CompaniesResource) GetCompany(id int) (*CompanyDetails, *http.Response
 	return &company, resp, errors.Wrap(err, "failed to get company")
 }
 
+// CompanyAlternativeName represents a company alternative name in TMDb.
 type CompanyAlternativeName struct {
 	Name string `json:"name"`
 	Type string `json:"type"`
 }
 
+// CompanyAlternativeNames represents company alternative names in TMDb.
 type CompanyAlternativeNames struct {
-	Id    int                      `json:"id"`
+	ID    int                      `json:"id"`
 	Names []CompanyAlternativeName `json:"results"`
 }
 
-// Get the alternative names of a company.
+// GetAlternativeNames retrieves the alternative names of a company.
 func (cr *CompaniesResource) GetAlternativeNames(id int) (*CompanyAlternativeNames, *http.Response, error) {
 	path := fmt.Sprintf("/company/%d/alternative_names", id)
 	var names CompanyAlternativeNames
@@ -55,23 +59,25 @@ func (cr *CompaniesResource) GetAlternativeNames(id int) (*CompanyAlternativeNam
 	return &names, resp, errors.Wrap(err, "failed to get company alternative names")
 }
 
+// CompanyLogo represents a company logo in TMDb.
 type CompanyLogo struct {
 	AspectRatio float64 `json:"aspect_ratio"`
 	FilePath    string  `json:"file_path"`
 	Height      int     `json:"height"`
-	Id          string  `json:"id"`
+	ID          string  `json:"id"`
 	FileType    string  `json:"file_type"`
 	VoteAverage float64 `json:"vote_average"`
 	VoteCount   int     `json:"vote_count"`
 	Width       int     `json:"width"`
 }
 
+// CompanyImages represents company images in TMDb.
 type CompanyImages struct {
-	Id    int           `json:"id"`
+	ID    int           `json:"id"`
 	Logos []CompanyLogo `json:"logos"`
 }
 
-// Get company logos by id.
+// GetImages retrieves company logos by id.
 // There are two image formats that are supported for companies, PNG's and SVG's.
 func (cr *CompaniesResource) GetImages(id int) (*CompanyImages, *http.Response, error) {
 	path := fmt.Sprintf("/company/%d/images", id)

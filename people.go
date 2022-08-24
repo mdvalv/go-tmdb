@@ -12,10 +12,11 @@ type PeopleResource struct {
 	client *Client
 }
 
+// Person represents a person in TMDb.
 type Person struct {
 	Adult              bool        `json:"adult"`
 	Gender             int         `json:"gender"`
-	Id                 int         `json:"id"`
+	ID                 int         `json:"id"`
 	KnownForDepartment string      `json:"known_for_department"`
 	MediaType          string      `json:"media_type"`
 	Name               string      `json:"name"`
@@ -25,6 +26,7 @@ type Person struct {
 	KnownFor           []MovieOrTV `json:"known_for"`
 }
 
+// PersonDetails represents person details in TMDb.
 type PersonDetails struct {
 	Adult              bool     `json:"adult"`
 	AlsoKnownAs        []string `json:"also_known_as"`
@@ -33,8 +35,8 @@ type PersonDetails struct {
 	Deathday           *string  `json:"deathday"`
 	Gender             int      `json:"gender"`
 	Homepage           *string  `json:"homepage"`
-	Id                 int      `json:"id"`
-	ImdbId             *string  `json:"imdb_id"`
+	ID                 int      `json:"id"`
+	ImdbID             *string  `json:"imdb_id"`
 	KnownForDepartment string   `json:"known_for_department"`
 	Name               string   `json:"name"`
 	PlaceOfBirth       *string  `json:"place_of_birth"`
@@ -44,7 +46,7 @@ type PersonDetails struct {
 	// append to response
 	Changes         *Changes             `json:"changes"`
 	CombinedCredits *CombinedCredits     `json:"combined_credits"`
-	ExternalIds     *PersonExternalIds   `json:"external_ids"`
+	ExternalIDs     *PersonExternalIDs   `json:"external_ids"`
 	Images          *PersonImages        `json:"images"`
 	MovieCredits    *PersonMovieCredits  `json:"movie_credits"`
 	TaggedImages    *TaggedImages        `json:"tagged_images"`
@@ -52,6 +54,7 @@ type PersonDetails struct {
 	TVShowCredits   *PersonTVShowCredits `json:"tv_credits"`
 }
 
+// PersonDetailsOptions represents the available options for the request.
 type PersonDetailsOptions struct {
 	// Pass a ISO 639-1 value to display translated data for the fields that support it.
 	// minLength: 2
@@ -63,31 +66,36 @@ type PersonDetailsOptions struct {
 	AppendToResponse string `url:"append_to_response,omitempty" json:"append_to_response,omitempty"`
 }
 
-func (pr *PeopleResource) GetPerson(personId int, opt *PersonDetailsOptions) (*PersonDetails, *http.Response, error) {
-	path := fmt.Sprintf("/person/%d", personId)
+// GetPerson retrieves the primary person details by id.
+func (pr *PeopleResource) GetPerson(personID int, opt *PersonDetailsOptions) (*PersonDetails, *http.Response, error) {
+	path := fmt.Sprintf("/person/%d", personID)
 	var person PersonDetails
 	resp, err := pr.client.get(path, &person, WithQueryParams(opt))
 	return &person, resp, errors.Wrap(err, "failed to get person")
 }
 
+// Profile represents a profile in TMDb.
 type Profile struct {
 	FilePath *string `json:"file_path"`
 }
 
-func (pr *PeopleResource) GetChanges(personId int, opt *ChangesOptions) (*Changes, *http.Response, error) {
-	path := fmt.Sprintf("/person/%d/changes", personId)
+// GetChanges retrieves the changes for a person. By default only the last 24 hours are returned.
+// Query up to 14 days in a single query by using the start_date and end_date query parameters.
+func (pr *PeopleResource) GetChanges(personID int, opt *ChangesOptions) (*Changes, *http.Response, error) {
+	path := fmt.Sprintf("/person/%d/changes", personID)
 	var changes Changes
 	resp, err := pr.client.get(path, &changes, WithQueryParams(opt))
 	return &changes, resp, errors.Wrap(err, "failed to get changes")
 }
 
+// MovieCastPerson represents a person in a movie cast in TMDb.
 type MovieCastPerson struct {
 	Adult            bool    `json:"adult"`
 	BackdropPath     *string `json:"backdrop_path"`
 	Character        string  `json:"character"`
-	CreditId         string  `json:"credit_id"`
-	GenreIds         []int   `json:"genre_ids"`
-	Id               int     `json:"id"`
+	CreditID         string  `json:"credit_id"`
+	GenreIDs         []int   `json:"genre_ids"`
+	ID               int     `json:"id"`
 	Order            int     `json:"order"`
 	OriginalLanguage string  `json:"original_language"`
 	OriginalTitle    string  `json:"original_title"`
@@ -101,13 +109,14 @@ type MovieCastPerson struct {
 	VoteCount        int     `json:"vote_count"`
 }
 
+// MovieCrewPerson represents a person in a movie crew in TMDb.
 type MovieCrewPerson struct {
 	Adult            bool    `json:"adult"`
 	BackdropPath     *string `json:"backdrop_path"`
-	CreditId         string  `json:"credit_id"`
+	CreditID         string  `json:"credit_id"`
 	Department       string  `json:"department"`
-	GenreIds         []int   `json:"genre_ids"`
-	Id               int     `json:"id"`
+	GenreIDs         []int   `json:"genre_ids"`
+	ID               int     `json:"id"`
 	Job              string  `json:"job"`
 	OriginalLanguage string  `json:"original_language"`
 	OriginalTitle    string  `json:"original_title"`
@@ -121,29 +130,31 @@ type MovieCrewPerson struct {
 	VoteCount        int     `json:"vote_count"`
 }
 
+// PersonMovieCredits represents a person movie credits in TMDb.
 type PersonMovieCredits struct {
-	Id   *int              `json:"id"`
+	ID   *int              `json:"id"`
 	Cast []MovieCastPerson `json:"cast"`
 	Crew []MovieCrewPerson `json:"crew"`
 }
 
-// Get the movie credits for a person
-func (pr *PeopleResource) GetMovieCredits(personId int, opt *CreditsOptions) (*PersonMovieCredits, *http.Response, error) {
-	path := fmt.Sprintf("/person/%d/movie_credits", personId)
+// GetMovieCredits retrieves the movie credits for a person.
+func (pr *PeopleResource) GetMovieCredits(personID int, opt *CreditsOptions) (*PersonMovieCredits, *http.Response, error) {
+	path := fmt.Sprintf("/person/%d/movie_credits", personID)
 	var credits PersonMovieCredits
 	resp, err := pr.client.get(path, &credits, WithQueryParams(opt))
 	return &credits, resp, errors.Wrap(err, "failed to get movie credits")
 }
 
+// TVShowCastPerson represents a person in a tv show cast in TMDb.
 type TVShowCastPerson struct {
 	Adult            bool     `json:"adult"`
 	BackdropPath     *string  `json:"backdrop_path"`
 	Character        string   `json:"character"`
-	CreditId         string   `json:"credit_id"`
+	CreditID         string   `json:"credit_id"`
 	EpisodeCount     int      `json:"episode_count"`
 	FirstAirDate     string   `json:"first_air_date"`
-	GenreIds         []int    `json:"genre_ids"`
-	Id               int      `json:"id"`
+	GenreIDs         []int    `json:"genre_ids"`
+	ID               int      `json:"id"`
 	Name             string   `json:"name"`
 	OriginalLanguage string   `json:"original_language"`
 	OriginalName     string   `json:"original_name"`
@@ -155,15 +166,16 @@ type TVShowCastPerson struct {
 	VoteCount        int      `json:"vote_count"`
 }
 
+// TVShowCrewPerson represents a person in a tv show crew in TMDb.
 type TVShowCrewPerson struct {
 	Adult            bool     `json:"adult"`
 	BackdropPath     *string  `json:"backdrop_path"`
-	CreditId         string   `json:"credit_id"`
+	CreditID         string   `json:"credit_id"`
 	Department       string   `json:"department"`
 	EpisodeCount     int      `json:"episode_count"`
 	FirstAirDate     string   `json:"first_air_date"`
-	GenreIds         []int    `json:"genre_ids"`
-	Id               int      `json:"id"`
+	GenreIDs         []int    `json:"genre_ids"`
+	ID               int      `json:"id"`
 	Job              string   `json:"job"`
 	Name             string   `json:"name"`
 	OriginalLanguage string   `json:"original_language"`
@@ -176,29 +188,32 @@ type TVShowCrewPerson struct {
 	VoteCount        int      `json:"vote_count"`
 }
 
+// PersonTVShowCredits represents a person tv show credits in TMDb.
 type PersonTVShowCredits struct {
-	Id   *int               `json:"id"`
+	ID   *int               `json:"id"`
 	Cast []TVShowCastPerson `json:"cast"`
 	Crew []TVShowCrewPerson `json:"crew"`
 }
 
-// Get the TV show credits for a person.
-func (pr *PeopleResource) GetTVCredits(personId int, opt *CreditsOptions) (*PersonTVShowCredits, *http.Response, error) {
-	path := fmt.Sprintf("/person/%d/tv_credits", personId)
+// GetTVCredits retrieves the tv show credits for a person.
+func (pr *PeopleResource) GetTVCredits(personID int, opt *CreditsOptions) (*PersonTVShowCredits, *http.Response, error) {
+	path := fmt.Sprintf("/person/%d/tv_credits", personID)
 	var credits PersonTVShowCredits
 	resp, err := pr.client.get(path, &credits, WithQueryParams(opt))
 	return &credits, resp, errors.Wrap(err, "failed to get tv show credits")
 }
 
+// CombinedCreditsCast represents a cast in TMDb.
 type CombinedCreditsCast map[string]interface{}
 
+// CombinedCreditsMovieCast represents a movie cast in TMDb.
 type CombinedCreditsMovieCast struct {
 	Adult            bool    `json:"adult"`
 	BackdropPath     *string `json:"backdrop_path"`
 	Character        string  `json:"character"`
-	CreditId         string  `json:"credit_id"`
-	GenreIds         []int   `json:"genre_ids"`
-	Id               int     `json:"id"`
+	CreditID         string  `json:"credit_id"`
+	GenreIDs         []int   `json:"genre_ids"`
+	ID               int     `json:"id"`
 	MediaType        string  `json:"media_type"`
 	Order            int     `json:"order"`
 	OriginalLanguage string  `json:"original_language"`
@@ -213,15 +228,16 @@ type CombinedCreditsMovieCast struct {
 	VoteCount        int     `json:"vote_count"`
 }
 
+// CombinedCreditsTVShowCast represents a tv show cast in TMDb.
 type CombinedCreditsTVShowCast struct {
 	Adult            bool     `json:"adult"`
 	BackdropPath     *string  `json:"backdrop_path"`
 	Character        string   `json:"character"`
-	CreditId         string   `json:"credit_id"`
+	CreditID         string   `json:"credit_id"`
 	EpisodeCount     int      `json:"episode_count"`
 	FirstAirDate     string   `json:"first_air_date"`
-	GenreIds         []int    `json:"genre_ids"`
-	Id               int      `json:"id"`
+	GenreIDs         []int    `json:"genre_ids"`
+	ID               int      `json:"id"`
 	MediaType        string   `json:"media_type"`
 	Name             string   `json:"name"`
 	OriginalLanguage string   `json:"original_language"`
@@ -234,15 +250,17 @@ type CombinedCreditsTVShowCast struct {
 	VoteCount        int      `json:"vote_count"`
 }
 
+// CombinedCreditsCrew represents a crew in TMDb.
 type CombinedCreditsCrew map[string]interface{}
 
+// CombinedCreditsMovieCrew represents a movie crew in TMDb.
 type CombinedCreditsMovieCrew struct {
 	Adult            bool    `json:"adult"`
 	BackdropPath     *string `json:"backdrop_path"`
-	CreditId         string  `json:"credit_id"`
+	CreditID         string  `json:"credit_id"`
 	Department       string  `json:"department"`
-	GenreIds         []int   `json:"genre_ids"`
-	Id               int     `json:"id"`
+	GenreIDs         []int   `json:"genre_ids"`
+	ID               int     `json:"id"`
 	Job              string  `json:"job"`
 	MediaType        string  `json:"media_type"`
 	OriginalLanguage string  `json:"original_language"`
@@ -257,15 +275,16 @@ type CombinedCreditsMovieCrew struct {
 	VoteCount        int     `json:"vote_count"`
 }
 
+// CombinedCreditsTVShowCrew represents a tv show crew in TMDb.
 type CombinedCreditsTVShowCrew struct {
 	Adult            bool     `json:"adult"`
 	BackdropPath     *string  `json:"backdrop_path"`
-	CreditId         string   `json:"credit_id"`
+	CreditID         string   `json:"credit_id"`
 	Department       string   `json:"department"`
 	EpisodeCount     int      `json:"episode_count"`
 	FirstAirDate     string   `json:"first_air_date"`
-	GenreIds         []int    `json:"genre_ids"`
-	Id               int      `json:"id"`
+	GenreIDs         []int    `json:"genre_ids"`
+	ID               int      `json:"id"`
 	Job              string   `json:"job"`
 	MediaType        string   `json:"media_type"`
 	Name             string   `json:"name"`
@@ -279,95 +298,107 @@ type CombinedCreditsTVShowCrew struct {
 	VoteCount        int      `json:"vote_count"`
 }
 
+// CombinedCredits represents combined credits in TMDb.
 type CombinedCredits struct {
-	Id   *int                  `json:"id"`
+	ID   *int                  `json:"id"`
 	Cast []CombinedCreditsCast `json:"cast"`
 	Crew []CombinedCreditsCrew `json:"crew"`
 }
 
+// GetMediaType retrieves the media type from a combined credits cast.
 func (cc CombinedCreditsCast) GetMediaType() string {
 	return cc["media_type"].(string)
 }
 
+// ToMovieCast converts the data to a movie cast.
 func (cc CombinedCreditsCast) ToMovieCast() (*CombinedCreditsMovieCast, error) {
 	var credits CombinedCreditsMovieCast
 	err := convert("movie", cc, &credits)
 	return &credits, errors.Wrap(err, "failed to convert object to movie cast")
 }
 
+// ToTVShowCast converts the data to a tv show cast.
 func (cc CombinedCreditsCast) ToTVShowCast() (*CombinedCreditsTVShowCast, error) {
 	var credits CombinedCreditsTVShowCast
 	err := convert("tv", cc, &credits)
 	return &credits, errors.Wrap(err, "failed to convert object to tv cast")
 }
 
+// GetMediaType retrieves the media type from a combined credits crew.
 func (cc CombinedCreditsCrew) GetMediaType() string {
 	return cc["media_type"].(string)
 }
 
+// ToMovieCrew converts the data to a movie crew.
 func (cc CombinedCreditsCrew) ToMovieCrew() (*CombinedCreditsMovieCrew, error) {
 	var credits CombinedCreditsMovieCrew
 	err := convert("movie", cc, &credits)
 	return &credits, errors.Wrap(err, "failed to convert object to movie crew")
 }
 
+// ToTVShowCrew converts the data to a tv show crew.
 func (cc CombinedCreditsCrew) ToTVShowCrew() (*CombinedCreditsTVShowCrew, error) {
 	var credits CombinedCreditsTVShowCrew
 	err := convert("tv", cc, &credits)
 	return &credits, errors.Wrap(err, "failed to convert object to tv crew")
 }
 
-// Get the movie and TV credits together in a single response.
-func (pr *PeopleResource) GetCombinedCredits(personId int, opt *CreditsOptions) (*CombinedCredits, *http.Response, error) {
-	path := fmt.Sprintf("/person/%d/combined_credits", personId)
+// GetCombinedCredits retrieves the movie and TV credits together in a single response.
+func (pr *PeopleResource) GetCombinedCredits(personID int, opt *CreditsOptions) (*CombinedCredits, *http.Response, error) {
+	path := fmt.Sprintf("/person/%d/combined_credits", personID)
 	var credits CombinedCredits
 	resp, err := pr.client.get(path, &credits, WithQueryParams(opt))
 	return &credits, resp, errors.Wrap(err, "failed to get combined credits")
 }
 
-type PersonExternalIds struct {
-	Id          *int    `json:"id"`
-	FacebookId  *string `json:"facebook_id"`
-	FreebaseId  *string `json:"freebase_id"`
-	FreebaseMId *string `json:"freebase_mid"`
-	IMDbId      *string `json:"imdb_id"`
-	InstagramId *string `json:"instagram_id"`
-	TVRageId    *int    `json:"tvrage_id"`
-	TwitterId   *string `json:"twitter_id"`
+// PersonExternalIDs represents a person external ids in TMDb.
+type PersonExternalIDs struct {
+	ID          *int    `json:"id"`
+	FacebookID  *string `json:"facebook_id"`
+	FreebaseID  *string `json:"freebase_id"`
+	FreebaseMID *string `json:"freebase_mid"`
+	IMDbID      *string `json:"imdb_id"`
+	InstagramID *string `json:"instagram_id"`
+	TVRageID    *int    `json:"tvrage_id"`
+	TwitterID   *string `json:"twitter_id"`
 }
 
-type ExternalIdOptions languageOptions
+// ExternalIDOptions represents the available options for the request.
+type ExternalIDOptions languageOptions
 
-// Get the external ids for a person.
+// GetExternalIDs retrieves the external ids for a person.
 // Currently supported external sources:
 // IMDB ID, Facebook, Freebase MID, Freebase ID, Instagram, TVRage ID, Twitter
-func (pr *PeopleResource) GetExternalIDs(personId int, opt *ExternalIdOptions) (*PersonExternalIds, *http.Response, error) {
-	path := fmt.Sprintf("/person/%d/external_ids", personId)
-	var externalIds PersonExternalIds
-	resp, err := pr.client.get(path, &externalIds, WithQueryParams(opt))
-	return &externalIds, resp, errors.Wrap(err, "failed to get external ids")
+func (pr *PeopleResource) GetExternalIDs(personID int, opt *ExternalIDOptions) (*PersonExternalIDs, *http.Response, error) {
+	path := fmt.Sprintf("/person/%d/external_ids", personID)
+	var externalIDs PersonExternalIDs
+	resp, err := pr.client.get(path, &externalIDs, WithQueryParams(opt))
+	return &externalIDs, resp, errors.Wrap(err, "failed to get external ids")
 }
 
+// PersonImages represents person images in TMDb.
 type PersonImages struct {
-	Id       *int    `json:"id"`
+	ID       *int    `json:"id"`
 	Profiles []Image `json:"profiles"`
 }
 
-// Get the images for a person.
-func (pr *PeopleResource) GetImages(personId int) (*PersonImages, *http.Response, error) {
-	path := fmt.Sprintf("/person/%d/images", personId)
+// GetImages retrieves the images for a person.
+func (pr *PeopleResource) GetImages(personID int) (*PersonImages, *http.Response, error) {
+	path := fmt.Sprintf("/person/%d/images", personID)
 	var images PersonImages
 	resp, err := pr.client.get(path, &images)
 	return &images, resp, errors.Wrap(err, "failed to get images")
 }
 
+// TaggedImagesOptions represents the available options for the request.
 type TaggedImagesOptions languagePageOptions
 
+// TaggedImage represents a tagged image in TMDb.
 type TaggedImage struct {
 	AspectRatio float64   `json:"aspect_ratio"`
 	FilePath    string    `json:"file_path"`
 	Height      int       `json:"height"`
-	Id          string    `json:"id"`
+	ID          string    `json:"id"`
 	ImageType   string    `json:"image_type"`
 	ISO6391     *string   `json:"iso_639_1"`
 	Media       MovieOrTV `json:"media"`
@@ -377,31 +408,36 @@ type TaggedImage struct {
 	Width       int       `json:"width"`
 }
 
+// TaggedImages represents tagged images in TMDb.
 type TaggedImages struct {
 	pagination
-	Id     *int          `json:"id"`
+	ID     *int          `json:"id"`
 	Images []TaggedImage `json:"results"`
 }
 
-// Get the images that this person has been tagged in.
-func (pr *PeopleResource) GetTaggedImages(personId int, opt *TaggedImagesOptions) (*TaggedImages, *http.Response, error) {
-	path := fmt.Sprintf("/person/%d/tagged_images", personId)
+// GetTaggedImages retrieves the images that this person has been tagged in.
+func (pr *PeopleResource) GetTaggedImages(personID int, opt *TaggedImagesOptions) (*TaggedImages, *http.Response, error) {
+	path := fmt.Sprintf("/person/%d/tagged_images", personID)
 	var images TaggedImages
 	resp, err := pr.client.get(path, &images, WithQueryParams(opt))
 	return &images, resp, errors.Wrap(err, "failed to get images")
 }
 
+// PersonTranslationsOptions represents the available options for the request.
 type PersonTranslationsOptions languageOptions
 
+// PersonTranslations represents person translations in TMDb.
 type PersonTranslations struct {
-	Id           *int                `json:"id"`
+	ID           *int                `json:"id"`
 	Translations []PersonTranslation `json:"translations"`
 }
 
+// PersonData represents person data in TMDb.
 type PersonData struct {
 	Biography string `json:"biography"`
 }
 
+// PersonTranslation represents a person translation in TMDb.
 type PersonTranslation struct {
 	ISO31661    string     `json:"iso_3166_1"`
 	ISO6391     string     `json:"iso_639_1"`
@@ -410,16 +446,18 @@ type PersonTranslation struct {
 	Data        PersonData `json:"data"`
 }
 
-// Get a list of translations that have been created for a person.
-func (pr *PeopleResource) GetTranslations(personId int, opt *PersonTranslationsOptions) (*PersonTranslations, *http.Response, error) {
-	path := fmt.Sprintf("/person/%d/translations", personId)
+// GetTranslations retrieves a list of translations that have been created for a person.
+func (pr *PeopleResource) GetTranslations(personID int, opt *PersonTranslationsOptions) (*PersonTranslations, *http.Response, error) {
+	path := fmt.Sprintf("/person/%d/translations", personID)
 	var translations PersonTranslations
 	resp, err := pr.client.get(path, &translations, WithQueryParams(opt))
 	return &translations, resp, errors.Wrap(err, "failed to get translations")
 }
 
+// LatestPersonOptions represents the available options for the request.
 type LatestPersonOptions languageOptions
 
+// LatestPerson represents the latest person in TMDb.
 type LatestPerson struct {
 	Adult              bool     `json:"adult"`
 	AlsoKnownAs        []string `json:"also_known_as"`
@@ -428,8 +466,8 @@ type LatestPerson struct {
 	Deathday           *string  `json:"deathday"`
 	Gender             int      `json:"gender"`
 	Homepage           *string  `json:"homepage"`
-	Id                 int      `json:"id"`
-	ImdbId             *string  `json:"imdb_id"`
+	ID                 int      `json:"id"`
+	ImdbID             *string  `json:"imdb_id"`
 	KnownForDepartment string   `json:"known_for_department"`
 	Name               string   `json:"name"`
 	PlaceOfBirth       *string  `json:"place_of_birth"`
@@ -437,7 +475,7 @@ type LatestPerson struct {
 	ProfilePath        *string  `json:"profile_path"`
 }
 
-// Get the most newly created person. This is a live response and will continuously change.
+// GetLatest retrieves the most newly created person. This is a live response and will continuously change.
 func (pr *PeopleResource) GetLatest(opt *LatestPersonOptions) (*LatestPerson, *http.Response, error) {
 	path := "/person/latest"
 	var latest LatestPerson
@@ -445,25 +483,28 @@ func (pr *PeopleResource) GetLatest(opt *LatestPersonOptions) (*LatestPerson, *h
 	return &latest, resp, errors.Wrap(err, "failed to get latest person")
 }
 
+// PopularPeopleOptions represents the available options for the request.
 type PopularPeopleOptions languagePageOptions
 
+// PopularPerson represents a popular person in TMDb.
 type PopularPerson struct {
 	KnownFor           []MovieOrTV `json:"known_for"`
 	Adult              bool        `json:"adult"`
 	Gender             int         `json:"gender"`
-	Id                 int         `json:"id"`
+	ID                 int         `json:"id"`
 	KnownForDepartment string      `json:"known_for_department"`
 	Name               string      `json:"name"`
 	Popularity         float64     `json:"popularity"`
 	ProfilePath        string      `json:"profile_path"`
 }
 
+// PopularPeople represents popular people in TMDb.
 type PopularPeople struct {
 	pagination
 	People []PopularPerson `json:"results"`
 }
 
-// Get the list of popular people on TMDB. This list updates daily.
+// GetPopular retrieves the list of popular people on TMDB. This list updates daily.
 func (pr *PeopleResource) GetPopular(opt *PopularPeopleOptions) (*PopularPeople, *http.Response, error) {
 	path := "/person/popular"
 	var popular PopularPeople
@@ -471,7 +512,7 @@ func (pr *PeopleResource) GetPopular(opt *PopularPeopleOptions) (*PopularPeople,
 	return &popular, resp, errors.Wrap(err, "failed to get popular people")
 }
 
-// Get a list of all of the person ids that have been changed in the past 24 hours.
+// GetPeopleChanges retrieves a list of all of the person ids that have been changed in the past 24 hours.
 // Query it for up to 14 days worth of changed IDs at a time with the start_date and end_date query parameters.
 // 100 items are returned per page.
 func (pr *PeopleResource) GetPeopleChanges(opt *ChangesOptions) (*MediaChanges, *http.Response, error) {

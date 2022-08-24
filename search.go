@@ -11,17 +11,19 @@ type SearchResource struct {
 	client *Client
 }
 
+// SearchCompanies represents companies in TMDb.
 type SearchCompanies struct {
 	pagination
 	Results []Company `json:"results"`
 }
 
+// SearchCompaniesOptions represents the available options for the request.
 type SearchCompaniesOptions struct {
 	// Specify which page to query.
 	Page *int `url:"page,omitempty" json:"page,omitempty"`
 }
 
-// Search for companies.
+// Companies searches for companies.
 func (sr *SearchResource) Companies(query string, opt *SearchCompaniesOptions) (*SearchCompanies, *http.Response, error) {
 	path := "/search/company"
 	var companies SearchCompanies
@@ -29,10 +31,11 @@ func (sr *SearchResource) Companies(query string, opt *SearchCompaniesOptions) (
 	return &companies, resp, errors.Wrap(err, "failed to search for companies")
 }
 
+// SearchCollection represents a collection in TMDb.
 type SearchCollection struct {
 	Adult            bool    `json:"adult"`
 	BackdropPath     *string `json:"backdrop_path"`
-	Id               int     `json:"id"`
+	ID               int     `json:"id"`
 	Name             string  `json:"name"`
 	OriginalLanguage string  `json:"original_language"`
 	OriginalName     string  `json:"original_name"`
@@ -40,14 +43,16 @@ type SearchCollection struct {
 	PosterPath       *string `json:"poster_path"`
 }
 
+// SearchCollections represents collections in TMDb.
 type SearchCollections struct {
 	pagination
 	Collections []SearchCollection `json:"results"`
 }
 
+// SearchCollectionsOptions represents the available options for the request.
 type SearchCollectionsOptions languagePageOptions
 
-// Search for collections.
+// Collections searches for collections.
 func (sr *SearchResource) Collections(query string, opt *SearchCollectionsOptions) (*SearchCollections, *http.Response, error) {
 	path := "/search/collection"
 	var collections SearchCollections
@@ -55,17 +60,19 @@ func (sr *SearchResource) Collections(query string, opt *SearchCollectionsOption
 	return &collections, resp, errors.Wrap(err, "failed to search for collections")
 }
 
+// SearchKeywordsOptions represents the available options for the request.
 type SearchKeywordsOptions struct {
 	// Specify which page to query.
 	Page *int `url:"page,omitempty" json:"page,omitempty"`
 }
 
+// SearchKeywords represents keywords in TMDb.
 type SearchKeywords struct {
 	pagination
 	Keywords []Keyword `json:"results"`
 }
 
-// Search for keywords.
+// Keywords searches for keywords.
 func (sr *SearchResource) Keywords(query string, opt *SearchKeywordsOptions) (*SearchKeywords, *http.Response, error) {
 	path := "/search/keyword"
 	var keywords SearchKeywords
@@ -73,6 +80,7 @@ func (sr *SearchResource) Keywords(query string, opt *SearchKeywordsOptions) (*S
 	return &keywords, resp, errors.Wrap(err, "failed to search for keywords")
 }
 
+// SearchMoviesOptions represents the available options for the request.
 type SearchMoviesOptions struct {
 	// Pass a ISO 639-1 value to display translated data for the fields that support it.
 	// minLength: 2
@@ -98,9 +106,10 @@ type SearchMoviesOptions struct {
 	Region string `url:"region,omitempty" json:"region,omitempty"`
 }
 
+// SearchMovies represents movies in TMDb.
 type SearchMovies paginatedMovies
 
-// Search for movies.
+// Movies searches for movies.
 func (sr *SearchResource) Movies(query string, opt *SearchMoviesOptions) (*SearchMovies, *http.Response, error) {
 	path := "/search/movie"
 	var movies SearchMovies
@@ -108,6 +117,7 @@ func (sr *SearchResource) Movies(query string, opt *SearchMoviesOptions) (*Searc
 	return &movies, resp, errors.Wrap(err, "failed to search for movies")
 }
 
+// SearchPeopleOptions represents the available options for the request.
 type SearchPeopleOptions struct {
 	// Pass a ISO 639-1 value to display translated data for the fields that support it.
 	// minLength: 2
@@ -127,24 +137,29 @@ type SearchPeopleOptions struct {
 	Region string `url:"region,omitempty" json:"region,omitempty"`
 }
 
+// MovieOrTV can be either a movie or a tv show object in TMDb.
 type MovieOrTV map[string]interface{}
 
+// GetMediaType retrieves the media type from a movie or tv show.
 func (mt MovieOrTV) GetMediaType() string {
 	return mt["media_type"].(string)
 }
 
+// ToMovie converts the data to a movie.
 func (mt MovieOrTV) ToMovie() (*Movie, error) {
 	return convertToMovie(mt)
 }
 
+// ToTVShow converts the data to a tv show.
 func (mt MovieOrTV) ToTVShow() (*TVShow, error) {
 	return convertToTVShow(mt)
 }
 
+// SearchPerson represents a person in TMDb.
 type SearchPerson struct {
 	Adult              bool        `json:"adult"`
 	Gender             int         `json:"gender"`
-	Id                 int         `json:"id"`
+	ID                 int         `json:"id"`
 	KnownFor           []MovieOrTV `json:"known_for"`
 	KnownForDepartment string      `json:"known_for_department"`
 	Name               string      `json:"name"`
@@ -152,12 +167,13 @@ type SearchPerson struct {
 	ProfilePath        *string     `json:"profile_path"`
 }
 
+// SearchPeople represents people in TMDb.
 type SearchPeople struct {
 	pagination
 	People []SearchPerson `json:"results"`
 }
 
-// Search for people.
+// People searches for people.
 func (sr *SearchResource) People(query string, opt *SearchPeopleOptions) (*SearchPeople, *http.Response, error) {
 	path := "/search/person"
 	var people SearchPeople
@@ -165,6 +181,7 @@ func (sr *SearchResource) People(query string, opt *SearchPeopleOptions) (*Searc
 	return &people, resp, errors.Wrap(err, "failed to search for people")
 }
 
+// SearchTVShowsOptions represents the available options for the request.
 type SearchTVShowsOptions struct {
 	// Pass a ISO 639-1 value to display translated data for the fields that support it.
 	// minLength: 2
@@ -185,9 +202,10 @@ type SearchTVShowsOptions struct {
 	FirstAirDateYear *int `url:"first_air_date_year,omitempty" json:"first_air_date_year,omitempty"`
 }
 
+// SearchTVShows represents tv shows in TMDb.
 type SearchTVShows paginatedTVShows
 
-// Search for TV shows.
+// TVShows searches for TV shows.
 func (sr *SearchResource) TVShows(query string, opt *SearchTVShowsOptions) (*SearchTVShows, *http.Response, error) {
 	path := "/search/tv"
 	var tvShows SearchTVShows
@@ -195,6 +213,7 @@ func (sr *SearchResource) TVShows(query string, opt *SearchTVShowsOptions) (*Sea
 	return &tvShows, resp, errors.Wrap(err, "failed to search for tv shows")
 }
 
+// SearchMultiOptions represents the available options for the request.
 type SearchMultiOptions struct {
 	// Pass a ISO 639-1 value to display translated data for the fields that support it.
 	// minLength: 2
@@ -214,10 +233,11 @@ type SearchMultiOptions struct {
 	Region string `url:"region,omitempty" json:"region,omitempty"`
 }
 
+// SearchMultiPerson represents a person in TMDb.
 type SearchMultiPerson struct {
 	Adult              bool        `json:"adult"`
 	Gender             int         `json:"gender"`
-	Id                 int         `json:"id"`
+	ID                 int         `json:"id"`
 	KnownFor           []MovieOrTV `json:"known_for"`
 	KnownForDepartment string      `json:"known_for_department"`
 	Name               string      `json:"name"`
@@ -226,14 +246,16 @@ type SearchMultiPerson struct {
 	MediaType          string      `json:"media_type"`
 }
 
+// SearchMultiResults represents results for a multi search in TMDb.
 type SearchMultiResults map[string]interface{}
 
+// SearchMulti represents a multi search in TMDb.
 type SearchMulti struct {
 	pagination
 	Results []SearchMultiResults `json:"results"`
 }
 
-// Search multiple models in a single request.
+// Multi searches multiple models in a single request.
 // Multi search currently supports searching for movies, tv shows and people in a single request.
 func (sr *SearchResource) Multi(query string, opt *SearchTVShowsOptions) (*SearchMulti, *http.Response, error) {
 	path := "/search/multi"
@@ -242,18 +264,22 @@ func (sr *SearchResource) Multi(query string, opt *SearchTVShowsOptions) (*Searc
 	return &multi, resp, errors.Wrap(err, "failed to search multi media")
 }
 
+// GetMediaType retrieves the media type from search multi results.
 func (sr SearchMultiResults) GetMediaType() string {
 	return sr["media_type"].(string)
 }
 
+// ToMovie converts the data to a movie.
 func (sr SearchMultiResults) ToMovie() (*Movie, error) {
 	return convertToMovie(sr)
 }
 
+// ToTVShow converts the data to a tv show.
 func (sr SearchMultiResults) ToTVShow() (*TVShow, error) {
 	return convertToTVShow(sr)
 }
 
+// ToPerson converts the data to a person.
 func (sr SearchMultiResults) ToPerson() (*SearchMultiPerson, error) {
 	var person SearchMultiPerson
 	err := convert("person", sr, &person)

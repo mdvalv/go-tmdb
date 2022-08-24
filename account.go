@@ -12,17 +12,20 @@ type AccountResource struct {
 	client *Client
 }
 
+// Gravatar represents a gravatar object.
 type Gravatar struct {
 	Hash string `json:"hash"`
 }
 
+// Avatar represents an avatar object.
 type Avatar struct {
 	Gravatar Gravatar `json:"gravatar"`
 }
 
+// Account represents a TMDb account.
 type Account struct {
 	Avatar       Avatar `json:"avatar"`
-	Id           int    `json:"id"`
+	ID           int    `json:"id"`
 	ISO6391      string `json:"iso_639_1"`
 	ISO31661     string `json:"iso_3166_1"`
 	Name         string `json:"name"`
@@ -30,18 +33,19 @@ type Account struct {
 	Username     string `json:"username"`
 }
 
-// Get account details.
-func (ar *AccountResource) GetAccount(sessionId string) (*Account, *http.Response, error) {
+// GetAccount retrieves account details from TMDb.
+func (ar *AccountResource) GetAccount(sessionID string) (*Account, *http.Response, error) {
 	path := "/account"
 	var account Account
-	resp, err := ar.client.get(path, &account, WithQueryParam("session_id", sessionId))
+	resp, err := ar.client.get(path, &account, WithSessionID(sessionID))
 	return &account, resp, errors.Wrap(err, "failed to get account")
 }
 
+// CreatedList represents a created list in TMDb.
 type CreatedList struct {
 	Description   string  `json:"description"`
 	FavoriteCount int     `json:"favorite_count"`
-	Id            int     `json:"id"`
+	ID            int     `json:"id"`
 	ISO6391       string  `json:"iso_639_1"`
 	ItemCount     int     `json:"item_count"`
 	ListType      string  `json:"list_type"`
@@ -49,23 +53,28 @@ type CreatedList struct {
 	PosterPath    *string `json:"poster_path"`
 }
 
+// CreatedLists represents the created lists in TMDb.
 type CreatedLists struct {
 	pagination
 	Lists []CreatedList `json:"results"`
 }
 
+// AccountListsOptions represents the available options for the request.
 type AccountListsOptions languagePageOptions
 
-// Get all of the lists created by an account. Will include private lists if the requester is the owner.
-func (ar *AccountResource) GetCreatedLists(accountId int, sessionId string, opt *AccountListsOptions) (*CreatedLists, *http.Response, error) {
-	path := fmt.Sprintf("/account/%d/lists", accountId)
+// GetCreatedLists retrieves all of the lists created by an account.
+// Will include private lists if the requester is the owner.
+func (ar *AccountResource) GetCreatedLists(accountID int, sessionID string, opt *AccountListsOptions) (*CreatedLists, *http.Response, error) {
+	path := fmt.Sprintf("/account/%d/lists", accountID)
 	var lists CreatedLists
-	resp, err := ar.client.get(path, &lists, WithQueryParams(opt), WithQueryParam("session_id", sessionId))
+	resp, err := ar.client.get(path, &lists, WithQueryParams(opt), WithSessionID(sessionID))
 	return &lists, resp, errors.Wrap(err, "failed to get account lists")
 }
 
+// FavoriteMovies represents the favorite movies in TMDb.
 type FavoriteMovies paginatedMovies
 
+// AccountOptions represents the available options for the request.
 type AccountOptions struct {
 	// Pass a ISO 639-1 value to display translated data for the fields that support it.
 	// minLength: 2
@@ -82,29 +91,31 @@ type AccountOptions struct {
 	Page *int `url:"page,omitempty" json:"page,omitempty"`
 }
 
-// Get the list of favorite movies.
-func (ar *AccountResource) GetFavoriteMovies(accountId int, sessionId string, opt *AccountOptions) (*FavoriteMovies, *http.Response, error) {
-	path := fmt.Sprintf("/account/%d/favorite/movies", accountId)
+// GetFavoriteMovies retrieves the list of favorite movies.
+func (ar *AccountResource) GetFavoriteMovies(accountID int, sessionID string, opt *AccountOptions) (*FavoriteMovies, *http.Response, error) {
+	path := fmt.Sprintf("/account/%d/favorite/movies", accountID)
 	var movies FavoriteMovies
-	resp, err := ar.client.get(path, &movies, WithQueryParams(opt), WithQueryParam("session_id", sessionId))
+	resp, err := ar.client.get(path, &movies, WithQueryParams(opt), WithSessionID(sessionID))
 	return &movies, resp, errors.Wrap(err, "failed to get favorite movies")
 }
 
+// FavoriteTVShows represents the favorite tv shows in TMDb.
 type FavoriteTVShows paginatedTVShows
 
-// Get the list of favorite tv shows.
-func (ar *AccountResource) GetFavoriteTVShows(accountId int, sessionId string, opt *AccountOptions) (*FavoriteTVShows, *http.Response, error) {
-	path := fmt.Sprintf("/account/%d/favorite/tv", accountId)
+// GetFavoriteTVShows retrieves the list of favorite tv shows.
+func (ar *AccountResource) GetFavoriteTVShows(accountID int, sessionID string, opt *AccountOptions) (*FavoriteTVShows, *http.Response, error) {
+	path := fmt.Sprintf("/account/%d/favorite/tv", accountID)
 	var tvShows FavoriteTVShows
-	resp, err := ar.client.get(path, &tvShows, WithQueryParams(opt), WithQueryParam("session_id", sessionId))
+	resp, err := ar.client.get(path, &tvShows, WithQueryParams(opt), WithSessionID(sessionID))
 	return &tvShows, resp, errors.Wrap(err, "failed to get favorite tv shows")
 }
 
+// RatedMovie represents a rated movie in TMDb.
 type RatedMovie struct {
 	Adult            bool    `json:"adult"`
 	BackdropPath     *string `json:"backdrop_path"`
-	GenreIds         []int   `json:"genre_ids"`
-	Id               int     `json:"id"`
+	GenreIDs         []int   `json:"genre_ids"`
+	ID               int     `json:"id"`
 	OriginalLanguage string  `json:"original_language"`
 	OriginalTitle    string  `json:"original_title"`
 	Overview         string  `json:"overview"`
@@ -118,25 +129,27 @@ type RatedMovie struct {
 	VoteCount        int     `json:"vote_count"`
 }
 
+// RatedMovies represents rated movies in TMDb.
 type RatedMovies struct {
 	pagination
 	Movies []RatedMovie `json:"results"`
 }
 
-// Get the list of rated movies.
-func (ar *AccountResource) GetRatedMovies(accountId int, sessionId string, opt *AccountOptions) (*RatedMovies, *http.Response, error) {
-	path := fmt.Sprintf("/account/%d/rated/movies", accountId)
+// GetRatedMovies retrieves the list of rated movies.
+func (ar *AccountResource) GetRatedMovies(accountID int, sessionID string, opt *AccountOptions) (*RatedMovies, *http.Response, error) {
+	path := fmt.Sprintf("/account/%d/rated/movies", accountID)
 	var movies RatedMovies
-	resp, err := ar.client.get(path, &movies, WithQueryParams(opt), WithQueryParam("session_id", sessionId))
+	resp, err := ar.client.get(path, &movies, WithQueryParams(opt), WithSessionID(sessionID))
 	return &movies, resp, errors.Wrap(err, "failed to get rated movies")
 }
 
+// RatedTVShow represents a rated tv show in TMDb.
 type RatedTVShow struct {
 	Adult            bool     `json:"adult"`
 	BackdropPath     *string  `json:"backdrop_path"`
 	FirstAirDate     string   `json:"first_air_date"`
-	GenreIds         []int    `json:"genre_ids"`
-	Id               int      `json:"id"`
+	GenreIDs         []int    `json:"genre_ids"`
+	ID               int      `json:"id"`
 	Name             string   `json:"name"`
 	OriginalLanguage string   `json:"original_language"`
 	OriginalName     string   `json:"original_name"`
@@ -149,96 +162,105 @@ type RatedTVShow struct {
 	VoteCount        int      `json:"vote_count"`
 }
 
+// RatedTVShows represents rated tv shows in TMDb.
 type RatedTVShows struct {
 	pagination
 	TVShows []RatedTVShow `json:"results"`
 }
 
-// Get the list of rated tv shows.
-func (ar *AccountResource) GetRatedTVShows(accountId int, sessionId string, opt *AccountOptions) (*RatedTVShows, *http.Response, error) {
-	path := fmt.Sprintf("/account/%d/rated/tv", accountId)
+// GetRatedTVShows retrieves the list of rated tv shows.
+func (ar *AccountResource) GetRatedTVShows(accountID int, sessionID string, opt *AccountOptions) (*RatedTVShows, *http.Response, error) {
+	path := fmt.Sprintf("/account/%d/rated/tv", accountID)
 	var tvShows RatedTVShows
-	resp, err := ar.client.get(path, &tvShows, WithQueryParams(opt), WithQueryParam("session_id", sessionId))
+	resp, err := ar.client.get(path, &tvShows, WithQueryParams(opt), WithSessionID(sessionID))
 	return &tvShows, resp, errors.Wrap(err, "failed to get rated tv shows")
 }
 
+// RatedTVEpisode represents a rated tv episode in TMDb.
 type RatedTVEpisode struct {
 	AirDate        string  `json:"air_date"`
 	EpisodeNumber  int     `json:"episode_number"`
-	Id             int     `json:"id"`
+	ID             int     `json:"id"`
 	Name           string  `json:"name"`
 	Overview       string  `json:"overview"`
 	ProductionCode string  `json:"production_code"`
 	Rating         float64 `json:"rating"`
 	Runtime        int     `json:"runtime"`
 	SeasonNumber   int     `json:"season_number"`
-	ShowId         int     `json:"show_id"`
+	ShowID         int     `json:"show_id"`
 	StillPath      *string `json:"still_path"`
 	VoteAverage    float64 `json:"vote_average"`
 	VoteCount      int     `json:"vote_count"`
 }
 
+// RatedTVEpisodes represents rated tv episodes in TMDb.
 type RatedTVEpisodes struct {
 	pagination
 	TVShows []RatedTVEpisode `json:"results"`
 }
 
-// Get the list of rated tv episodes.
-func (ar *AccountResource) GetRatedTVEpisodes(accountId int, sessionId string, opt *AccountOptions) (*RatedTVEpisodes, *http.Response, error) {
-	path := fmt.Sprintf("/account/%d/rated/tv/episodes", accountId)
+// GetRatedTVEpisodes retrieves the list of rated tv episodes.
+func (ar *AccountResource) GetRatedTVEpisodes(accountID int, sessionID string, opt *AccountOptions) (*RatedTVEpisodes, *http.Response, error) {
+	path := fmt.Sprintf("/account/%d/rated/tv/episodes", accountID)
 	var episodes RatedTVEpisodes
-	resp, err := ar.client.get(path, &episodes, WithQueryParams(opt), WithQueryParam("session_id", sessionId))
+	resp, err := ar.client.get(path, &episodes, WithQueryParams(opt), WithSessionID(sessionID))
 	return &episodes, resp, errors.Wrap(err, "failed to get rated tv episodes")
 }
 
+// WatchlistMovies represents movies added to the watchlist in TMDb.
 type WatchlistMovies paginatedMovies
 
-// Get the list of rated movies.
-func (ar *AccountResource) GetWatchlistMovies(accountId int, sessionId string, opt *AccountOptions) (*WatchlistMovies, *http.Response, error) {
-	path := fmt.Sprintf("/account/%d/watchlist/movies", accountId)
+// GetWatchlistMovies retrieves the list of rated movies.
+func (ar *AccountResource) GetWatchlistMovies(accountID int, sessionID string, opt *AccountOptions) (*WatchlistMovies, *http.Response, error) {
+	path := fmt.Sprintf("/account/%d/watchlist/movies", accountID)
 	var movies WatchlistMovies
-	resp, err := ar.client.get(path, &movies, WithQueryParams(opt), WithQueryParam("session_id", sessionId))
+	resp, err := ar.client.get(path, &movies, WithQueryParams(opt), WithSessionID(sessionID))
 	return &movies, resp, errors.Wrap(err, "failed to get movies in watchlist")
 }
 
+// WatchlistTVShows represents tv shows added to the watchlist in TMDb.
 type WatchlistTVShows paginatedTVShows
 
-// Get the list of rated tv shows.
-func (ar *AccountResource) GetWatchlistTVShows(accountId int, sessionId string, opt *AccountOptions) (*WatchlistTVShows, *http.Response, error) {
-	path := fmt.Sprintf("/account/%d/watchlist/tv", accountId)
+// GetWatchlistTVShows retrieves the list of rated tv shows.
+func (ar *AccountResource) GetWatchlistTVShows(accountID int, sessionID string, opt *AccountOptions) (*WatchlistTVShows, *http.Response, error) {
+	path := fmt.Sprintf("/account/%d/watchlist/tv", accountID)
 	var tvShows WatchlistTVShows
-	resp, err := ar.client.get(path, &tvShows, WithQueryParams(opt), WithQueryParam("session_id", sessionId))
+	resp, err := ar.client.get(path, &tvShows, WithQueryParams(opt), WithSessionID(sessionID))
 	return &tvShows, resp, errors.Wrap(err, "failed to get tv shows in watchlist")
 }
 
+// Favorite represents a favorite object in TMDb.
 type Favorite struct {
-	MediaId   int    `json:"media_id"`
+	MediaID   int    `json:"media_id"`
 	MediaType string `json:"media_type"`
 	Favorite  bool   `json:"favorite"`
 }
 
+// FavoriteResponse represents the favorite response.
 type FavoriteResponse statusResponse
 
-// Add/remove some media to favorites.
-func (ar *AccountResource) Favorite(accountId int, sessionId string, favorite Favorite) (*FavoriteResponse, *http.Response, error) {
-	path := fmt.Sprintf("/account/%d/favorite", accountId)
+// Favorite adds/removes some media to/from favorites.
+func (ar *AccountResource) Favorite(accountID int, sessionID string, favorite Favorite) (*FavoriteResponse, *http.Response, error) {
+	path := fmt.Sprintf("/account/%d/favorite", accountID)
 	var favoriteResp FavoriteResponse
-	resp, err := ar.client.post(path, &favoriteResp, WithBody(favorite), WithQueryParam("session_id", sessionId))
+	resp, err := ar.client.post(path, &favoriteResp, WithBody(favorite), WithSessionID(sessionID))
 	return &favoriteResp, resp, errors.Wrap(err, "failed to mark as favorite")
 }
 
+// Watchlist represents a watchlist object in TMDb.
 type Watchlist struct {
-	MediaId   int    `json:"media_id"`
+	MediaID   int    `json:"media_id"`
 	MediaType string `json:"media_type"`
 	Watchlist bool   `json:"watchlist"`
 }
 
+// WatchlistResponse represents the watchlist response.
 type WatchlistResponse statusResponse
 
-// Add/remove some media to watchlist.
-func (ar *AccountResource) Watchlist(accountId int, sessionId string, watchlist Watchlist) (*WatchlistResponse, *http.Response, error) {
-	path := fmt.Sprintf("/account/%d/watchlist", accountId)
+// Watchlist adds/removes some media to/from watchlist.
+func (ar *AccountResource) Watchlist(accountID int, sessionID string, watchlist Watchlist) (*WatchlistResponse, *http.Response, error) {
+	path := fmt.Sprintf("/account/%d/watchlist", accountID)
 	var watchlistResp WatchlistResponse
-	resp, err := ar.client.post(path, &watchlistResp, WithBody(watchlist), WithQueryParam("session_id", sessionId))
+	resp, err := ar.client.post(path, &watchlistResp, WithBody(watchlist), WithSessionID(sessionID))
 	return &watchlistResp, resp, errors.Wrap(err, "failed to mark as favorite")
 }

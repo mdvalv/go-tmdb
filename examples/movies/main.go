@@ -11,28 +11,28 @@ type example struct {
 	client *tmdb.Client
 }
 
-var sessionId = os.Getenv("SESSIONID")
+var sessionID = os.Getenv("SESSIONID")
 
 func (e example) GetAccountStates() {
-	states, _, err := e.client.Movies.GetAccountStates(531428, sessionId)
+	states, _, err := e.client.Movies.GetAccountStates(531428, sessionID)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*states)
 }
 
 func (e example) Rate() {
-	sessionId := tmdb.Auth{
-		SessionId: sessionId,
+	sessionID := tmdb.Auth{
+		SessionID: sessionID,
 	}
-	states, _, err := e.client.Movies.Rate(28031, 8.5, sessionId)
+	states, _, err := e.client.Movies.Rate(28031, 8.5, sessionID)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*states)
 }
 
 func (e example) DeleteRating() {
-	sessionId := tmdb.Auth{
-		SessionId: sessionId,
+	sessionID := tmdb.Auth{
+		SessionID: sessionID,
 	}
-	states, _, err := e.client.Movies.DeleteRating(28031, sessionId)
+	states, _, err := e.client.Movies.DeleteRating(28031, sessionID)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*states)
 }
@@ -71,8 +71,8 @@ func (e example) GetCredits() {
 	examples.PrettyPrint(*credits)
 }
 
-func (e example) GetExternalIds() {
-	ids, _, err := e.client.Movies.GetExternalIds(540)
+func (e example) GetExternalIDs() {
+	ids, _, err := e.client.Movies.GetExternalIDs(540)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*ids)
 }
@@ -193,7 +193,7 @@ func main() {
 		example.GetAlternativeTitles, // 5
 		example.GetChanges,           // 6
 		example.GetCredits,           // 7
-		example.GetExternalIds,       // 8
+		example.GetExternalIDs,       // 8
 		example.GetImages,            // 9
 		example.GetKeywords,          // 10
 		example.GetLists,             // 11

@@ -11,7 +11,7 @@ type example struct {
 	client *tmdb.Client
 }
 
-var sessionId = os.Getenv("SESSIONID")
+var sessionID = os.Getenv("SESSIONID")
 
 func (e example) GetSeason() {
 	opt := tmdb.TVSeasonDetailsOptions{
@@ -23,7 +23,7 @@ func (e example) GetSeason() {
 }
 
 func (e example) GetAccountStates() {
-	states, _, err := e.client.TVSeasons.GetAccountStates(1424, 1, sessionId)
+	states, _, err := e.client.TVSeasons.GetAccountStates(1424, 1, sessionID)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*states)
 }
@@ -49,8 +49,8 @@ func (e example) GetCredits() {
 	examples.PrettyPrint(*credits)
 }
 
-func (e example) GetExternalIds() {
-	ids, _, err := e.client.TVSeasons.GetExternalIds(67466, 1, nil)
+func (e example) GetExternalIDs() {
+	ids, _, err := e.client.TVSeasons.GetExternalIDs(67466, 1, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*ids)
 }
@@ -88,7 +88,7 @@ func main() {
 		example.GetAggregateCredits, // 3
 		example.GetChanges,          // 4
 		example.GetCredits,          // 5
-		example.GetExternalIds,      // 6
+		example.GetExternalIDs,      // 6
 		example.GetImages,           // 7
 		example.GetTranslations,     // 8
 		example.GetVideos,           // 9

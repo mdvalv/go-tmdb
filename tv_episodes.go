@@ -12,12 +12,13 @@ type TVEpisodesResource struct {
 	client *Client
 }
 
+// TVEpisodeDetails represents tv episode details in TMDb.
 type TVEpisodeDetails struct {
 	AirDate        string       `json:"air_date"`
 	Crew           []TVShowCrew `json:"crew"`
 	EpisodeNumber  int          `json:"episode_number"`
 	GuestStars     []TVShowCast `json:"guest_stars"`
-	Id             int          `json:"id"`
+	ID             int          `json:"id"`
 	Name           string       `json:"name"`
 	Overview       string       `json:"overview"`
 	ProductionCode *string      `json:"production_code"`
@@ -29,12 +30,13 @@ type TVEpisodeDetails struct {
 
 	// append to response
 	Credits      *TVEpisodeCredits      `json:"credits"`
-	ExternalIds  *TVEpisodeExternalIds  `json:"external_ids"`
+	ExternalIDs  *TVEpisodeExternalIDs  `json:"external_ids"`
 	Images       *TVEpisodeImages       `json:"images"`
 	Translations *TVEpisodeTranslations `json:"translations"`
 	Videos       *Videos                `json:"videos"`
 }
 
+// TVEpisodeDetailsOptions represents the available options for the request.
 type TVEpisodeDetailsOptions struct {
 	// Pass a ISO 639-1 value to display translated data for the fields that support it.
 	// minLength: 2
@@ -53,91 +55,98 @@ type TVEpisodeDetailsOptions struct {
 	AppendToResponse string `url:"append_to_response,omitempty" json:"append_to_response,omitempty"`
 }
 
-// Get the TV episode details by id.
-func (tr *TVEpisodesResource) GetEpisode(tvId, seasonNumber, episodeNumber int, opt *TVEpisodeDetailsOptions) (*TVEpisodeDetails, *http.Response, error) {
-	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d", tvId, seasonNumber, episodeNumber)
+// GetEpisode retrieves the TV episode details by id.
+func (tr *TVEpisodesResource) GetEpisode(tvID, seasonNumber, episodeNumber int, opt *TVEpisodeDetailsOptions) (*TVEpisodeDetails, *http.Response, error) {
+	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d", tvID, seasonNumber, episodeNumber)
 	var episode TVEpisodeDetails
 	resp, err := tr.client.get(path, &episode, WithQueryParams(opt))
 	return &episode, resp, errors.Wrap(err, "failed to get episode")
 }
 
+// AccountStatesEpisode represents account states for a episode in TMDb.
 type AccountStatesEpisode struct {
-	Id    int         `json:"id"`
+	ID    int         `json:"id"`
 	Rated interface{} `json:"rated"`
 }
 
-// Returns all of the user ratings for the season's episodes.
-func (tr *TVEpisodesResource) GetAccountStates(tvId, seasonNumber, episodeNumber int, sessionId string) (*AccountStatesEpisode, *http.Response, error) {
-	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/account_states", tvId, seasonNumber, episodeNumber)
+// GetAccountStates returns all of the user ratings for the season's episodes.
+func (tr *TVEpisodesResource) GetAccountStates(tvID, seasonNumber, episodeNumber int, sessionID string) (*AccountStatesEpisode, *http.Response, error) {
+	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/account_states", tvID, seasonNumber, episodeNumber)
 	var states AccountStatesEpisode
-	resp, err := tr.client.get(path, &states, WithQueryParam("session_id", sessionId))
+	resp, err := tr.client.get(path, &states, WithSessionID(sessionID))
 	return &states, resp, errors.Wrap(err, "failed to get account states")
 }
 
-// Get the changes for a TV episode. By default only the last 24 hours are returned.
+// GetChanges retrieves the changes for a TV episode. By default only the last 24 hours are returned.
 // Query up to 14 days in a single query by using the start_date and end_date query parameters.
-func (tr *TVEpisodesResource) GetChanges(episodeId int, opt *ChangesOptions) (*Changes, *http.Response, error) {
-	path := fmt.Sprintf("/tv/episode/%d/changes", episodeId)
+func (tr *TVEpisodesResource) GetChanges(episodeID int, opt *ChangesOptions) (*Changes, *http.Response, error) {
+	path := fmt.Sprintf("/tv/episode/%d/changes", episodeID)
 	var changes Changes
 	resp, err := tr.client.get(path, &changes, WithQueryParams(opt))
 	return &changes, resp, errors.Wrap(err, "failed to get episode changes")
 }
 
+// TVEpisodeCredits represents tv episode credits in TMDb.
 type TVEpisodeCredits struct {
 	Cast       []TVShowCast `json:"cast"`
 	Crew       []TVShowCrew `json:"crew"`
 	GuestStars []TVShowCast `json:"guest_stars"`
-	Id         *int         `json:"id"`
+	ID         *int         `json:"id"`
 }
 
-// Get the credits (cast, crew and guest stars) for a TV episode.
-func (tr *TVEpisodesResource) GetCredits(tvId, seasonNumber, episodeNumber int, opt *CreditsOptions) (*TVEpisodeCredits, *http.Response, error) {
-	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/credits", tvId, seasonNumber, episodeNumber)
+// GetCredits retrieves the credits (cast, crew and guest stars) for a TV episode.
+func (tr *TVEpisodesResource) GetCredits(tvID, seasonNumber, episodeNumber int, opt *CreditsOptions) (*TVEpisodeCredits, *http.Response, error) {
+	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/credits", tvID, seasonNumber, episodeNumber)
 	var credits TVEpisodeCredits
 	resp, err := tr.client.get(path, &credits, WithQueryParams(opt))
 	return &credits, resp, errors.Wrap(err, "failed to get credits")
 }
 
-type TVEpisodeExternalIds struct {
-	Id          *int    `json:"id"`
-	FreebaseId  *string `json:"freebase_id"`
-	FreebaseMId *string `json:"freebase_mid"`
-	IMDbId      *string `json:"imdb_id"`
-	TVDbId      *int    `json:"tvdb_id"`
-	TVRageId    *int    `json:"tvrage_id"`
+// TVEpisodeExternalIDs represents tv episode external ids in TMDb.
+type TVEpisodeExternalIDs struct {
+	ID          *int    `json:"id"`
+	FreebaseID  *string `json:"freebase_id"`
+	FreebaseMID *string `json:"freebase_mid"`
+	IMDbID      *string `json:"imdb_id"`
+	TVDbID      *int    `json:"tvdb_id"`
+	TVRageID    *int    `json:"tvrage_id"`
 }
 
-// Get the external ids for a TV season.
-func (tr *TVEpisodesResource) GetExternalIds(tvId, seasonNumber, episodeNumber int, opt *ExternalIdsOptions) (*TVEpisodeExternalIds, *http.Response, error) {
-	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/external_ids", tvId, seasonNumber, episodeNumber)
-	var ids TVEpisodeExternalIds
+// GetExternalIDs retrieves the external ids for a TV season.
+func (tr *TVEpisodesResource) GetExternalIDs(tvID, seasonNumber, episodeNumber int, opt *ExternalIDsOptions) (*TVEpisodeExternalIDs, *http.Response, error) {
+	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/external_ids", tvID, seasonNumber, episodeNumber)
+	var ids TVEpisodeExternalIDs
 	resp, err := tr.client.get(path, &ids, WithQueryParams(opt))
 	return &ids, resp, errors.Wrap(err, "failed to get external ids")
 }
 
+// Still represents a still in TMDb.
 type Still Image
 
+// TVEpisodeImages represents tv episode images in TMDb.
 type TVEpisodeImages struct {
-	Id     *int    `json:"id"`
+	ID     *int    `json:"id"`
 	Stills []Still `json:"stills"`
 }
 
-// Get the images that belong to a TV episode.
+// GetImages retrieves the images that belong to a TV episode.
 // Querying images with a language parameter will filter the results.
 // To include a fallback language (especially useful for backdrops), use the include_image_language parameter.
 // This should be a comma separated value like so: include_image_language=en,null.
-func (tr *TVEpisodesResource) GetImages(tvId, seasonNumber, episodeNumber int, opt *ImagesOptions) (*TVEpisodeImages, *http.Response, error) {
-	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/images", tvId, seasonNumber, episodeNumber)
+func (tr *TVEpisodesResource) GetImages(tvID, seasonNumber, episodeNumber int, opt *ImagesOptions) (*TVEpisodeImages, *http.Response, error) {
+	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/images", tvID, seasonNumber, episodeNumber)
 	var images TVEpisodeImages
 	resp, err := tr.client.get(path, &images, WithQueryParams(opt))
 	return &images, resp, errors.Wrap(err, "failed to get images")
 }
 
+// TVEpisodeData represents tv episode data in TMDb.
 type TVEpisodeData struct {
 	Name     string `json:"name"`
 	Overview string `json:"overview"`
 }
 
+// TVEpisodeTranslation represents a tv episode translation in TMDb.
 type TVEpisodeTranslation struct {
 	ISO31661    string        `json:"iso_3166_1"`
 	ISO6391     string        `json:"iso_639_1"`
@@ -146,41 +155,42 @@ type TVEpisodeTranslation struct {
 	Data        TVEpisodeData `json:"data"`
 }
 
+// TVEpisodeTranslations represents tv episode translations in TMDb.
 type TVEpisodeTranslations struct {
-	Id           *int                   `json:"id"`
+	ID           *int                   `json:"id"`
 	Translations []TVEpisodeTranslation `json:"translations"`
 }
 
-// Get a list of the translations that exist for a TV show.
-func (tr *TVEpisodesResource) GetTranslations(tvId, seasonNumber, episodeNumber int) (*TVEpisodeTranslations, *http.Response, error) {
-	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/translations", tvId, seasonNumber, episodeNumber)
+// GetTranslations retrieves a list of the translations that exist for a TV show.
+func (tr *TVEpisodesResource) GetTranslations(tvID, seasonNumber, episodeNumber int) (*TVEpisodeTranslations, *http.Response, error) {
+	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/translations", tvID, seasonNumber, episodeNumber)
 	var translations TVEpisodeTranslations
 	resp, err := tr.client.get(path, &translations)
 	return &translations, resp, errors.Wrap(err, "failed to get translations")
 }
 
-// Get the videos that have been added to a TV season.
-func (tr *TVEpisodesResource) GetVideos(tvId, seasonNumber, episodeNumber int, opt *VideosOptions) (*Videos, *http.Response, error) {
-	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/videos", tvId, seasonNumber, episodeNumber)
+// GetVideos retrieves the videos that have been added to a TV season.
+func (tr *TVEpisodesResource) GetVideos(tvID, seasonNumber, episodeNumber int, opt *VideosOptions) (*Videos, *http.Response, error) {
+	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/videos", tvID, seasonNumber, episodeNumber)
 	var videos Videos
 	resp, err := tr.client.get(path, &videos, WithQueryParams(opt))
 	return &videos, resp, errors.Wrap(err, "failed to get tv show videos")
 }
 
-// Rate a TV episode.
+// Rate rates a TV episode.
 // A valid session or guest session ID is required.
-func (tr *TVEpisodesResource) Rate(tvId, seasonNumber, episodeNumber int, rating float64, sessionId Auth) (*RateResponse, *http.Response, error) {
-	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/rating", tvId, seasonNumber, episodeNumber)
+func (tr *TVEpisodesResource) Rate(tvID, seasonNumber, episodeNumber int, rating float64, sessionID Auth) (*RateResponse, *http.Response, error) {
+	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/rating", tvID, seasonNumber, episodeNumber)
 	var response RateResponse
-	resp, err := tr.client.post(path, &response, WithBody(map[string]float64{"value": rating}), WithQueryParams(sessionId))
+	resp, err := tr.client.post(path, &response, WithBody(map[string]float64{"value": rating}), WithQueryParams(sessionID))
 	return &response, resp, errors.Wrap(err, "failed to rate tv show episode")
 }
 
-// Remove a rating for a TV episode.
+// DeleteRating removes a rating for a TV episode.
 // A valid session or guest session ID is required.
-func (tr *TVEpisodesResource) DeleteRating(tvId, seasonNumber, episodeNumber int, sessionId Auth) (*DeleteRatingResponse, *http.Response, error) {
-	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/rating", tvId, seasonNumber, episodeNumber)
+func (tr *TVEpisodesResource) DeleteRating(tvID, seasonNumber, episodeNumber int, sessionID Auth) (*DeleteRatingResponse, *http.Response, error) {
+	path := fmt.Sprintf("/tv/%d/season/%d/episode/%d/rating", tvID, seasonNumber, episodeNumber)
 	var response DeleteRatingResponse
-	resp, err := tr.client.delete(path, &response, WithQueryParams(sessionId))
+	resp, err := tr.client.delete(path, &response, WithQueryParams(sessionID))
 	return &response, resp, errors.Wrap(err, "failed to delete tv show episode rating")
 }

@@ -12,28 +12,32 @@ type CreditsResource struct {
 	client *Client
 }
 
+// GetMediaType retrieves the media type from a media credit.
 func (mc MediaCredit) GetMediaType() string {
 	return mc["media_type"].(string)
 }
 
+// ToMovieCredit converts the data to a movie credit.
 func (mc MediaCredit) ToMovieCredit() (*MovieCredit, error) {
 	var credit MovieCredit
 	err := convert("movie", mc, &credit)
 	return &credit, errors.Wrap(err, "failed to convert object to movie credit")
 }
 
+// ToTVShowCredit converts the data to a tv show credit.
 func (mc MediaCredit) ToTVShowCredit() (*TVShowCredit, error) {
 	var credit TVShowCredit
 	err := convert("tv", mc, &credit)
 	return &credit, errors.Wrap(err, "failed to convert object to tv credit")
 }
 
+// MovieCredit represents a movie credit in TMDb.
 type MovieCredit struct {
 	Adult            bool    `json:"adult"`
 	BackdropPath     *string `json:"backdrop_path"`
 	Character        string  `json:"character"`
-	GenreIds         []int   `json:"genre_ids"`
-	Id               int     `json:"id"`
+	GenreIDs         []int   `json:"genre_ids"`
+	ID               int     `json:"id"`
 	MediaType        string  `json:"media_type"`
 	OriginalLanguage string  `json:"original_language"`
 	OriginalTitle    string  `json:"original_title"`
@@ -47,13 +51,14 @@ type MovieCredit struct {
 	VoteCount        int     `json:"vote_count"`
 }
 
+// TVShowCredit represents a tv show credit in TMDb.
 type TVShowCredit struct {
 	Adult            bool        `json:"adult"`
 	BackdropPath     *string     `json:"backdrop_path"`
 	Episodes         []TVEpisode `json:"episodes"`
 	FirstAirDate     string      `json:"first_air_date"`
-	GenreIds         []int       `json:"genre_ids"`
-	Id               int         `json:"id"`
+	GenreIDs         []int       `json:"genre_ids"`
+	ID               int         `json:"id"`
 	MediaType        string      `json:"media_type"`
 	Name             string      `json:"name"`
 	OriginalLanguage string      `json:"original_language"`
@@ -67,12 +72,14 @@ type TVShowCredit struct {
 	VoteCount        int         `json:"vote_count"`
 }
 
+// MediaCredit represents a media credit from TMSb.
 type MediaCredit map[string]interface{}
 
+// PersonCredit represents a person credit in TMDb.
 type PersonCredit struct {
 	Adult              bool    `json:"adult"`
 	Gender             int     `json:"gender"`
-	Id                 int     `json:"id"`
+	ID                 int     `json:"id"`
 	KnownForDepartment string  `json:"known_for_department"`
 	MediaType          string  `json:"media_type"`
 	Name               string  `json:"name"`
@@ -81,17 +88,18 @@ type PersonCredit struct {
 	ProfilePath        string  `json:"profile_path"`
 }
 
+// Credit represents a credit in TMDb.
 type Credit struct {
 	CreditType string       `json:"credit_type"`
 	Department string       `json:"department"`
-	Id         string       `json:"id"`
+	ID         string       `json:"id"`
 	Job        string       `json:"job"`
 	Media      MediaCredit  `json:"media"`
 	MediaType  string       `json:"media_type"`
 	Person     PersonCredit `json:"person"`
 }
 
-// Get a movie or TV credit details by id.
+// GetCredit retrieves a movie or TV credit details by id.
 func (cr *CreditsResource) GetCredit(id string) (*Credit, *http.Response, error) {
 	path := fmt.Sprintf("/credit/%s", id)
 	var credit Credit
