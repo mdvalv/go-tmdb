@@ -1,3 +1,4 @@
+// Find examples.
 package main
 
 import (
@@ -12,18 +13,18 @@ type example struct {
 }
 
 const (
-	imdbId = "imdb_id"
-	tvdbId = "tvdb_id"
+	imdbID = "imdb_id"
+	tvdbID = "tvdb_id"
 )
 
 func (e example) FindMovie() {
-	findings, _, err := e.client.Find.Find("tt0421994", imdbId, nil)
+	findings, _, err := e.client.Find.Find("tt0421994", imdbID, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*findings)
 }
 
 func (e example) FindPerson() {
-	findings, _, err := e.client.Find.Find("nm6442992", imdbId, nil)
+	findings, _, err := e.client.Find.Find("nm6442992", imdbID, nil)
 	examples.PanicOnError(err)
 	for _, person := range findings.People {
 		fmt.Println("->", person.Name, "known for:")
@@ -47,19 +48,19 @@ func (e example) FindPerson() {
 }
 
 func (e example) FindTVShow() {
-	findings, _, err := e.client.Find.Find("tt10638036", imdbId, nil)
+	findings, _, err := e.client.Find.Find("tt10638036", imdbID, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*findings)
 }
 
 func (e example) FindEpisode() {
-	findings, _, err := e.client.Find.Find("tt8160066", imdbId, nil)
+	findings, _, err := e.client.Find.Find("tt8160066", imdbID, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*findings)
 }
 
 func (e example) FindSeason() {
-	findings, _, err := e.client.Find.Find("668343", tvdbId, nil)
+	findings, _, err := e.client.Find.Find("668343", tvdbID, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*findings)
 }

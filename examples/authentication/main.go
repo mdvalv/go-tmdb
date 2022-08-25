@@ -1,3 +1,4 @@
+// Authentication examples.
 package main
 
 import (
@@ -18,7 +19,7 @@ const (
 	accessTokenV4 = "v4_access_token"
 )
 
-var sessionId = os.Getenv("SESSIONID")
+var sessionID = os.Getenv("SESSIONID")
 
 func (e example) CreateGuestSession() {
 	session, _, err := e.client.Authentication.CreateGuestSession()
@@ -51,7 +52,7 @@ func (e example) CreateSessionWithV4Token() {
 }
 
 func (e example) DeleteSession() {
-	success, _, err := e.client.Authentication.DeleteSession(sessionId)
+	success, _, err := e.client.Authentication.DeleteSession(sessionID)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*success)
 }

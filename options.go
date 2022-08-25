@@ -1,7 +1,9 @@
 package tmdb
 
+// CreditsOptions represents the available options for the request.
 type CreditsOptions languageOptions
 
+// languageOptions represents the available options for the request.
 type languageOptions struct {
 	// Pass a ISO 639-1 value to display translated data for the fields that support it.
 	// minLength: 2
@@ -11,6 +13,7 @@ type languageOptions struct {
 	Language string `url:"language,omitempty" json:"language,omitempty"`
 }
 
+// languagePageOptions represents the available options for the request.
 type languagePageOptions struct {
 	// Pass a ISO 639-1 value to display translated data for the fields that support it.
 	// minLength: 2

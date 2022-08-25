@@ -12,6 +12,7 @@ type GuestSessionResource struct {
 	client *Client
 }
 
+// GuestSessionOptions represents the available options for the request.
 type GuestSessionOptions struct {
 	// Pass a ISO 639-1 value to display translated data for the fields that support it.
 	// minLength: 2
@@ -28,25 +29,25 @@ type GuestSessionOptions struct {
 	Page *int `url:"page,omitempty" json:"page,omitempty"`
 }
 
-// Get the list of rated movies.
-func (ar *GuestSessionResource) GetRatedMovies(sessionId string, opt *GuestSessionOptions) (*RatedMovies, *http.Response, error) {
-	path := fmt.Sprintf("/guest_session/%s/rated/movies", sessionId)
+// GetRatedMovies retrieves the list of rated movies.
+func (ar *GuestSessionResource) GetRatedMovies(sessionID string, opt *GuestSessionOptions) (*RatedMovies, *http.Response, error) {
+	path := fmt.Sprintf("/guest_session/%s/rated/movies", sessionID)
 	var movies RatedMovies
 	resp, err := ar.client.get(path, &movies, WithQueryParams(opt))
 	return &movies, resp, errors.Wrap(err, "failed to get rated movies")
 }
 
-// Get the list of rated tv shows.
-func (ar *GuestSessionResource) GetRatedTVShows(sessionId string, opt *GuestSessionOptions) (*RatedTVShows, *http.Response, error) {
-	path := fmt.Sprintf("/guest_session/%s/rated/tv", sessionId)
+// GetRatedTVShows retrieves the list of rated tv shows.
+func (ar *GuestSessionResource) GetRatedTVShows(sessionID string, opt *GuestSessionOptions) (*RatedTVShows, *http.Response, error) {
+	path := fmt.Sprintf("/guest_session/%s/rated/tv", sessionID)
 	var tvShows RatedTVShows
 	resp, err := ar.client.get(path, &tvShows, WithQueryParams(opt))
 	return &tvShows, resp, errors.Wrap(err, "failed to get rated tv shows")
 }
 
-// Get the list of rated tv episodes.
-func (ar *GuestSessionResource) GetRatedTVEpisodes(sessionId string, opt *GuestSessionOptions) (*RatedTVEpisodes, *http.Response, error) {
-	path := fmt.Sprintf("/guest_session/%s/rated/tv/episodes", sessionId)
+// GetRatedTVEpisodes retrieves the list of rated tv episodes.
+func (ar *GuestSessionResource) GetRatedTVEpisodes(sessionID string, opt *GuestSessionOptions) (*RatedTVEpisodes, *http.Response, error) {
+	path := fmt.Sprintf("/guest_session/%s/rated/tv/episodes", sessionID)
 	var episodes RatedTVEpisodes
 	resp, err := ar.client.get(path, &episodes, WithQueryParams(opt))
 	return &episodes, resp, errors.Wrap(err, "failed to get rated tv episodes")

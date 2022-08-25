@@ -1,3 +1,4 @@
+// People examples.
 package main
 
 import (
@@ -101,9 +102,9 @@ func (e example) GetCombinedCredits() {
 }
 
 func (e example) GetExternalIDs() {
-	extIds, _, err := e.client.People.GetExternalIDs(2340180, nil)
+	extIDs, _, err := e.client.People.GetExternalIDs(2340180, nil)
 	examples.PanicOnError(err)
-	examples.PrettyPrint(*extIds)
+	examples.PrettyPrint(*extIDs)
 }
 
 func (e example) GetImages() {

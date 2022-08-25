@@ -1,3 +1,4 @@
+// Account examples.
 package main
 
 import (
@@ -12,19 +13,19 @@ type example struct {
 }
 
 const (
-	accountId = 123
+	accountID = 123
 )
 
-var sessionId = os.Getenv("SESSIONID")
+var sessionID = os.Getenv("SESSIONID")
 
 func (e example) GetAccount() {
-	account, _, err := e.client.Account.GetAccount(sessionId)
+	account, _, err := e.client.Account.GetAccount(sessionID)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*account)
 }
 
 func (e example) GetCreatedLists() {
-	account, _, err := e.client.Account.GetCreatedLists(accountId, sessionId, nil)
+	account, _, err := e.client.Account.GetCreatedLists(accountID, sessionID, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*account)
 }
@@ -33,13 +34,13 @@ func (e example) GetCreatedListsWithOptions() {
 	opt := tmdb.AccountListsOptions{
 		Language: "pt-BR",
 	}
-	account, _, err := e.client.Account.GetCreatedLists(accountId, sessionId, &opt)
+	account, _, err := e.client.Account.GetCreatedLists(accountID, sessionID, &opt)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*account)
 }
 
 func (e example) GetFavoriteMovies() {
-	movies, _, err := e.client.Account.GetFavoriteMovies(accountId, sessionId, nil)
+	movies, _, err := e.client.Account.GetFavoriteMovies(accountID, sessionID, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*movies)
 }
@@ -49,13 +50,13 @@ func (e example) GetFavoriteMoviesWithOptions() {
 		Language: "pt-BR",
 		SortBy:   "created_at.desc",
 	}
-	movies, _, err := e.client.Account.GetFavoriteMovies(accountId, sessionId, &opt)
+	movies, _, err := e.client.Account.GetFavoriteMovies(accountID, sessionID, &opt)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*movies)
 }
 
 func (e example) GetFavoriteTVShows() {
-	movies, _, err := e.client.Account.GetFavoriteTVShows(accountId, sessionId, nil)
+	movies, _, err := e.client.Account.GetFavoriteTVShows(accountID, sessionID, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*movies)
 }
@@ -65,13 +66,13 @@ func (e example) GetFavoriteTVShowsWithOptions() {
 		Language: "pt-BR",
 		SortBy:   "created_at.desc",
 	}
-	movies, _, err := e.client.Account.GetFavoriteTVShows(accountId, sessionId, &opt)
+	movies, _, err := e.client.Account.GetFavoriteTVShows(accountID, sessionID, &opt)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*movies)
 }
 
 func (e example) GetRatedMovies() {
-	movies, _, err := e.client.Account.GetRatedMovies(accountId, sessionId, nil)
+	movies, _, err := e.client.Account.GetRatedMovies(accountID, sessionID, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*movies)
 }
@@ -81,13 +82,13 @@ func (e example) GetRatedMoviesWithOptions() {
 		Language: "pt-BR",
 		SortBy:   "created_at.desc",
 	}
-	movies, _, err := e.client.Account.GetRatedMovies(accountId, sessionId, &opt)
+	movies, _, err := e.client.Account.GetRatedMovies(accountID, sessionID, &opt)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*movies)
 }
 
 func (e example) GetRatedTVShows() {
-	tvShows, _, err := e.client.Account.GetRatedTVShows(accountId, sessionId, nil)
+	tvShows, _, err := e.client.Account.GetRatedTVShows(accountID, sessionID, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*tvShows)
 }
@@ -97,13 +98,13 @@ func (e example) GetRatedTVShowsWithOptions() {
 		Language: "pt-BR",
 		SortBy:   "created_at.desc",
 	}
-	tvShows, _, err := e.client.Account.GetRatedTVShows(accountId, sessionId, &opt)
+	tvShows, _, err := e.client.Account.GetRatedTVShows(accountID, sessionID, &opt)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*tvShows)
 }
 
 func (e example) GetRatedTVEpisodes() {
-	episodes, _, err := e.client.Account.GetRatedTVEpisodes(accountId, sessionId, nil)
+	episodes, _, err := e.client.Account.GetRatedTVEpisodes(accountID, sessionID, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*episodes)
 }
@@ -113,13 +114,13 @@ func (e example) GetRatedTVEpisodesWithOptions() {
 		Language: "pt-BR",
 		SortBy:   "created_at.desc",
 	}
-	episodes, _, err := e.client.Account.GetRatedTVEpisodes(accountId, sessionId, &opt)
+	episodes, _, err := e.client.Account.GetRatedTVEpisodes(accountID, sessionID, &opt)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*episodes)
 }
 
 func (e example) GetWatchlistMovies() {
-	movies, _, err := e.client.Account.GetWatchlistMovies(accountId, sessionId, nil)
+	movies, _, err := e.client.Account.GetWatchlistMovies(accountID, sessionID, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*movies)
 }
@@ -129,13 +130,13 @@ func (e example) GetWatchlistMoviesWithOptions() {
 		Language: "pt-BR",
 		SortBy:   "created_at.desc",
 	}
-	movies, _, err := e.client.Account.GetWatchlistMovies(accountId, sessionId, &opt)
+	movies, _, err := e.client.Account.GetWatchlistMovies(accountID, sessionID, &opt)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*movies)
 }
 
 func (e example) GetWatchlistTVShows() {
-	tvShows, _, err := e.client.Account.GetWatchlistTVShows(accountId, sessionId, nil)
+	tvShows, _, err := e.client.Account.GetWatchlistTVShows(accountID, sessionID, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*tvShows)
 }
@@ -145,7 +146,7 @@ func (e example) GetWatchlistTVShowsWithOptions() {
 		Language: "pt-BR",
 		SortBy:   "created_at.desc",
 	}
-	tvShows, _, err := e.client.Account.GetWatchlistTVShows(accountId, sessionId, &opt)
+	tvShows, _, err := e.client.Account.GetWatchlistTVShows(accountID, sessionID, &opt)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*tvShows)
 }
@@ -153,10 +154,10 @@ func (e example) GetWatchlistTVShowsWithOptions() {
 func (e example) Favorite() {
 	opt := tmdb.Favorite{
 		Favorite:  true,
-		MediaId:   458723,
+		MediaID:   458723,
 		MediaType: "movie",
 	}
-	movies, _, err := e.client.Account.Favorite(accountId, sessionId, opt)
+	movies, _, err := e.client.Account.Favorite(accountID, sessionID, opt)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*movies)
 }
@@ -164,10 +165,10 @@ func (e example) Favorite() {
 func (e example) Watchlist() {
 	opt := tmdb.Watchlist{
 		Watchlist: true,
-		MediaId:   776503,
+		MediaID:   776503,
 		MediaType: "movie",
 	}
-	movies, _, err := e.client.Account.Watchlist(accountId, sessionId, opt)
+	movies, _, err := e.client.Account.Watchlist(accountID, sessionID, opt)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*movies)
 }

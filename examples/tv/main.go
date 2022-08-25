@@ -1,3 +1,4 @@
+// TV examples.
 package main
 
 import (
@@ -11,7 +12,7 @@ type example struct {
 	client *tmdb.Client
 }
 
-var sessionId = os.Getenv("SESSIONID")
+var sessionID = os.Getenv("SESSIONID")
 
 func (e example) GetTVShow() {
 	opt := tmdb.TVShowDetailsOptions{
@@ -24,7 +25,7 @@ func (e example) GetTVShow() {
 }
 
 func (e example) GetAccountStates() {
-	states, _, err := e.client.TV.GetAccountStates(47801, sessionId)
+	states, _, err := e.client.TV.GetAccountStates(47801, sessionID)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*states)
 }
@@ -68,8 +69,8 @@ func (e example) GetEpisodeGroups() {
 	examples.PrettyPrint(*groups)
 }
 
-func (e example) GetExternalIds() {
-	ids, _, err := e.client.TV.GetExternalIds(4616, nil)
+func (e example) GetExternalIDs() {
+	ids, _, err := e.client.TV.GetExternalIDs(4616, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*ids)
 }
@@ -175,19 +176,19 @@ func (e example) GetEpisodeGroup() {
 }
 
 func (e example) Rate() {
-	sessionId := tmdb.Auth{
-		SessionId: sessionId,
+	sessionID := tmdb.Auth{
+		SessionID: sessionID,
 	}
-	states, _, err := e.client.TV.Rate(31917, 7.5, sessionId)
+	states, _, err := e.client.TV.Rate(31917, 7.5, sessionID)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*states)
 }
 
 func (e example) DeleteRating() {
-	sessionId := tmdb.Auth{
-		SessionId: sessionId,
+	sessionID := tmdb.Auth{
+		SessionID: sessionID,
 	}
-	states, _, err := e.client.TV.DeleteRating(31917, sessionId)
+	states, _, err := e.client.TV.DeleteRating(31917, sessionID)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*states)
 }
@@ -206,7 +207,7 @@ func main() {
 		example.GetContentRatings,       // 6
 		example.GetCredits,              // 7
 		example.GetEpisodeGroups,        // 8
-		example.GetExternalIds,          // 9
+		example.GetExternalIDs,          // 9
 		example.GetImages,               // 10
 		example.GetKeywords,             // 11
 		example.GetRecommendations,      // 12

@@ -1,3 +1,4 @@
+// Guest Session examples.
 package main
 
 import (
@@ -10,23 +11,23 @@ type example struct {
 }
 
 const (
-	sessionId = "guest_session_id"
+	sessionID = "guest_session_id"
 )
 
 func (e example) GetRatedMovies() {
-	account, _, err := e.client.GuestSession.GetRatedMovies(sessionId, nil)
+	account, _, err := e.client.GuestSession.GetRatedMovies(sessionID, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*account)
 }
 
 func (e example) GetRatedTVShows() {
-	tvShows, _, err := e.client.GuestSession.GetRatedTVShows(sessionId, nil)
+	tvShows, _, err := e.client.GuestSession.GetRatedTVShows(sessionID, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*tvShows)
 }
 
 func (e example) GetRatedTVEpisodes() {
-	episodes, _, err := e.client.GuestSession.GetRatedTVEpisodes(sessionId, nil)
+	episodes, _, err := e.client.GuestSession.GetRatedTVEpisodes(sessionID, nil)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*episodes)
 }

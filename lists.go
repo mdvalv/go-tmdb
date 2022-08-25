@@ -12,11 +12,12 @@ type ListsResource struct {
 	client *Client
 }
 
+// List represents a list in TMDb.
 type List struct {
 	CreatedBy     string      `json:"created_by"`
 	Description   string      `json:"description"`
 	FavoriteCount int         `json:"favorite_count"`
-	Id            string      `json:"id"`
+	ID            string      `json:"id"`
 	ISO6391       string      `json:"iso_639_1"`
 	ItemCount     int         `json:"item_count"`
 	Items         []MovieOrTV `json:"items"`
@@ -24,86 +25,94 @@ type List struct {
 	PosterPath    *string     `json:"poster_path"`
 }
 
+// ListOptions represents the available options for the request.
 type ListOptions languageOptions
 
-// Get the details of a list.
-func (lr *ListsResource) GetList(listId string, opt *ListOptions) (*List, *http.Response, error) {
-	path := fmt.Sprintf("/list/%s", listId)
+// GetList retrieves the details of a list.
+func (lr *ListsResource) GetList(listID string, opt *ListOptions) (*List, *http.Response, error) {
+	path := fmt.Sprintf("/list/%s", listID)
 	var list List
 	resp, err := lr.client.get(path, &list, WithQueryParams(opt))
 	return &list, resp, errors.Wrap(err, "failed to get list")
 }
 
+// ItemStatus represents an item status in TMDb.
 type ItemStatus struct {
-	Id          string `json:"id"`
+	ID          string `json:"id"`
 	ItemPresent bool   `json:"item_present"`
 }
 
-// Check if a movie has already been added to the list.
-func (lr *ListsResource) GetItemStatus(listId string, movieId int) (*ItemStatus, *http.Response, error) {
-	path := fmt.Sprintf("/list/%s/item_status", listId)
+// GetItemStatus checks if a movie has already been added to the list.
+func (lr *ListsResource) GetItemStatus(listID string, movieID int) (*ItemStatus, *http.Response, error) {
+	path := fmt.Sprintf("/list/%s/item_status", listID)
 	var status ItemStatus
-	resp, err := lr.client.get(path, &status, WithQueryParam("movie_id", fmt.Sprint(movieId)))
+	resp, err := lr.client.get(path, &status, WithQueryParam("movie_id", fmt.Sprint(movieID)))
 	return &status, resp, errors.Wrap(err, "failed to get item status")
 }
 
+// CreateList represents list to be created in TMDb.
 type CreateList struct {
 	Name        string `url:"name,omitempty" json:"name,omitempty"`
 	Description string `url:"description,omitempty" json:"description,omitempty"`
 	Language    string `url:"language,omitempty" json:"language,omitempty"`
 }
 
+// CreateListResponse represents response for creating a list in TMDb.
 type CreateListResponse struct {
-	ListId        int    `json:"list_id"`
+	ListID        int    `json:"list_id"`
 	StatusCode    int    `json:"status_code"`
 	StatusMessage string `json:"status_message"`
 	Success       bool   `json:"success"`
 }
 
-// Create a list.
-func (lr *ListsResource) CreateList(sessionId string, list CreateList) (*CreateListResponse, *http.Response, error) {
+// CreateList creates a list.
+func (lr *ListsResource) CreateList(sessionID string, list CreateList) (*CreateListResponse, *http.Response, error) {
 	path := "/list"
 	var response CreateListResponse
-	resp, err := lr.client.post(path, &response, WithBody(list), WithQueryParam("session_id", sessionId))
+	resp, err := lr.client.post(path, &response, WithBody(list), WithSessionID(sessionID))
 	return &response, resp, errors.Wrap(err, "failed to get item status")
 }
 
+// AddItemResponse represents the response for adding an item to a list.
 type AddItemResponse statusResponse
 
-// Add a movie to a list.
-func (lr *ListsResource) AddMovie(sessionId, listId string, itemId int) (*AddItemResponse, *http.Response, error) {
-	path := fmt.Sprintf("/list/%s/add_item", listId)
+// AddMovie adds a movie to a list.
+func (lr *ListsResource) AddMovie(sessionID, listID string, itemID int) (*AddItemResponse, *http.Response, error) {
+	path := fmt.Sprintf("/list/%s/add_item", listID)
 	var response AddItemResponse
-	resp, err := lr.client.post(path, &response, WithQueryParam("media_id", fmt.Sprint(itemId)), WithQueryParam("session_id", sessionId))
+	resp, err := lr.client.post(path, &response, WithQueryParam("media_id", fmt.Sprint(itemID)), WithSessionID(sessionID))
 	return &response, resp, errors.Wrap(err, "failed to add movie")
 }
 
+// RemoveItemResponse represents the response for removing an item from a list.
 type RemoveItemResponse statusResponse
 
-// Remove a movie from a list.
-func (lr *ListsResource) RemoveMovie(sessionId, listId string, itemId int) (*RemoveItemResponse, *http.Response, error) {
-	path := fmt.Sprintf("/list/%s/remove_item", listId)
+// RemoveMovie removes a movie from a list.
+func (lr *ListsResource) RemoveMovie(sessionID, listID string, itemID int) (*RemoveItemResponse, *http.Response, error) {
+	path := fmt.Sprintf("/list/%s/remove_item", listID)
 	var response RemoveItemResponse
-	resp, err := lr.client.post(path, &response, WithQueryParam("media_id", fmt.Sprint(itemId)), WithQueryParam("session_id", sessionId))
+	resp, err := lr.client.post(path, &response, WithQueryParam("media_id", fmt.Sprint(itemID)), WithSessionID(sessionID))
 	return &response, resp, errors.Wrap(err, "failed to remove movie")
 }
 
+// ClearListResponse represents the response for clearing all items from a list.
 type ClearListResponse statusResponse
 
-// Clear all of the items from a list.
-func (lr *ListsResource) Clear(sessionId, listId string) (*ClearListResponse, *http.Response, error) {
-	path := fmt.Sprintf("/list/%s/clear", listId)
+// Clear clears all of the items from a list.
+func (lr *ListsResource) Clear(sessionID, listID string) (*ClearListResponse, *http.Response, error) {
+	path := fmt.Sprintf("/list/%s/clear", listID)
 	var response ClearListResponse
-	resp, err := lr.client.post(path, &response, WithQueryParam("confirm", "true"), WithQueryParam("session_id", sessionId))
+	resp, err := lr.client.post(path, &response, WithQueryParam("confirm", "true"), WithSessionID(sessionID))
 	return &response, resp, errors.Wrap(err, "failed to clear list")
 }
 
+// DeleteListResponse represents the response for deleting a list.
 type DeleteListResponse statusResponse
 
-// Delete a list.
-func (lr *ListsResource) Delete(sessionId, listId string) (*DeleteListResponse, *http.Response, error) {
-	path := fmt.Sprintf("/list/%s", listId)
+// Delete deletes a list.
+func (lr *ListsResource) Delete(sessionID, listID string) (*DeleteListResponse, *http.Response, error) {
+	path := fmt.Sprintf("/list/%s", listID)
 	var response DeleteListResponse
-	resp, err := lr.client.delete(path, &response, WithQueryParam("session_id", sessionId))
+	resp, err := lr.client.delete(path, &response, WithSessionID(sessionID))
 	return &response, resp, errors.Wrap(err, "failed to delete list")
 }

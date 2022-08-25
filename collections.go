@@ -12,11 +12,12 @@ type CollectionsResource struct {
 	client *Client
 }
 
+// Part represents a part in TMDb.
 type Part struct {
 	Adult            bool    `json:"adult"`
 	BackdropPath     *string `json:"backdrop_path"`
-	GenreIds         []int   `json:"genre_ids"`
-	Id               int     `json:"id"`
+	GenreIDs         []int   `json:"genre_ids"`
+	ID               int     `json:"id"`
 	OriginalLanguage string  `json:"original_language"`
 	OriginalTitle    string  `json:"original_title"`
 	Overview         string  `json:"overview"`
@@ -29,8 +30,9 @@ type Part struct {
 	VoteCount        int     `json:"vote_count"`
 }
 
+// Collection represents a collection in TMDb.
 type Collection struct {
-	Id           int     `json:"id"`
+	ID           int     `json:"id"`
 	Name         string  `json:"name"`
 	Overview     string  `json:"overview"`
 	PosterPath   *string `json:"poster_path"`
@@ -38,9 +40,10 @@ type Collection struct {
 	Parts        []Part  `json:"parts"`
 }
 
+// CollectionsOptions represents the available options for the request.
 type CollectionsOptions languageOptions
 
-// Get collection details by id.
+// GetCollection retrieves collection details by id.
 func (cr *CollectionsResource) GetCollection(id int, opt *CollectionsOptions) (*Collection, *http.Response, error) {
 	path := fmt.Sprintf("/collection/%d", id)
 	var collection Collection
@@ -48,6 +51,7 @@ func (cr *CollectionsResource) GetCollection(id int, opt *CollectionsOptions) (*
 	return &collection, resp, errors.Wrap(err, "failed to get collection")
 }
 
+// Image represents an image in TMDb.
 type Image struct {
 	AspectRatio float64 `json:"aspect_ratio"`
 	FilePath    string  `json:"file_path"`
@@ -58,17 +62,20 @@ type Image struct {
 	Width       int     `json:"width"`
 }
 
+// Backdrop represents a backdrop in TMDb.
 type Backdrop Image
 
+// Poster represents a poster in TMDb.
 type Poster Image
 
+// CollectionImages represents collection images in TMDb.
 type CollectionImages struct {
-	Id        int        `json:"id"`
+	ID        int        `json:"id"`
 	Backdrops []Backdrop `json:"backdrops"`
 	Posters   []Poster   `json:"posters"`
 }
 
-// Get the images for a collection by id.
+// GetImages retrieves the images for a collection by id.
 func (cr *CollectionsResource) GetImages(id int, opt *CollectionsOptions) (*CollectionImages, *http.Response, error) {
 	path := fmt.Sprintf("/collection/%d/images", id)
 	var images CollectionImages
@@ -76,12 +83,14 @@ func (cr *CollectionsResource) GetImages(id int, opt *CollectionsOptions) (*Coll
 	return &images, resp, errors.Wrap(err, "failed to get collection images")
 }
 
+// CollectionData represents a collection data in TMDb.
 type CollectionData struct {
 	Title    string `json:"title"`
 	Overview string `json:"overview"`
 	Homepage string `json:"homepage"`
 }
 
+// CollectionTranslation represents a collection translation in TMDb.
 type CollectionTranslation struct {
 	ISO31661    string         `json:"iso_3166_1"`
 	ISO6391     string         `json:"iso_639_1"`
@@ -90,12 +99,13 @@ type CollectionTranslation struct {
 	Data        CollectionData `json:"data"`
 }
 
+// CollectionTranslations represents collection translations in TMDb.
 type CollectionTranslations struct {
-	Id           int                     `json:"id"`
+	ID           int                     `json:"id"`
 	Translations []CollectionTranslation `json:"translations"`
 }
 
-// Get the list translations for a collection by id.
+// GetTranslations retrieves the list translations for a collection by id.
 func (cr *CollectionsResource) GetTranslations(id int, opt *CollectionsOptions) (*CollectionTranslations, *http.Response, error) {
 	path := fmt.Sprintf("/collection/%d/translations", id)
 	var translations CollectionTranslations

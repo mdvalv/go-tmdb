@@ -1,3 +1,4 @@
+// Lists examples.
 package main
 
 import (
@@ -13,13 +14,13 @@ type example struct {
 }
 
 const (
-	listId = "list_id"
+	listID = "list_id"
 )
 
-var sessionId = os.Getenv("SESSIONID")
+var sessionID = os.Getenv("SESSIONID")
 
 func (e example) GetList() {
-	list, _, err := e.client.Lists.GetList(listId, nil)
+	list, _, err := e.client.Lists.GetList(listID, nil)
 	examples.PanicOnError(err)
 
 	for _, item := range list.Items {
@@ -44,7 +45,7 @@ func (e example) GetListWithOptions() {
 	opt := tmdb.ListOptions{
 		Language: "pt-BR",
 	}
-	list, _, err := e.client.Lists.GetList(listId, &opt)
+	list, _, err := e.client.Lists.GetList(listID, &opt)
 	examples.PanicOnError(err)
 	for _, item := range list.Items {
 		switch item.GetMediaType() {
@@ -65,7 +66,7 @@ func (e example) GetListWithOptions() {
 }
 
 func (e example) GetItemStatus() {
-	status, _, err := e.client.Lists.GetItemStatus(listId, 73939)
+	status, _, err := e.client.Lists.GetItemStatus(listID, 73939)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*status)
 }
@@ -76,31 +77,31 @@ func (e example) CreateList() {
 		Description: "new list description",
 	}
 
-	response, _, err := e.client.Lists.CreateList(sessionId, list)
+	response, _, err := e.client.Lists.CreateList(sessionID, list)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*response)
 }
 
 func (e example) AddMovie() {
-	response, _, err := e.client.Lists.AddMovie(sessionId, listId, 597219)
+	response, _, err := e.client.Lists.AddMovie(sessionID, listID, 597219)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*response)
 }
 
 func (e example) RemoveMovie() {
-	response, _, err := e.client.Lists.RemoveMovie(sessionId, listId, 597219)
+	response, _, err := e.client.Lists.RemoveMovie(sessionID, listID, 597219)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*response)
 }
 
 func (e example) Clear() {
-	response, _, err := e.client.Lists.Clear(sessionId, listId)
+	response, _, err := e.client.Lists.Clear(sessionID, listID)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*response)
 }
 
 func (e example) Delete() {
-	response, _, err := e.client.Lists.Delete(sessionId, listId)
+	response, _, err := e.client.Lists.Delete(sessionID, listID)
 	examples.PanicOnError(err)
 	examples.PrettyPrint(*response)
 }

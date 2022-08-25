@@ -1,3 +1,4 @@
+// Package tmdb is a complete implementation for TMDb API v3.
 package tmdb
 
 import (
@@ -14,13 +15,14 @@ import (
 )
 
 const (
-	BASE_URL = "https://api.themoviedb.org/3"
+	// BaseURL is the base URL for TMDb API.
+	BaseURL = "https://api.themoviedb.org/3"
 )
 
 // Client handles interaction with TMDb API.
 type Client struct {
 	// HTTP client used to communicate with the API.
-	HttpClient *resty.Client
+	HTTPClient *resty.Client
 
 	// Available TMDb resources that can be interacted with through the API.
 	Account        *AccountResource
@@ -49,9 +51,9 @@ type Client struct {
 }
 
 // getRestyClient adds some custom configuration to the HTTP client used by TMDb client.
-func getRestyClient(token, baseUrl string) *resty.Client {
+func getRestyClient(token, baseURL string) *resty.Client {
 	client := resty.New()
-	client.SetBaseURL(baseUrl)
+	client.SetBaseURL(baseURL)
 	client.SetQueryParam("api_key", token)
 	client.SetHeader("Accept", "application/json")
 	client.OnAfterResponse(func(c *resty.Client, resp *resty.Response) error {
@@ -63,7 +65,7 @@ func getRestyClient(token, baseUrl string) *resty.Client {
 // NewClient returns a new TMDb API client.
 func NewClient(token string) (*Client, error) {
 	c := &Client{
-		HttpClient: getRestyClient(token, BASE_URL),
+		HTTPClient: getRestyClient(token, BaseURL),
 	}
 
 	c.Account = &AccountResource{client: c}
@@ -104,11 +106,9 @@ func checkResponse(resp *resty.Response) error {
 	if resp.Body() != nil {
 		var raw interface{}
 		if err = json.Unmarshal(resp.Body(), &raw); err != nil {
-			err = errors.Wrap(err, "failed to parse unknown error format")
-			return err
-		} else {
-			return errors.New(parseError(raw))
+			return errors.Wrap(err, "failed to parse unknown error format")
 		}
+		return errors.New(parseError(raw))
 	}
 
 	return err
@@ -139,11 +139,11 @@ func parseError(raw interface{}) string {
 	}
 }
 
-// requestOptionFn can be used to customize the request fields.
-type requestOptionFn func(*resty.Request) error
+// RequestOptionFn can be used to customize the request fields.
+type RequestOptionFn func(*resty.Request) error
 
 // WithBody can be used to set a custom request body.
-func WithBody(body interface{}) requestOptionFn {
+func WithBody(body interface{}) RequestOptionFn {
 	return func(r *resty.Request) error {
 		if body != nil {
 			r.SetHeader("Content-Type", "application/json")
@@ -154,7 +154,7 @@ func WithBody(body interface{}) requestOptionFn {
 }
 
 // WithQueryParams can be used to set custom query parameters to the request.
-func WithQueryParams(params interface{}) requestOptionFn {
+func WithQueryParams(params interface{}) RequestOptionFn {
 	return func(r *resty.Request) error {
 		q, err := query.Values(params)
 		if err != nil {
@@ -166,16 +166,24 @@ func WithQueryParams(params interface{}) requestOptionFn {
 }
 
 // WithQueryParam can be used to set a custom query parameter to the request.
-func WithQueryParam(param, value string) requestOptionFn {
+func WithQueryParam(param, value string) RequestOptionFn {
 	return func(r *resty.Request) error {
 		r.SetQueryParam(param, value)
 		return nil
 	}
 }
 
+// WithSessionID can be used to set a session ID to the request.
+func WithSessionID(sessionID string) RequestOptionFn {
+	return func(r *resty.Request) error {
+		r.SetQueryParam("session_id", sessionID)
+		return nil
+	}
+}
+
 // newRequest prepares a new resty.Request.
-func (c *Client) newRequest(resource interface{}, options ...requestOptionFn) (*resty.Request, error) {
-	req := c.HttpClient.NewRequest().SetResult(resource)
+func (c *Client) newRequest(resource interface{}, options ...RequestOptionFn) (*resty.Request, error) {
+	req := c.HTTPClient.NewRequest().SetResult(resource)
 	for _, fn := range options {
 		if fn != nil {
 			if err := fn(req); err != nil {
@@ -187,7 +195,7 @@ func (c *Client) newRequest(resource interface{}, options ...requestOptionFn) (*
 }
 
 // get performs a get request.
-func (c *Client) get(path string, resource interface{}, options ...requestOptionFn) (*http.Response, error) {
+func (c *Client) get(path string, resource interface{}, options ...RequestOptionFn) (*http.Response, error) {
 	req, err := c.newRequest(resource, options...)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get request")
@@ -197,7 +205,7 @@ func (c *Client) get(path string, resource interface{}, options ...requestOption
 }
 
 // delete performs a delete request.
-func (c *Client) delete(path string, resource interface{}, options ...requestOptionFn) (*http.Response, error) {
+func (c *Client) delete(path string, resource interface{}, options ...RequestOptionFn) (*http.Response, error) {
 	req, err := c.newRequest(resource, options...)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get request")
@@ -207,7 +215,7 @@ func (c *Client) delete(path string, resource interface{}, options ...requestOpt
 }
 
 // post performs post request.
-func (c *Client) post(path string, resource interface{}, options ...requestOptionFn) (*http.Response, error) {
+func (c *Client) post(path string, resource interface{}, options ...RequestOptionFn) (*http.Response, error) {
 	req, err := c.newRequest(resource, options...)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get request")
@@ -234,7 +242,7 @@ func convertToTVShow(obj media) (*TVShow, error) {
 
 func convert(expectedMedia string, obj media, to interface{}) error {
 	if obj.GetMediaType() != expectedMedia {
-		return errors.New(fmt.Sprintf("invalid conversion from %s to %s", obj.GetMediaType(), expectedMedia))
+		return fmt.Errorf("invalid conversion from %s to %s", obj.GetMediaType(), expectedMedia)
 	}
 	result, err := json.Marshal(obj)
 	if err != nil {

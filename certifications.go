@@ -11,12 +11,14 @@ type CertificationsResource struct {
 	client *Client
 }
 
+// Certification represents a certification in TMDb.
 type Certification struct {
 	Certification string `json:"certification"`
 	Meaning       string `json:"meaning"`
 	Order         int    `json:"order"`
 }
 
+// MovieCertifications represents movie certifications in TMDb.
 type MovieCertifications struct {
 	AU []Certification `json:"AU"`
 	BR []Certification `json:"BR"`
@@ -29,6 +31,7 @@ type MovieCertifications struct {
 	US []Certification `json:"US"`
 }
 
+// TVCertifications represents tv certifications in TMDb.
 type TVCertifications struct {
 	AU []Certification `json:"AU"`
 	BR []Certification `json:"BR"`
@@ -42,10 +45,12 @@ type TVCertifications struct {
 	US []Certification `json:"US"`
 }
 
+// MovieCertificationsResponse represents the response for getting movie certifications from TMDb.
 type MovieCertificationsResponse struct {
 	Certifications MovieCertifications `json:"certifications"`
 }
 
+// TVCertificationsResponse represents the response for getting tv certifications from TMDb.
 type TVCertificationsResponse struct {
 	Certifications TVCertifications `json:"certifications"`
 }

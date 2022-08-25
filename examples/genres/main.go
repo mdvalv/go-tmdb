@@ -1,3 +1,4 @@
+// Genres examples.
 package main
 
 import (

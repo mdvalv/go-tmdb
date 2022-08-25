@@ -1,3 +1,4 @@
+// Configuration examples.
 package main
 
 import (

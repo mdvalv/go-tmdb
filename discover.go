@@ -11,9 +11,13 @@ type DiscoverResource struct {
 	client *Client
 }
 
+// DiscoverMovies represents the discovered movies from TMDb.
 type DiscoverMovies paginatedMovies
+
+// DiscoverTVShows represents the discovered tv shows from TMDb.
 type DiscoverTVShows paginatedTVShows
 
+// DiscoverMoviesOptions represents the available options for the request.
 type DiscoverMoviesOptions struct {
 	// Choose from one of the many available sort options:
 	//    popularity.asc / popularity.desc
@@ -143,7 +147,8 @@ type DiscoverMoviesOptions struct {
 	WithoutCompanies string `url:"without_companies,omitempty" json:"without_companies,omitempty"`
 }
 
-// Discover movies by different types of data like average rating, number of votes, genres and certifications.
+// DiscoverMovies retrieves movies by different types of data
+// like average rating, number of votes, genres and certifications.
 //
 // Please note, when using certification/certification.lte it's required to also specify certification_country.
 // These two parameters work together in order to filter the results.
@@ -166,6 +171,7 @@ func (dr *DiscoverResource) DiscoverMovies(opt *DiscoverMoviesOptions) (*Discove
 	return &discover, resp, errors.Wrap(err, "failed to discover movies")
 }
 
+// DiscoverTVShowsOptions represents the available options for the request.
 type DiscoverTVShowsOptions struct {
 	// Choose from one of the many available sort options:
 	//    vote_average.desc / vote_average.asc
@@ -287,8 +293,8 @@ type DiscoverTVShowsOptions struct {
 	WithoutCompanies string `url:"without_companies,omitempty" json:"without_companies,omitempty"`
 }
 
-// Discover TV shows by different types of data like average rating, number of votes,
-// genres, the network they aired on and air dates.
+// DiscoverTVShows retrieves TV shows by different types of data
+// like average rating, number of votes, genres, the network they aired on and air dates.
 //
 // Also note that a number of filters support being comma (,) or pipe (|) separated.
 // Comma's are treated like an AND and query while pipe's are an OR.

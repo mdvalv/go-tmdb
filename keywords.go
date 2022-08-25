@@ -12,8 +12,9 @@ type KeywordsResource struct {
 	client *Client
 }
 
+// Keyword represents a keyword in TMDb.
 type Keyword struct {
-	Id   int    `json:"id"`
+	ID   int    `json:"id"`
 	Name string `json:"name"`
 }
 
@@ -25,14 +26,16 @@ func (kr *KeywordsResource) GetKeyword(id int) (*Keyword, *http.Response, error)
 	return &keyword, resp, errors.Wrap(err, "failed to get keyword")
 }
 
+// KeywordMovies represents keyword movies in TMDb.
 type KeywordMovies struct {
-	Id           int           `json:"id"`
+	ID           int           `json:"id"`
 	Page         int           `json:"page"`
 	Movies       []MovieResult `json:"results"`
 	TotalPages   int           `json:"total_pages"`
 	TotalResults int           `json:"total_results"`
 }
 
+// KeywordMoviesOptions represents the available options for the request.
 type KeywordMoviesOptions struct {
 	// Pass a ISO 639-1 value to display translated data for the fields that support it.
 	// minLength: 2
@@ -49,7 +52,7 @@ type KeywordMoviesOptions struct {
 	Page *int `url:"page,omitempty" json:"page,omitempty"`
 }
 
-// Get the movies that belong to a keyword.
+// GetKeywordMovies retrieves the movies that belong to a keyword.
 // It is highly recommend using movie discover instead of this method as it is much more flexible.
 func (kr *KeywordsResource) GetKeywordMovies(id int, opt *KeywordMoviesOptions) (*KeywordMovies, *http.Response, error) {
 	path := fmt.Sprintf("/keyword/%d/movies", id)

@@ -1,3 +1,4 @@
+// Networks examples.
 package main
 
 import (

@@ -1,3 +1,4 @@
+// Companies examples.
 package main
 
 import (

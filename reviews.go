@@ -12,6 +12,7 @@ type ReviewsResource struct {
 	client *Client
 }
 
+// AuthorDetails represents author details in TMDb.
 type AuthorDetails struct {
 	Name       string  `json:"name"`
 	Username   string  `json:"username"`
@@ -19,31 +20,33 @@ type AuthorDetails struct {
 	Rating     float64 `json:"rating"`
 }
 
+// Review represents review in TMDb.
 type Review struct {
-	Id            string        `json:"id"`
+	ID            string        `json:"id"`
 	Author        string        `json:"author"`
 	AuthorDetails AuthorDetails `json:"author_details"`
 	Content       string        `json:"content"`
 	CreatedAt     string        `json:"created_at"`
 	UpdatedAt     string        `json:"updated_at"`
-	Url           string        `json:"url"`
+	URL           string        `json:"url"`
 }
 
+// ReviewDetails represents review details in TMDb.
 type ReviewDetails struct {
 	Author        string        `json:"author"`
 	AuthorDetails AuthorDetails `json:"author_details"`
 	Content       string        `json:"content"`
 	CreatedAt     string        `json:"created_at"`
-	Id            string        `json:"id"`
+	ID            string        `json:"id"`
 	ISO6391       string        `json:"iso_639_1"`
-	MediaId       int           `json:"media_id"`
+	MediaID       int           `json:"media_id"`
 	MediaTitle    string        `json:"media_title"`
 	MediaType     string        `json:"media_type"`
 	UpdatedAt     string        `json:"updated_at"`
-	Url           string        `json:"url"`
+	URL           string        `json:"url"`
 }
 
-// Retrieve the details of a movie or TV show review.
+// GetReview retrieves the details of a movie or TV show review.
 func (rr *ReviewsResource) GetReview(id string) (*ReviewDetails, *http.Response, error) {
 	path := fmt.Sprintf("/review/%s", id)
 	var review ReviewDetails

@@ -11,13 +11,14 @@ type AuthenticationResource struct {
 	client *Client
 }
 
+// AuthToken represents the authentication object in TMDb.
 type AuthToken struct {
 	ExpiresAt    string `json:"expires_at"`
 	RequestToken string `json:"request_token"`
 	Success      bool   `json:"success"`
 }
 
-// Create a temporary request token that can be used to validate a TMDB user login.
+// CreateRequestToken creates a temporary request token that can be used to validate a TMDB user login.
 func (ar *AuthenticationResource) CreateRequestToken() (*AuthToken, *http.Response, error) {
 	path := "/authentication/token/new"
 	var response AuthToken
@@ -25,13 +26,14 @@ func (ar *AuthenticationResource) CreateRequestToken() (*AuthToken, *http.Respon
 	return &response, resp, errors.Wrap(err, "failed to get request token")
 }
 
+// GuestSession represents a guest session object in TMDb.
 type GuestSession struct {
 	ExpiresAt      string `json:"expires_at"`
-	GuestSessionId string `json:"guest_session_id"`
+	GuestSessionID string `json:"guest_session_id"`
 	Success        bool   `json:"success"`
 }
 
-// Create a new guest session.
+// CreateGuestSession creates a new guest session.
 func (ar *AuthenticationResource) CreateGuestSession() (*GuestSession, *http.Response, error) {
 	path := "/authentication/guest_session/new"
 	var session GuestSession
@@ -39,12 +41,13 @@ func (ar *AuthenticationResource) CreateGuestSession() (*GuestSession, *http.Res
 	return &session, resp, errors.Wrap(err, "failed to get guest session")
 }
 
+// Session represents the session object in TMDb.
 type Session struct {
-	SessionId string `json:"session_id"`
+	SessionID string `json:"session_id"`
 	Success   bool   `json:"success"`
 }
 
-// Create a fully valid session ID once a user has validated the request token.
+// CreateSession creates a fully valid session ID once a user has validated the request token.
 func (ar *AuthenticationResource) CreateSession(requestToken string) (*Session, *http.Response, error) {
 	path := "/authentication/session/new"
 	opt := map[string]string{
@@ -55,7 +58,7 @@ func (ar *AuthenticationResource) CreateSession(requestToken string) (*Session, 
 	return &session, resp, errors.Wrap(err, "failed to get session")
 }
 
-// This method allows an application to validate a request token by entering a username and password.
+// ValidateRequestToken allows an application to validate a request token by entering a username and password.
 func (ar *AuthenticationResource) ValidateRequestToken(username, password, requestToken string) (*AuthToken, *http.Response, error) {
 	path := "/authentication/token/validate_with_login"
 	opt := map[string]string{
@@ -68,7 +71,7 @@ func (ar *AuthenticationResource) ValidateRequestToken(username, password, reque
 	return &session, resp, errors.Wrap(err, "failed to get session")
 }
 
-// Use this method to create a v3 session ID from a valid v4 access token.
+// CreateSessionWithV4Token creates a v3 session ID from a valid v4 access token.
 // The v4 token needs to be authenticated by the user.
 // The standard "read token" will not validate to create a session ID.
 func (ar *AuthenticationResource) CreateSessionWithV4Token(accessToken string) (*Session, *http.Response, error) {
@@ -81,15 +84,16 @@ func (ar *AuthenticationResource) CreateSessionWithV4Token(accessToken string) (
 	return &session, resp, errors.Wrap(err, "failed to get session")
 }
 
+// DeleteSessionResponse represents the response for deleting a session id.
 type DeleteSessionResponse struct {
 	Success bool `json:"success"`
 }
 
-// Delete (or "logout") from a session.
-func (ar *AuthenticationResource) DeleteSession(sessionId string) (*DeleteSessionResponse, *http.Response, error) {
+// DeleteSession deletes (or "logout") from a session.
+func (ar *AuthenticationResource) DeleteSession(sessionID string) (*DeleteSessionResponse, *http.Response, error) {
 	path := "/authentication/session"
 	opt := map[string]string{
-		"session_id": sessionId,
+		"session_id": sessionID,
 	}
 	var deleteResponse DeleteSessionResponse
 	resp, err := ar.client.delete(path, &deleteResponse, WithBody(opt))

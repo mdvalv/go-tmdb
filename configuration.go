@@ -11,9 +11,10 @@ type ConfigurationResource struct {
 	client *Client
 }
 
+// ConfigurationImages represents configuration images in TMDb.
 type ConfigurationImages struct {
-	BaseUrl       string   `json:"base_url"`
-	SecureBaseUrl string   `json:"secure_base_url"`
+	BaseURL       string   `json:"base_url"`
+	SecureBaseURL string   `json:"secure_base_url"`
 	BackdropSizes []string `json:"backdrop_sizes"`
 	LogoSizes     []string `json:"logo_sizes"`
 	PosterSizes   []string `json:"poster_sizes"`
@@ -21,12 +22,13 @@ type ConfigurationImages struct {
 	StillSizes    []string `json:"still_sizes"`
 }
 
+// Configuration represents the configuration in TMDb.
 type Configuration struct {
 	Images     ConfigurationImages `json:"images"`
 	ChangeKeys []string            `json:"change_keys"`
 }
 
-// Get the system wide configuration information.
+// GetAPIConfiguration retrieves the system wide configuration information.
 // Some elements of the API require some knowledge of this configuration data.
 // The purpose of this is to try and keep the actual API responses as light as possible.
 // It is recommended to cache this data within the application and check for updates every few days.
@@ -43,12 +45,13 @@ func (cr *ConfigurationResource) GetAPIConfiguration() (*Configuration, *http.Re
 	return &configuration, resp, errors.Wrap(err, "failed to get API configuration")
 }
 
+// Countries represents countries in TMDb.
 type Countries []struct {
 	ISO31661    string `json:"iso_3166_1"`
 	EnglishName string `json:"english_name"`
 }
 
-// Get the list of countries (ISO 3166-1 tags) used throughout TMDB.
+// GetCountries retrieves the list of countries (ISO 3166-1 tags) used throughout TMDB.
 func (cr *ConfigurationResource) GetCountries() (Countries, *http.Response, error) {
 	path := "/configuration/countries"
 	var countries Countries
@@ -56,12 +59,13 @@ func (cr *ConfigurationResource) GetCountries() (Countries, *http.Response, erro
 	return countries, resp, errors.Wrap(err, "failed to get countries")
 }
 
+// Jobs represents jobs in TMDb.
 type Jobs []struct {
 	Department string   `json:"department"`
 	Jobs       []string `json:"jobs"`
 }
 
-// Get a list of the jobs and departments used on TMDB.
+// GetJobs retrieves a list of the jobs and departments used on TMDB.
 func (cr *ConfigurationResource) GetJobs() (Jobs, *http.Response, error) {
 	path := "/configuration/jobs"
 	var jobs Jobs
@@ -69,13 +73,14 @@ func (cr *ConfigurationResource) GetJobs() (Jobs, *http.Response, error) {
 	return jobs, resp, errors.Wrap(err, "failed to get jobs")
 }
 
+// Languages represents languages in TMDb.
 type Languages []struct {
 	ISO6391     string `json:"iso_639_1"`
 	EnglishName string `json:"english_name"`
 	Name        string `json:"name"`
 }
 
-// Get the list of languages (ISO 639-1 tags) used throughout TMDB.
+// GetLanguages retrieves the list of languages (ISO 639-1 tags) used throughout TMDB.
 func (cr *ConfigurationResource) GetLanguages() (Languages, *http.Response, error) {
 	path := "/configuration/languages"
 	var languages Languages
@@ -83,9 +88,10 @@ func (cr *ConfigurationResource) GetLanguages() (Languages, *http.Response, erro
 	return languages, resp, errors.Wrap(err, "failed to get languages")
 }
 
+// PrimaryTranslations represents primary translations in TMDb.
 type PrimaryTranslations []string
 
-// Get a list of the officially supported translations on TMDB.
+// GetPrimaryTranslations retrieves a list of the officially supported translations on TMDB.
 func (cr *ConfigurationResource) GetPrimaryTranslations() (PrimaryTranslations, *http.Response, error) {
 	path := "/configuration/primary_translations"
 	var translations PrimaryTranslations
@@ -93,12 +99,13 @@ func (cr *ConfigurationResource) GetPrimaryTranslations() (PrimaryTranslations, 
 	return translations, resp, errors.Wrap(err, "failed to get primary translations")
 }
 
+// Timezones represents timezones in TMDb.
 type Timezones []struct {
 	ISO31661 string   `json:"iso_3166_1"`
 	Zones    []string `json:"zones"`
 }
 
-// Get the list of timezones used throughout TMDB.
+// GetTimezones retrieves the list of timezones used throughout TMDB.
 func (cr *ConfigurationResource) GetTimezones() (Timezones, *http.Response, error) {
 	path := "/configuration/timezones"
 	var timezones Timezones

@@ -1,3 +1,4 @@
+// Credits examples.
 package main
 
 import (
