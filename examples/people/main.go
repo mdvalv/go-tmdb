@@ -1,3 +1,4 @@
+// People examples.
 package main
 
 import (

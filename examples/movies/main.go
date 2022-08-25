@@ -1,3 +1,4 @@
+// Movies examples.
 package main
 
 import (

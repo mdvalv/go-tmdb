@@ -1,3 +1,4 @@
+// Authentication examples.
 package main
 
 import (

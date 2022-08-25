@@ -1,3 +1,4 @@
+// Account examples.
 package main
 
 import (

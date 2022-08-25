@@ -1,3 +1,4 @@
+// Guest Session examples.
 package main
 
 import (
